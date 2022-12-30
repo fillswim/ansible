@@ -1,0 +1,8 @@
+
+[staging_servers]
+linux1 ansible_host=192.168.2.21
+
+[prod_servers]
+linux2 ansible_host=192.168.2.22
+linux3 ansible_host=192.168.2.23
+linux4 ansible_host=192.168.2.24
