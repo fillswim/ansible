@@ -1,0 +1,15 @@
+---
+- name: Install default Apache Web servers
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install Apache WebServer
+      ansible.builtin.apt:
+        name: httpd
+
+    - name: Start Apache and Enable it on the every boot
+      ansible.builtin.service:
+        name: httpd
+        enabled: true
+        state: started
