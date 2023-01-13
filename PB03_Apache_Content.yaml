@@ -27,7 +27,8 @@
       ansible.builtin.copy:
         src: "{{ source_file }}"
         dest: "{{ destin_file }}"
-        mode: '0555'
+        mode: '0664'
+        remote_src: true
       notify: Restart Apache Handler
 
   handlers:
