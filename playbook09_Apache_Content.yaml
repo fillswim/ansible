@@ -1,0 +1,25 @@
+---
+- name: Install Apache and Upload my Web Page
+  hosts: all
+
+  vars:
+    source_file: ./MyWebSite/index.html
+    destin_file: /var/www/html
+
+  tasks:
+    - name: Install Apache WebServer
+      ansible.builtin.apt:
+        name: apache2
+
+    - name: Copy my home page to servers
+      ansible.builtin.copy:
+        src: "{{ source_file }}"
+        dest: "{{ destin_file }}"
+        mode: '0555'
+      notify: Restart Apache Handler
+
+  handlers:
+    - name: Restart Apache Handler
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
