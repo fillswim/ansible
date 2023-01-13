@@ -1,0 +1,15 @@
+---
+- name: Copy file
+  hosts: all
+
+  vars:
+    source_file: ./MyWebSite/index.html
+    destin_file: /var/www/html
+
+  tasks:
+    - name: Copy my home page to servers
+      ansible.builtin.copy:
+        src: "{{ source_file }}"
+        dest: "{{ destin_file }}"
+        mode: '0664'
+        remote_src: true

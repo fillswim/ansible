@@ -1,0 +1,10 @@
+---
+- name: Download index.html
+  hosts: all
+
+  tasks:
+    - name: Download index.html
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/fillswim/ansible/master/index.html
+        dest: ./MyWebSite/index.html
+        mode: '0664'

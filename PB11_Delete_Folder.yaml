@@ -1,0 +1,9 @@
+---
+- name: Delete folder
+  hosts: all
+
+  tasks:
+    - name: Delete folder
+      ansible.builtin.file:
+        path: ./MyWebSite/
+        state: absent

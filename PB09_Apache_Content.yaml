@@ -11,6 +11,18 @@
       ansible.builtin.apt:
         name: apache2
 
+    - name: Create folder
+      ansible.builtin.file:
+        path: ./MyWebSite/
+        state: directory
+        mode: '0775'
+
+    - name: Download index.html
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/fillswim/ansible/master/index.html
+        dest: ./MyWebSite/index.html
+        mode: '0664'
+
     - name: Copy my home page to servers
       ansible.builtin.copy:
         src: "{{ source_file }}"

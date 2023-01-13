@@ -1,0 +1,10 @@
+---
+- name: Create folder
+  hosts: all
+
+  tasks:
+    - name: Create folder
+      ansible.builtin.file:
+        path: ./MyWebSite/
+        state: directory
+        mode: '0775'
