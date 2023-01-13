@@ -1,0 +1,9 @@
+---
+- name: Stop Apache Web servers
+  hosts: all
+
+  tasks:
+    - name: Stop Apache
+      ansible.builtin.service:
+        name: apache2
+        state: stopped

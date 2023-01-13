@@ -1,0 +1,9 @@
+---
+- name: Unmask Apache
+  hosts: all
+
+  tasks:
+    - name: Unmask Apache
+      ansible.builtin.systemd:
+        name: apache2
+        masked: false

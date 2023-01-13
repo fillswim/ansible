@@ -1,0 +1,10 @@
+---
+- name: Start Apache Web servers
+  hosts: all
+
+  tasks:
+    - name: Start Apache
+      ansible.builtin.service:
+        name: apache2
+        enabled: true
+        state: started

@@ -1,0 +1,9 @@
+---
+- name: Restart Apache Web servers
+  hosts: all
+
+  tasks:
+    - name: Restart Apache
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
