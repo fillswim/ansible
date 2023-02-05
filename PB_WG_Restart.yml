@@ -1,0 +1,14 @@
+---
+- name: Restart WireGuard
+  hosts: wg_servers
+
+  tasks:
+  - name: Restart WireGuard
+    community.docker.docker_compose:
+      project_src: /root/wireguard
+      files:
+        - docker-compose.yml
+      services: wireguard
+      restarted: true
+    vars:
+      ansible_python_interpreter: /usr/bin/python3

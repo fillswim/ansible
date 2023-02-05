@@ -1,0 +1,8 @@
+---
+- name: Set timezone
+  hosts: hyperv_servers
+
+  tasks:
+    - name: Set timezone to Europe/Moscow
+      community.general.timezone:
+        name: Europe/Moscow

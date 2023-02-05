@@ -1,0 +1,11 @@
+---
+- name: Playbook for user when
+  hosts: ansible_servers
+
+  # Вывод всех переменных с хоста
+  # ansible ansible_linux1 -m setup
+  tasks:
+    - name: Show ansible_hostname
+      ansible.builtin.debug:
+        var: ansible_hostname
+      when: ansible_default_ipv4.address == "192.168.2.21"

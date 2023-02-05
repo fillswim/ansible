@@ -1,0 +1,30 @@
+---
+- name: Playbook for Variables Lesson
+  hosts: ansible_servers
+
+  vars:
+    message1: Hello
+    message2: World
+    secret: 12345
+
+  tasks:
+    - name: Print Secret variables
+      ansible.builtin.debug:
+        var: secret
+
+    - name: Print Secret word
+      ansible.builtin.debug:
+        msg: "Secret word is: {{ secret }}"
+
+    - name: Print Secret owner
+      ansible.builtin.debug:
+        msg: "User of this server is: {{ ansible_user }}"
+
+    - name: Set fact
+      ansible.builtin.set_fact:
+        new_fact: "{{ message1 }} {{ message2 }} from {{ ansible_user }}"
+        other_fact: "{{ message1 }} {{ message2 }}"
+
+    - name: Print new fact
+      ansible.builtin.debug:
+        var: new_fact

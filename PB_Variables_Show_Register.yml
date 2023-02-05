@@ -1,0 +1,12 @@
+---
+- name: Playbook save var from shell
+  hosts: ansible_linux1
+
+  tasks:
+    - name: Save var from shell
+      ansible.builtin.shell: uptime
+      register: results
+
+    - name: Show register
+      ansible.builtin.debug:
+        var: results.stdout

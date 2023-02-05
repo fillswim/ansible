@@ -1,0 +1,7 @@
+---
+- name: Test connection to my vds servers
+  hosts: wg_servers
+
+  tasks:
+  - name: Ping my vds servers
+    ansible.builtin.ping:
