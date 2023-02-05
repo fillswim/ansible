@@ -1,0 +1,7 @@
+---
+- name: Test connection to my servers
+  hosts: hyperv_servers
+
+  tasks:
+  - name: Ping my servers
+    ansible.builtin.ping:
