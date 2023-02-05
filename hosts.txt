@@ -1,8 +1,28 @@
 
 [staging_servers]
-linux1 ansible_host=192.168.2.21
+ansible_linux1 ansible_host=192.168.2.21
 
 [prod_servers]
-linux2 ansible_host=192.168.2.22
-linux3 ansible_host=192.168.2.23
-linux4 ansible_host=192.168.2.24
+ansible_linux2 ansible_host=192.168.2.22
+ansible_linux3 ansible_host=192.168.2.23
+ansible_linux4 ansible_host=192.168.2.24
+
+[wg_servers]
+wg1 ansible_host=176.124.201.22
+
+[nginx_servers]
+nginx_proxy_manager ansible_host=192.168.2.100
+
+[jenkins_servers]
+jenkins_master ansible_host=192.168.2.50
+jenkins_builder ansible_host=192.168.2.55
+jenkins_node1 ansible_host=192.168.2.51
+
+[ansible_servers:children]
+staging_servers
+prod_servers
+
+[hyperv_servers:children]
+ansible_servers
+nginx_servers
+jenkins_servers
