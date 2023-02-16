@@ -1,0 +1,80 @@
+---
+- name: Install Apache and Upload my Web Page
+  hosts: ansible_servers
+
+  vars:
+    source_folder: ./MyWebSite2
+    destin_folder: /var/www/html
+
+  tasks:
+    - name: Show ansible_os_family
+      ansible.builtin.debug:
+        var: ansible_os_family
+
+    - name: Block for Debian
+      when: ansible_os_family == "Debian"
+      become: true
+      block:
+        - name: Install Apache WebServer on Debian
+          ansible.builtin.apt:
+            name: apache2
+
+        - name: Generate Index.thml
+          ansible.builtin.template:
+            src: "{{ source_folder }}/index.j2"
+            dest: "{{ destin_folder }}/index.html"
+            mode: '0555'
+
+        - name: Copy index.html to servers on Debian
+          ansible.builtin.copy:
+            src: "{{ source_folder }}/{{ item }}"
+            dest: "{{ destin_folder }}"
+            mode: '0664'
+          loop:
+            - "au.png"
+            - "de.png"
+            - "fr.png"
+            - "gb.png"
+
+        - name: Restart Apache for Debian
+          ansible.builtin.service:
+            name: apache2
+            state: restarted
+
+    - name: Block for RedHat
+      when: ansible_os_family == "RedHat"
+      become: true
+      block:
+        - name: Install Apache WebServer on RedHat
+          ansible.builtin.yum:
+            name:
+              - httpd
+
+        - name: Generate Index.thml
+          ansible.builtin.template:
+            src: "{{ source_folder }}/index.j2"
+            dest: "{{ destin_folder }}/index.html"
+            mode: '0555'
+
+        - name: Copy index.html to servers
+          ansible.builtin.copy:
+            src: "{{ source_folder }}/{{ item }}"
+            dest: "{{ destin_folder }}"
+            mode: '0664'
+          loop:
+            - "au.png"
+            - "de.png"
+            - "fr.png"
+            - "gb.png"
+
+        - name: Restart Apache Handler for RedHat
+          ansible.builtin.service:
+            name: httpd
+            state: restarted
+
+  handlers:
+    - name: Copy index.html to servers
+      ansible.builtin.copy:
+        src: "{{ source_file }}"
+        dest: "{{ destin_file }}"
+        mode: '0664'
