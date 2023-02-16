@@ -1,0 +1,32 @@
+---
+- name: Loops playbook
+  hosts: ansible_linux1
+
+  tasks:
+    - name: Say hello to all
+      ansible.builtin.debug:
+        msg: "Hello {{ item }}"
+      loop:
+        - "testuser1"
+        - "testuser2"
+        - "testuser3"
+        - "testuser4"
+
+    - name: Loop Until example
+      ansible.builtin.shell: echo -n A >> myfile.txt && cat myfile.txt # Каждый раз записывать "A" в файл и выводить на экран
+      register: output  # Сохранение результатов вывода echo в переменную output
+      delay: 2          # Задержка в 2 секунды между запусками
+      retries: 10       # Максимальное количество повторений
+      until: output.stdout.find("AAAA") == false # Повторять до того, пока в файле не накопится "AAAA"
+
+    - name: Print myfile.txt
+      ansible.builtin.debug:
+        var: output.stdout
+
+#    - name: Install many packages
+#      ansible.builtin.apt:
+#        name: {{ item }}
+#      loop:
+#        - python
+#        - tree
+#        - mysql-client

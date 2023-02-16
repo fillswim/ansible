@@ -1,38 +1,58 @@
 ---
 - name: Install Apache and Upload my Web Page
-  hosts: all
+  hosts: ansible_servers
 
   vars:
-    source_file: ./MyWebSite/index.html
+    source_file: ./MyWebSite1/index.html
     destin_file: /var/www/html
 
   tasks:
-    - name: Install Apache WebServer
-      ansible.builtin.apt:
-        name: apache2
+    - name: Show ansible_os_family
+      ansible.builtin.debug:
+        var: ansible_os_family
 
-    - name: Create folder
-      ansible.builtin.file:
-        path: ./MyWebSite/
-        state: directory
-        mode: '0775'
+    - name: Block for Debian
+      when: ansible_os_family == "Debian"
+      become: true
+      block:
+        - name: Install Apache WebServer on Debian
+          ansible.builtin.apt:
+            name: apache2
 
-    - name: Download index.html
-      ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/fillswim/ansible/master/index.html
-        dest: ./MyWebSite/index.html
-        mode: '0664'
+        - name: Copy index.html to servers on Debian
+          ansible.builtin.copy:
+            src: "{{ source_file }}"
+            dest: "{{ destin_file }}"
+            mode: '0664'
 
-    - name: Copy my home page to servers
+        - name: Restart Apache for Debian
+          ansible.builtin.service:
+            name: apache2
+            state: restarted
+
+    - name: Block for RedHat
+      when: ansible_os_family == "RedHat"
+      become: true
+      block:
+        - name: Install Apache WebServer on RedHat
+          ansible.builtin.yum:
+            name:
+              - httpd
+
+        - name: Copy index.html to servers
+          ansible.builtin.copy:
+            src: "{{ source_file }}"
+            dest: "{{ destin_file }}"
+            mode: '0664'
+
+        - name: Restart Apache Handler for RedHat
+          ansible.builtin.service:
+            name: httpd
+            state: restarted
+
+  handlers:
+    - name: Copy index.html to servers
       ansible.builtin.copy:
         src: "{{ source_file }}"
         dest: "{{ destin_file }}"
         mode: '0664'
-        remote_src: true
-      notify: Restart Apache Handler
-
-  handlers:
-    - name: Restart Apache Handler
-      ansible.builtin.service:
-        name: apache2
-        state: restarted

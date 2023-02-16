@@ -3,9 +3,10 @@
 ansible_linux1 ansible_host=192.168.2.21
 
 [prod_servers]
-ansible_linux2 ansible_host=192.168.2.22
-ansible_linux3 ansible_host=192.168.2.23
+ansible_linux2 ansible_host=192.168.2.22 owner=User2
+ansible_linux3 ansible_host=192.168.2.23 owner=User3
 ansible_linux4 ansible_host=192.168.2.24
+ansible_linux5 ansible_host=192.168.2.25
 
 [wg_servers]
 wg1 ansible_host=176.124.201.22

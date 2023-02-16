@@ -1,6 +1,6 @@
 ---
 - name: Test connection to my servers
-  hosts: hyperv_servers
+  hosts: prod_servers
 
   tasks:
   - name: Ping my servers

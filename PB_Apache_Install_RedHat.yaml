@@ -1,0 +1,16 @@
+---
+- name: Install Apache RedHat
+  hosts: ansible_linux5
+
+  tasks:
+
+    - name: Install Apache WebServer on RedHat
+      ansible.builtin.yum:
+        name:
+          - httpd
+
+    - name: Start Apache and Enable it on every boot
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true

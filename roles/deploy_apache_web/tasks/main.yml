@@ -1,0 +1,26 @@
+---
+# tasks file for deploy_apache_web
+- name: Create folder
+  ansible.builtin.file:
+    path: "{{ source_folder }}"
+    state: directory
+    mode: '0775'
+
+- name: Download indexes
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/fillswim/ansible/master/{{ item }}
+    dest: "{{ source_folder }}/{{ item }}"
+    mode: '0664'
+    loop:
+      - "index1.html"
+      - "index2.html"
+      - "index3.html"
+
+- name: Copy indexes to other folder
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ destin_folder }}"
+    mode: '0664'
+    remote_src: true
+    with_fileglob:
+      - "{{ source_folder }}/*.*"

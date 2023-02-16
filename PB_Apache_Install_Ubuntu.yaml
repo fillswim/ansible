@@ -1,5 +1,5 @@
 ---
-- name: Install Apache
+- name: Install Apache Ubuntu
   hosts: all
 
   tasks:
