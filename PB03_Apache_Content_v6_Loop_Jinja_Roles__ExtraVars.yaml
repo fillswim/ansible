@@ -1,0 +1,9 @@
+---
+# Запуск:
+# ansible-playbook PB03_Apache_Content_v6_Loop_Jinja_Roles__ExtraVars.yaml --extra-var "MYHOSTS=ansible_linux1"
+- name: Install Apache and Upload my Web Page
+  hosts: "{{ MYHOSTS }}"
+
+  roles:
+    - { role: deploy_apache_web, when ansible_system == 'Linux'}
+

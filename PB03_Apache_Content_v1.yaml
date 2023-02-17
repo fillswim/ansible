@@ -49,10 +49,3 @@
           ansible.builtin.service:
             name: httpd
             state: restarted
-
-  handlers:
-    - name: Copy index.html to servers
-      ansible.builtin.copy:
-        src: "{{ source_file }}"
-        dest: "{{ destin_file }}"
-        mode: '0664'

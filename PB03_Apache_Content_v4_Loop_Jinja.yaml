@@ -19,13 +19,13 @@
           ansible.builtin.apt:
             name: apache2
 
-        - name: Generate Index.thml
+        - name: Generate and copy index.html
           ansible.builtin.template:
             src: "{{ source_folder }}/index.j2"
             dest: "{{ destin_folder }}/index.html"
             mode: '0555'
 
-        - name: Copy index.html to servers on Debian
+        - name: Copy pictures to servers on Debian
           ansible.builtin.copy:
             src: "{{ source_folder }}/{{ item }}"
             dest: "{{ destin_folder }}"
@@ -50,13 +50,13 @@
             name:
               - httpd
 
-        - name: Generate Index.thml
+        - name: Generate and copy index.html
           ansible.builtin.template:
             src: "{{ source_folder }}/index.j2"
             dest: "{{ destin_folder }}/index.html"
             mode: '0555'
 
-        - name: Copy index.html to servers
+        - name: Copy pictures to servers
           ansible.builtin.copy:
             src: "{{ source_folder }}/{{ item }}"
             dest: "{{ destin_folder }}"
@@ -71,10 +71,3 @@
           ansible.builtin.service:
             name: httpd
             state: restarted
-
-  handlers:
-    - name: Copy index.html to servers
-      ansible.builtin.copy:
-        src: "{{ source_file }}"
-        dest: "{{ destin_file }}"
-        mode: '0664'

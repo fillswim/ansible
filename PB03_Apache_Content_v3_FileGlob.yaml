@@ -19,7 +19,7 @@
           ansible.builtin.apt:
             name: apache2
 
-        - name: Copy index.html to servers on Debian
+        - name: Copy files to servers on Debian with Fileglob
           ansible.builtin.copy:
             src: "{{ item }}"
             dest: "{{ destin_folder }}"
@@ -41,7 +41,7 @@
             name:
               - httpd
 
-        - name: Copy index.html to servers
+        - name: Copy files to servers with Fileglob
           ansible.builtin.copy:
             src: "{{ item }}"
             dest: "{{ destin_folder }}"
@@ -53,10 +53,3 @@
           ansible.builtin.service:
             name: httpd
             state: restarted
-
-  handlers:
-    - name: Copy index.html to servers
-      ansible.builtin.copy:
-        src: "{{ source_file }}"
-        dest: "{{ destin_file }}"
-        mode: '0664'

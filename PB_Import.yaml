@@ -1,0 +1,16 @@
+---
+- name: My test import playbook
+  hosts: ansible_servers
+
+  vars:
+    mytext: "Hello from Fill"
+
+  tasks:
+    - name: Ping my server
+      ansible.builtin.ping:
+
+    - name: Create folders
+      ansible.builtin.import_tasks: create_folders.yaml
+
+    - name: Create files
+      ansible.builtin.import_tasks: create_files.yaml
