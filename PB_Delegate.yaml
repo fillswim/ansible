@@ -1,0 +1,29 @@
+---
+- name: My delegate playbook
+  hosts: ansible_servers
+
+  vars:
+    mytext: "Privet ot Fill"
+
+  tasks:
+    - name: Ping my servers
+      ansible.builtin.ping:
+
+    - name: Create file 1
+      ansible.builtin.copy:
+        dest: /home/fill/test/newfolder1/file1.txt
+        mode: '0644'
+        content: |
+          This is file 1
+          On ENGLISH Hello World
+          On RUSSIAN {{ mytext }}
+      delegate_to: ansible_linux3 # Будет создан только на одном сервере
+
+    - name: Create file 2
+      ansible.builtin.copy:
+        dest: /home/fill/test/newfolder1/file2.txt
+        mode: '0644'
+        content: |
+          This is file 2
+          On ENGLISH Hello World
+          On RUSSIAN {{ mytext }}

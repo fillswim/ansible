@@ -1,0 +1,8 @@
+---
+- name: Logs playbook
+  hosts: ansible_servers
+
+  tasks:
+    - name: Server logs recording
+      ansible.builtin.shell: echo {{ ansible_date_time.date }} {{ ansible_date_time.time }} Hostname is {{ ansible_hostname }} >> /home/fill/ansible/log.txt
+      delegate_to: 127.0.0.1

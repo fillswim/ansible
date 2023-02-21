@@ -1,0 +1,5 @@
+2023-02-20 14:13:04 Hostname is ansible-client1
+2023-02-20 14:13:04 Hostname is ansible-client2
+2023-02-20 14:13:04 Hostname is 192
+2023-02-20 14:13:04 Hostname is ansible-client4
+2023-02-20 14:13:04 Hostname is ansible-client3

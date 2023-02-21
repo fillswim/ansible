@@ -1,0 +1,21 @@
+---
+- name: My delegate playbook
+  hosts: ubuntu_servers
+
+  vars:
+    mytext: "Privet ot Fill"
+
+  tasks:
+    - name: Ping my servers
+      ansible.builtin.ping:
+
+    - name: Update
+      ansible.builtin.apt:
+        update_cache: true
+        force_apt_get: true
+      become: true
+
+    - name: Upgrade
+      ansible.builtin.apt:
+        upgrade: dist
+      become: true

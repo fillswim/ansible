@@ -1,0 +1,23 @@
+---
+- name: My delegate and wait playbook
+  hosts: ansible_servers
+
+  vars:
+    mytext: "Privet ot Fill"
+
+  tasks:
+    - name: Ping my servers
+      ansible.builtin.ping:
+
+    - name: Reboot servers with reboot module
+      ansible.builtin.reboot:
+        pre_reboot_delay: 3
+      become: true
+
+    - name: Wait till my servers will come up online
+      ansible.builtin.wait_for:
+        host: "{{ ansible_hostname }}"
+        state: started
+        delay: 5              # Через сколько начинать ждать
+        timeout: 40           # Сколько максимально ждать
+      delegate_to: 127.0.0.1  # Ждать запуск серверов на мастере
