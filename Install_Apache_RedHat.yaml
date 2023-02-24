@@ -3,7 +3,6 @@
   hosts: ansible_linux5
 
   tasks:
-
     - name: Install Apache WebServer on RedHat
       become: true
       ansible.builtin.yum:
