@@ -1,0 +1,9 @@
+---
+- name: Show IP playbook
+  hosts: ansible_servers
+
+  tasks:
+
+    - name: Print IP
+      ansible.builtin.debug:
+        var: ansible_all_ipv4_addresses

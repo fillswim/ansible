@@ -1,0 +1,37 @@
+---
+- name: Ignore playbook
+  hosts: ubuntu_servers
+  any_errors_fatal: true                              # Любая ошибка полностью прекращает выполнение плейбука на всех серверах
+
+  tasks:
+
+    - name: Task number1 - Install package
+      when: ansible_os_family == "Debian"
+      become: true
+      ignore_errors: true                             # Игнорирует ошибки на данном задании
+      register: ignore_errors_register                # Сохранение ошибок в переменную ignore_errors_register
+      ansible.builtin.apt:
+        name: net-toolsss
+
+    - name: Show errors                               # Вывод ошибок на экран
+      ansible.builtin.debug:
+        var: ignore_errors_register
+
+    - name: Task number2 - Shell echo Hello World
+      ansible.builtin.shell:
+        echo Hello World!
+      register: task2_output
+      failed_when: task2_output.rc != 0               # Дальнейшие задания не будут выполняться, если Return Code != 0
+      # failed_when: "'World' in task2_output.stdout" # Дальнейшие задания не будут выполняться, если в выводе будет слово "World"
+
+    - name: Show output of task2
+      ansible.builtin.debug:
+        var: task2_output
+
+    - name: Task number3 - Print IP
+      ansible.builtin.debug:
+        var: ansible_all_ipv4_addresses
+
+    - name: Task number4 - Print OS
+      ansible.builtin.debug:
+        var: ansible_os_family
