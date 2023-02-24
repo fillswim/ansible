@@ -4,6 +4,7 @@
 
   tasks:
     - name: Restart Apache
+      become: true
       ansible.builtin.service:
         name: apache2
         state: restarted

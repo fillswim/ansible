@@ -5,11 +5,13 @@
   tasks:
 
     - name: Install Apache WebServer on RedHat
+      become: true
       ansible.builtin.yum:
         name:
           - httpd
 
     - name: Start Apache and Enable it on every boot
+      become: true
       ansible.builtin.service:
         name: httpd
         state: started

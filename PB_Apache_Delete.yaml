@@ -4,6 +4,7 @@
 
   tasks:
     - name: Delete Apache
+      become: true
       ansible.builtin.apt:
         name: apache2
         state: absent

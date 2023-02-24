@@ -4,6 +4,7 @@
 
   tasks:
     - name: Start Apache
+      become: true
       ansible.builtin.service:
         name: apache2
         enabled: true

@@ -22,11 +22,3 @@
     - name: Print myfile.txt
       ansible.builtin.debug:
         var: output.stdout
-
-#    - name: Install many packages
-#      ansible.builtin.apt:
-#        name: {{ item }}
-#      loop:
-#        - python
-#        - tree
-#        - mysql-client

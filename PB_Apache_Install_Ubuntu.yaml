@@ -4,5 +4,6 @@
 
   tasks:
     - name: Install Apache WebServer
+      become: true
       ansible.builtin.apt:
         name: apache2
