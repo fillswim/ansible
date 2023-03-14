@@ -1,9 +1,6 @@
 ---
-- name: My delegate playbook
-  hosts: ubuntu_servers
-
-  vars:
-    mytext: "Privet ot Fill"
+- name: My Update Ubuntu playbook
+  hosts: k8s_servers
 
   tasks:
     - name: Ping my servers

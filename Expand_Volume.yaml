@@ -1,0 +1,15 @@
+---
+- name: Expand volume 100%
+  hosts: ansible_ubuntu_servers
+
+  tasks:
+    - name: Ping my servers
+      ansible.builtin.ping:
+
+    - name: extend the volume to the maximum size available
+      ansible.builtin.shell: lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+      become: true
+
+    - name: Resize the filesystem
+      ansible.builtin.shell: resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+      become: true

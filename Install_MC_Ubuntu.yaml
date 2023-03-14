@@ -1,0 +1,9 @@
+---
+- name: Install Midnight Commander
+  hosts: k8s_servers
+
+  tasks:
+    - name: Install Midnight Commander
+      become: true
+      ansible.builtin.apt:
+        name: mc

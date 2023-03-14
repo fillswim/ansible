@@ -1,7 +1,8 @@
 ---
 - name: Test connection to my servers
-  hosts: all
+  hosts: k8s_servers
 
   tasks:
   - name: Ping my servers
+    become: true
     ansible.builtin.ping:

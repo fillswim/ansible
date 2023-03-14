@@ -1,18 +1,29 @@
 
-[staging_servers]
+[ansible_staging_ubuntu_servers]
 ansible_linux1 ansible_host=192.168.2.21
 
-[prod_servers]
+[ansible_prod_ubuntu_servers]
 ansible_linux2 ansible_host=192.168.2.22 owner=User2
 ansible_linux3 ansible_host=192.168.2.23 owner=User3
 ansible_linux4 ansible_host=192.168.2.24
+
+[ansible_prod_rhel_servers]
 ansible_linux5 ansible_host=192.168.2.25
 
-[ubuntu_servers]
-ansible_linux1 ansible_host=192.168.2.21
-ansible_linux2 ansible_host=192.168.2.22
-ansible_linux3 ansible_host=192.168.2.23
-ansible_linux4 ansible_host=192.168.2.24
+[ansible_staging_servers:children]
+ansible_staging_ubuntu_servers
+
+[ansible_prod_servers:children]
+ansible_prod_ubuntu_servers
+ansible_prod_rhel_servers
+
+[ansible_servers:children]
+ansible_staging_servers
+ansible_prod_servers
+
+[ansible_ubuntu_servers:children]
+ansible_staging_ubuntu_servers
+ansible_prod_ubuntu_servers
 
 [wg_servers]
 wg1 ansible_host=176.124.201.22
@@ -25,11 +36,22 @@ jenkins_master ansible_host=192.168.2.50
 jenkins_builder ansible_host=192.168.2.55
 jenkins_node1 ansible_host=192.168.2.51
 
-[ansible_servers:children]
-staging_servers
-prod_servers
+[k8s_master_servers]
+k8s_master1 ansible_host=192.168.2.81
+k8s_master2 ansible_host=192.168.2.82
+k8s_master3 ansible_host=192.168.2.83
+
+[k8s_worker_servers]
+k8s_worker1 ansible_host=192.168.2.91
+k8s_worker2 ansible_host=192.168.2.92
+k8s_worker3 ansible_host=192.168.2.93
+
+[k8s_servers:children]
+k8s_master_servers
+k8s_worker_servers
 
 [hyperv_servers:children]
 ansible_servers
 nginx_servers
 jenkins_servers
+k8s_servers
