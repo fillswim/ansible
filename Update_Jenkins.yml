@@ -1,0 +1,32 @@
+---
+- name: Update Jenkins
+  hosts: jenkins_master
+
+  vars:
+    source_file: /usr/share/java/jenkins.war
+    destin_file: /usr/share/java/jenkins_old.war
+
+  tasks:
+
+    - name: Save old file
+      become: true
+      ansible.builtin.copy:
+        src: "{{ source_file }}"
+        dest: "{{ destin_file }}"
+        mode: '0664'
+        force: true
+        remote_src: true
+
+    - name: Download jenkins.war
+      become: true
+      ansible.builtin.get_url:
+        url: https://updates.jenkins.io/download/war/2.387.1/jenkins.war
+        dest: "{{ source_file }}"
+        mode: '0664'
+        force: true
+
+    - name: Restart Jenkins
+      become: true
+      ansible.builtin.service:
+        name: jenkins
+        state: restarted
