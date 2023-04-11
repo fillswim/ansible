@@ -3,7 +3,7 @@
   hosts: "{{ selected_hosts }}"
 
   # Set password
-  # ansible-playbook Install_Docker.yaml --extra-var "selected_hosts=ansible_linux1 groupname=docker username=filldocker password=******"
+  # ansible-playbook Install_Docker.yaml --extra-var "selected_hosts=ansible_linux1 groupname=docker username=filldocker password=******"  -b -K
 
   vars:
     docker_gpg: /etc/apt/keyrings/docker.asc
