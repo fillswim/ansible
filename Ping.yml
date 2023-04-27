@@ -3,6 +3,6 @@
   hosts: k8s_servers
 
   tasks:
-  - name: Ping my servers
-    become: true
-    ansible.builtin.ping:
+    - name: Ping my servers
+      become: true
+      ansible.builtin.ping:
