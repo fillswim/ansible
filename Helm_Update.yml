@@ -1,0 +1,14 @@
+---
+- name: Helm upgrade
+  hosts: k8s_master1
+
+# ansible-playbook Helm_Update.yml --extra-var "helm_name=my-nginx helm_repo=fillswimrepo/my-template-helmchart helm_namespace=default new_image=nginx:latest"
+
+  tasks:
+    - name: Helm upgrade
+      kubernetes.core.helm:
+        name: "{{ helm_name }}"
+        chart_ref: "{{ helm_repo }}"
+        release_namespace: "{{ helm_namespace }}"
+        values:
+          container.image: "{{ new_image }}"

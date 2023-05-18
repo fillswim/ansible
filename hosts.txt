@@ -1,20 +1,16 @@
+ansible_master ansible_host=127.0.0.1
+intellij ansible_host=192.168.2.70
 
 [ansible_staging_ubuntu_servers]
 ansible_linux1 ansible_host=192.168.2.21
 
-[ansible_prod_ubuntu_servers]
-ansible_linux2 ansible_host=192.168.2.22 owner=User2
-ansible_linux3 ansible_host=192.168.2.23 owner=User3
-ansible_linux4 ansible_host=192.168.2.24
-
 [ansible_prod_rhel_servers]
-ansible_linux5 ansible_host=192.168.2.25
+rhel9 ansible_host=192.168.2.25
 
 [ansible_staging_servers:children]
 ansible_staging_ubuntu_servers
 
 [ansible_prod_servers:children]
-ansible_prod_ubuntu_servers
 ansible_prod_rhel_servers
 
 [ansible_servers:children]
@@ -23,7 +19,6 @@ ansible_prod_servers
 
 [ansible_ubuntu_servers:children]
 ansible_staging_ubuntu_servers
-ansible_prod_ubuntu_servers
 
 [wg_servers]
 wg1 ansible_host=176.124.201.22

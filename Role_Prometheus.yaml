@@ -1,0 +1,10 @@
+---
+- name: Install Prometheus
+  # hosts: ansible_linux1
+  hosts: 127.0.0.1
+  connection: local # ansible-playbook Role_Prometheus.yaml -b -K
+
+  roles:
+    - role: prometheus.prometheus.prometheus
+      become: true
+      prometheus_version: "2.44.0"

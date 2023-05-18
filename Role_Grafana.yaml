@@ -1,0 +1,7 @@
+---
+- name: Install Prometheus
+  hosts: ansible_linux1
+
+  roles:
+    - role: prometheus.prometheus.prometheus
+      become: true

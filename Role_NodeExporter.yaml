@@ -1,0 +1,10 @@
+---
+- name: Install Node Exporter
+  hosts: rhel9
+  # hosts: 127.0.0.1
+  # connection: local # ansible-playbook Role_NodeExporter.yaml -b -K
+
+  roles:
+    - role: prometheus.prometheus.node_exporter
+      become: true
+      node_exporter_version: "1.5.0"
