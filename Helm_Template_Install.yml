@@ -8,6 +8,7 @@
   tasks:
     - name: Helm install
       kubernetes.core.helm:
+        update_repo_cache: true
         name: "{{ helm_name }}"
         chart_ref: fillswimrepo/my-template-helmchart
         release_namespace: "{{ helm_namespace }}"
