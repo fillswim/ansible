@@ -1,4 +1,4 @@
-![Ansible](images/Ansible.png)
+![Ansible](images/Ansible_new.png)
 
 # Ansible playbooks
 
