@@ -1,3 +1,5 @@
+![Ansible](images/Ansible.png)
+
 # Ansible playbooks
 
 ### Deploy Nginx on K8s using Ansible playbook
