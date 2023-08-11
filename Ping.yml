@@ -1,6 +1,6 @@
 ---
 - name: Test connection to my servers
-  hosts: intellij
+  hosts: all
   # hosts: 127.0.0.1
   # connection: local # ansible-playbook Ping.yml -b -K
 
