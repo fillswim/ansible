@@ -1,0 +1,15 @@
+---
+- name: Helm template install
+  hosts: "{{ host }}"                                   # k8s_master1
+
+# ansible-playbook Template_Helm_Install.yml --extra-var "host=k8s_master1 helm_name=my-gifservice helm_namespace=default helm_repo_name=fillswimrepo/my-template-helmchart helm_namespace=mygifservice-jenkins file=./K8s_tmp/HelmChart_values_gifservice.yaml"
+
+  tasks:
+    - name: Helm install
+      kubernetes.core.helm:
+        update_repo_cache: true
+        name: "{{ helm_name }}"                         # my-gifservice
+        chart_ref: "{{ helm_repo_name }}"               # fillswimrepo/my-template-helmchart
+        release_namespace: "{{ helm_namespace }}"       # mygifservice-jenkins
+        values_files:
+          - "{{ file }}"                                # ./K8s_tmp/HelmChart_values_gifservice.yaml

@@ -1,0 +1,30 @@
+---
+- name: Show ls -la
+  hosts: k8s_master1
+
+# ansible-playbook Folder_LS-LA.yaml
+
+  tasks:
+    - name: Show hostname
+      ansible.builtin.shell: hostname
+      register: results1
+
+    - name: Show register1
+      ansible.builtin.debug:
+        var: results1.stdout
+
+    - name: Show pwd
+      ansible.builtin.shell: pwd
+      register: results2
+
+    - name: Show register2
+      ansible.builtin.debug:
+        var: results2.stdout
+
+    - name: Show ls
+      ansible.builtin.shell: ls
+      register: results3
+
+    - name: Show register3
+      ansible.builtin.debug:
+        var: results3.stdout

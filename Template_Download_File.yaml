@@ -1,0 +1,12 @@
+---
+- name: Download file
+  hosts: "{{ host }}"                   # k8s_master1
+
+# ansible-playbook Template_Download_File.yaml --extra-var "host=k8s_master1 url=https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml destin_file=./K8s_tmp"
+
+  tasks:
+    - name: Download index.html
+      ansible.builtin.get_url:
+        url: "{{ url }}"                # https://raw.githubusercontent.com/fillswim/MyGifService/master/HelmChart_values_gifservice.yaml
+        dest: "{{ destin_file }}"       # ./K8s_tmp
+        mode: '0664'

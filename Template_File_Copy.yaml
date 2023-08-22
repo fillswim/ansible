@@ -1,0 +1,17 @@
+---
+- name: Copy file
+  hosts: "{{ host }}"
+
+# ansible-playbook Template_File_Copy.yaml --extra-var "host=k8s_master1 source_file=./HelmChart_values_gifservice.yaml destin_file=/tmp"
+
+  vars:
+    source_file: ./MyWebSite1/index.html
+    destin_file: /tmp
+
+  tasks:
+    - name: Copy file from Ansible Server to host
+      ansible.builtin.copy:
+        src: "{{ source_file }}"                    # Источник на Ansible-Master
+        dest: "{{ destin_file }}"                   # Папка назначения на host-машине
+        mode: '0664'
+        #remote_src: true                           # Показывает, что и источник тоже находится на host-машине

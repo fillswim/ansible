@@ -9,7 +9,7 @@
   tasks:
     - name: Copy my home page to servers
       ansible.builtin.copy:
-        src: "{{ source_file }}"
-        dest: "{{ destin_file }}"
+        src: "{{ source_file }}"              # Источник на Ansible-Master
+        dest: "{{ destin_file }}"             # Папка назначения на host-машине
         mode: '0664'
-        remote_src: true
+        #remote_src: true                     # Показывает, что и источник тоже находится на host-машине
