@@ -1,7 +1,6 @@
 ---
 - name: Test connection to my servers
-  hosts: all
-  # hosts: 127.0.0.1
+  hosts: k8s_alt_servers
   # connection: local # ansible-playbook Ping.yml -b -K
 
   tasks:

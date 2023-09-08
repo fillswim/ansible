@@ -45,6 +45,20 @@ k8s_worker3 ansible_host=192.168.2.93
 k8s_master_servers
 k8s_worker_servers
 
+[k8s_alt_master_servers]
+k8s_alt_master1 ansible_host=192.168.2.131
+k8s_alt_master2 ansible_host=192.168.2.132
+k8s_alt_master3 ansible_host=192.168.2.133
+
+[k8s_alt_worker_servers]
+k8s_alt_worker1 ansible_host=192.168.2.141
+k8s_alt_worker2 ansible_host=192.168.2.142
+k8s_alt_worker3 ansible_host=192.168.2.143
+
+[k8s_alt_servers:children]
+k8s_alt_master_servers
+k8s_alt_worker_servers
+
 [hyperv_servers:children]
 ansible_servers
 nginx_servers
