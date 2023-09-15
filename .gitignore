@@ -3,3 +3,5 @@
 # virtualenv
 venv/
 ENV/
+.venv/
+.conda
