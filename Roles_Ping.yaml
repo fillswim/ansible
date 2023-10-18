@@ -1,0 +1,18 @@
+---
+
+# Ping
+# Если не добавлен ключ
+# ansible-playbook -i hosts_k8s_alma.yaml Roles_Ping.yaml -kK
+# ansible-playbook -i hosts_all.txt Roles_Ping.yaml -kK
+# Если добавлен ключ
+# ansible-playbook -i hosts_k8s_alma.yaml Roles_Ping.yaml
+# ansible-playbook -i hosts_k8s_alma.yaml Roles_Ping.yaml -b
+
+# Ad-Hoc
+# ansible -i hosts_k8s_alma.yaml all -m ping
+- name: Prepare VM
+  hosts: "all"
+  # hosts: "k8s-alma-master1"
+
+  roles:
+    - role: ping

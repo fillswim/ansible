@@ -1,0 +1,127 @@
+---
+# tasks file for 00-prepare-vm
+- name: Ping my servers
+  become: true
+  ansible.builtin.ping:
+
+- name: Добавление SSH ключа
+  ansible.posix.authorized_key:
+    #user: fill
+    user: root
+    state: present
+    key: '{{ item }}'
+  with_file:
+    - /home/fill/.ssh/id_rsa.pub
+    - /home/fill/.ssh/id_rsa_mypc.pub
+
+- name: Block for RedHat
+  when: ansible_os_family == "RedHat"
+  become: true
+  block:
+    - name: Обновление системы RedHat
+      become: true
+      ansible.builtin.yum:
+        name: '*'
+        state: latest
+
+    - name: Поменять hostname
+      become: true
+      ansible.builtin.hostname:
+        name: "{{inventory_hostname}}"
+
+    - name: Скопировать файл кучной настройки DNS
+      become: true
+      ansible.builtin.copy:
+        src: 90-dns-none.conf
+        dest: /etc/NetworkManager/conf.d/90-dns-none.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify:
+      - Restart NetworkManager
+
+    - name: Прописать собственные DNS
+      become: true
+      ansible.builtin.copy:
+        src: resolv.conf
+        dest: /etc/resolv.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify:
+      - Restart NetworkManager
+
+    - name: Копирование файла chrony.conf
+      become: true
+      ansible.builtin.copy:
+        src: ntp/chrony.conf
+        dest: /etc/chrony.conf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Restart NTP Alma
+      become: true
+      ansible.builtin.service:
+        state: restarted
+        daemon_reload: yes
+        name: chronyd
+
+- name: Block for Ubuntu
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+    - name: Обновление системы Ubuntu
+      ansible.builtin.apt:
+        update_cache: true
+        force_apt_get: true
+      become: true
+
+    - name: Upgrade
+      ansible.builtin.apt:
+        upgrade: dist
+      become: true
+
+    - name: Прописать собственные DNS
+      become: true
+      ansible.builtin.copy:
+        src: 01-network-manager-all.yaml
+        dest: /etc/netplan/01-network-manager-all.yaml
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Netplan apply
+      become: true
+      ansible.builtin.command: sudo netplan apply
+
+    - name: Restart systemd-resolved
+      ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: true
+        name: systemd-resolved
+
+    - name: Install NTP Ubuntu
+      become: true
+      ansible.builtin.apt:
+        name: ntp
+
+    - name: Копирование файла ntp.conf
+      become: true
+      ansible.builtin.copy:
+        src: ntp/ntp.conf
+        dest: /etc/ntp.conf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Restart NTP Ubuntu
+      become: true
+      ansible.builtin.service:
+        state: restarted
+        name: ntp
+
+- name: Set timezone to Europe/Moscow
+  become: true
+  community.general.timezone:
+    name: Europe/Moscow

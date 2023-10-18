@@ -1,0 +1,6 @@
+ansible_user: root
+
+# Kubernetes parameters
+
+# Versions: 1.24.x, 1.25.x, 1.26.x, 1.27.x, 1.28.x
+kube_version: 1.28.2
