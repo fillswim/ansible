@@ -1,4 +1,9 @@
 ---
+
+- name: Ping
+  become: true
+  ansible.builtin.ping:
+
 # tasks file for 01-prepare-vm-for-k8s
 - name: Block for RedHat
   when: ansible_os_family == "RedHat"

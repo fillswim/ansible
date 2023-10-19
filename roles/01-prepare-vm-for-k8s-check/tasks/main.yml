@@ -15,7 +15,7 @@
   register: firewalld_results
   failed_when: "'Active: inactive (dead)' not in firewalld_results.stdout"
 
-- name: Check Chrony
+- name: Check NTP
   ansible.builtin.shell: systemctl status chronyd
   register: chronyd_results
   failed_when: "'Active: active (running)' not in chronyd_results.stdout"
