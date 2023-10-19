@@ -1,0 +1,16 @@
+---
+# tasks file for 02-High-Availability-check
+- name: Check HAProxy
+  ansible.builtin.shell: systemctl status haproxy
+  register: haproxy_results
+  failed_when: "'Active: active (running)' not in haproxy_results.stdout"
+
+- name: Check keepalived
+  ansible.builtin.shell: systemctl status keepalived
+  register: keepalived_results
+  failed_when: "'Active: active (running)' not in keepalived_results.stdout"
+
+- name: Ping
+  ansible.builtin.shell: ping -c4 {{ ha_cluster_virtual_ip }}
+  register: ping_results
+  failed_when: "'4 received' not in ping_results.stdout"

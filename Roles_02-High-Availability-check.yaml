@@ -1,0 +1,8 @@
+---
+# ansible-playbook -i hosts_k8s_alma.yaml Roles_02-High-Availability-check.yaml -b
+- name: High Availability
+  hosts: "all"
+  # hosts: "k8s-alma-master1.fillswim.local"
+
+  roles:
+    - role: 02-High-Availability-check
