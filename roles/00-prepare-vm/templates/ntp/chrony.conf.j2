@@ -2,7 +2,11 @@
 # Please consider joining the pool (https://www.pool.ntp.org/join.html).
 #pool 2.almalinux.pool.ntp.org iburst
 
-server 192.168.2.58 prefer iburst
+{% for ntp in ntp_servers %}
+server {{ ntp }} {% if ntp == ntp_servers[0] %}prefer iburst
+{% else %}iburst
+{% endif %}
+{% endfor %}
 
 # Use NTP servers from DHCP.
 sourcedir /run/chrony-dhcp

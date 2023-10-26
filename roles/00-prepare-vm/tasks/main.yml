@@ -1,35 +1,69 @@
 ---
 # tasks file for 00-prepare-vm
+
+# ============================================== Ping ==============================================
+
 - name: Ping my servers
   become: true
   ansible.builtin.ping:
 
-- name: Добавление SSH ключа
+# ============================================= Whoami =============================================
+
+- name: Whoami
+  ansible.builtin.shell: whoami
+  register: whoami_results
+
+- name: Whoami print
+  ansible.builtin.debug:
+    var: whoami_results.stdout
+
+# ========================================== Add SSH keys ==========================================
+
+#- name: Добавление SSH ключа к пользователю root
+#  ansible.posix.authorized_key:
+#    user: root
+#    state: present
+#    key: '{{ item }}'
+#  with_file:
+#    - /home/fill/.ssh/id_rsa.pub
+#    - /home/fill/.ssh/id_rsa_mypc.pub
+
+- name: Добавление SSH ключа к пользователю fill
   ansible.posix.authorized_key:
-    #user: fill
-    user: root
+    user: fill
     state: present
     key: '{{ item }}'
   with_file:
     - /home/fill/.ssh/id_rsa.pub
     - /home/fill/.ssh/id_rsa_mypc.pub
 
+# ========================================= Блок для RedHat ========================================
+# ==================================================================================================
+
 - name: Block for RedHat
   when: ansible_os_family == "RedHat"
   become: true
   block:
-    - name: Обновление системы RedHat
-      become: true
-      ansible.builtin.yum:
-        name: '*'
-        state: latest
+
+# ========================================= Upgrade system =========================================
+
+#    - name: Обновление системы RedHat
+#      ignore_errors: true
+#      become: true
+#      ansible.builtin.yum:
+#        name: '*'
+#        state: latest
+
+# ======================================= Поменять hostname ========================================
 
     - name: Поменять hostname
       become: true
       ansible.builtin.hostname:
         name: "{{inventory_hostname}}"
 
-    - name: Скопировать файл кучной настройки DNS
+# ============================================== DNS ===============================================
+
+    - name: Скопировать файл ручной настройки DNS
       become: true
       ansible.builtin.copy:
         src: 90-dns-none.conf
@@ -42,8 +76,8 @@
 
     - name: Прописать собственные DNS
       become: true
-      ansible.builtin.copy:
-        src: resolv.conf
+      ansible.builtin.template:
+        src: dns/resolv.conf.j2
         dest: /etc/resolv.conf
         owner: root
         group: root
@@ -51,10 +85,12 @@
       notify:
       - Restart NetworkManager
 
+# ============================================= Chrony =============================================
+
     - name: Копирование файла chrony.conf
       become: true
-      ansible.builtin.copy:
-        src: ntp/chrony.conf
+      ansible.builtin.template:
+        src: ntp/chrony.conf.j2
         dest: /etc/chrony.conf
         owner: root
         group: root
@@ -64,14 +100,21 @@
       become: true
       ansible.builtin.service:
         state: restarted
-        daemon_reload: yes
+        daemon_reload: true
         name: chronyd
+
+# ========================================= Блок для Ubuntu ========================================
+# ==================================================================================================
 
 - name: Block for Ubuntu
   when: ansible_os_family == "Debian"
   become: true
   block:
+
+# ========================================= Upgrade system =========================================
+
     - name: Обновление системы Ubuntu
+      ignore_errors: true
       ansible.builtin.apt:
         update_cache: true
         force_apt_get: true
@@ -82,10 +125,12 @@
         upgrade: dist
       become: true
 
+# ============================================== DNS ===============================================
+
     - name: Прописать собственные DNS
       become: true
-      ansible.builtin.copy:
-        src: 01-network-manager-all.yaml
+      ansible.builtin.template:
+        src: dns/01-network-manager-all.yaml.j2
         dest: /etc/netplan/01-network-manager-all.yaml
         owner: root
         group: root
@@ -101,6 +146,8 @@
         daemon_reload: true
         name: systemd-resolved
 
+# ============================================== NTP ===============================================
+
     - name: Install NTP Ubuntu
       become: true
       ansible.builtin.apt:
@@ -108,8 +155,8 @@
 
     - name: Копирование файла ntp.conf
       become: true
-      ansible.builtin.copy:
-        src: ntp/ntp.conf
+      ansible.builtin.template:
+        src: ntp/ntp.conf.j2
         dest: /etc/ntp.conf
         owner: root
         group: root
@@ -121,7 +168,10 @@
         state: restarted
         name: ntp
 
+# ==================================================================================================
+
 - name: Set timezone to Europe/Moscow
   become: true
   community.general.timezone:
     name: Europe/Moscow
+

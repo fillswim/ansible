@@ -1,0 +1,10 @@
+network:
+    version: 2
+    ethernets:
+        eth0:                                    # Private network interface
+            nameservers:
+                addresses:
+        {% for dns in nameservers %}
+        - {{ dns }}
+        {% endfor %}
+        search: [ {{ my_domen }} ]       # DNS zone

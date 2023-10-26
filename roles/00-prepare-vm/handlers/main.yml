@@ -1,8 +1,9 @@
 ---
 # handlers file for 00-prepare-vm
+
 - name: Restart NetworkManager
   become: true
   ansible.builtin.service:
     state: restarted
-    daemon_reload: yes
+    daemon_reload: true
     name: NetworkManager

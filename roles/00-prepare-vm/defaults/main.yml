@@ -1,2 +1,13 @@
 ---
 # defaults file for 00-prepare-vm
+
+# DNS серверы
+nameservers:
+  - 192.168.2.111
+  - 192.168.2.112
+
+my_domen: fillswim.local
+
+# NTP серверы
+ntp_servers:
+  - 192.168.2.58
