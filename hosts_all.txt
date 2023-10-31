@@ -12,5 +12,6 @@
 #k8s-alma-worker2 ansible_host=192.168.2.205
 #k8s-alma-worker3 ansible_host=192.168.2.206
 
-graylog.fillswim.local ansible_host=192.168.2.46
+nexus.fillswim.local ansible_host=192.168.2.45
+#graylog.fillswim.local ansible_host=192.168.2.46
 #alt10graylog.fillswim.local ansible_host=192.168.2.135
