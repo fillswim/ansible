@@ -163,15 +163,11 @@
     - name: Прописать собственные DNS
       become: true
       ansible.builtin.template:
-        src: dns/01-network-manager-all.yaml.j2
-        dest: /etc/netplan/01-network-manager-all.yaml
+        src: dns/resolved.conf.j2
+        dest: /etc/systemd/resolved.conf
         owner: root
         group: root
         mode: '0644'
-
-    - name: Netplan apply
-      become: true
-      ansible.builtin.command: sudo netplan apply
 
     - name: Restart systemd-resolved
       become: true
