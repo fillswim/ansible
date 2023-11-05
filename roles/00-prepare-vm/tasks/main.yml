@@ -111,22 +111,22 @@
   become: true
   block:
 
-# ======================================= Поменять hostname ========================================
-
-    - name: Поменять hostname
-      become: true
-      ansible.builtin.hostname:
-        name: "{{inventory_hostname}}"
-
+## ======================================= Поменять hostname ========================================
+#
+#    - name: Поменять hostname
+#      become: true
+#      ansible.builtin.hostname:
+#        name: "{{inventory_hostname}}"
+#
 # ===================================== Добавление репозитория =====================================
 
-- name: Добавление ключа и репозитория
-  block:
-    - name: Добавление ключа
-      become: true
-      ansible.builtin.get_url:
-        url: http://192.168.2.45:8081/repository/gpg_keys/myoffline_repository_ubuntu.gpg
-        dest: /etc/apt/trusted.gpg.d/myoffline_repository_ubuntu.gpg
+    - name: Добавление ключа и репозитория
+      block:
+        - name: Добавление ключа
+          become: true
+          ansible.builtin.get_url:
+            url: http://192.168.2.45:8081/repository/gpg_keys/myoffline_repository_ubuntu.gpg
+            dest: /etc/apt/trusted.gpg.d/myoffline_repository_ubuntu.gpg
 
     - name: Добавление репозитория
       become: true

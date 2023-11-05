@@ -1,4 +1,5 @@
 [Graylog-Ubuntu-Cluster]
-graylogcluster1 ansible_host=192.168.2.47
-graylogcluster2 ansible_host=192.168.2.48
-graylogcluster3 ansible_host=192.168.2.49
+#graylogcluster1 ansible_host=192.168.2.47
+#graylogcluster2 ansible_host=192.168.2.48
+#graylogcluster3 ansible_host=192.168.2.49
+graylogclusterlb1 ansible_host=192.168.2.123
