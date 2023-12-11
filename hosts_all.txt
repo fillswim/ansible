@@ -1,4 +1,4 @@
-[K8s-Alma]
+[All]
 #ansible-client1 ansible_host=192.168.2.21
 #ansible-client1 ansible_host=192.168.2.22
 #jenkins-node1 ansible_host=192.168.2.51
@@ -12,6 +12,8 @@
 #k8s-alma-worker2 ansible_host=192.168.2.205
 #k8s-alma-worker3 ansible_host=192.168.2.206
 
-nexus.fillswim.local ansible_host=192.168.2.45
+#nexus.fillswim.local ansible_host=192.168.2.45
 #graylog.fillswim.local ansible_host=192.168.2.46
 #alt10graylog.fillswim.local ansible_host=192.168.2.135
+
+terraform.fillswim.local ansible_host=192.168.2.53
