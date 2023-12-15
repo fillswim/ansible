@@ -1,8 +1,0 @@
----
-# ansible-playbook -i hosts_k8s_alma.yaml Roles_01-Prepare-VM-for-K8s.yaml -b
-- name: Prepare VM
-  hosts: "all"
-  # hosts: "k8s-alma-master1.fillswim.local"
-
-  roles:
-    - role: 01-prepare-vm-for-k8s

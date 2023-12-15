@@ -1,0 +1,223 @@
+---
+# tasks file for 00-prepare-vm
+
+# ============================================== Ping ==============================================
+
+- name: Ping my servers
+  become: true
+  ansible.builtin.ping:
+
+# ============================================= Whoami =============================================
+
+- name: Whoami
+  ansible.builtin.shell: whoami
+  register: whoami_results
+
+- name: Whoami print
+  ansible.builtin.debug:
+    var: whoami_results.stdout
+
+# ========================================== Add SSH keys ==========================================
+
+- name: Добавление SSH ключа к пользователю root
+  become: true
+  ansible.posix.authorized_key:
+    user: root
+    state: present
+    key: "{{ item }}"
+  with_file:
+    - /home/fill/.ssh/id_rsa.pub
+    - /home/fill/.ssh/id_rsa_mypc.pub
+    - /home/fill/.ssh/id_rsa_rtdc.pub
+
+- name: Добавление SSH ключа к пользователю fill
+  ansible.posix.authorized_key:
+    user: fill
+    state: present
+    key: "{{ item }}"
+  with_file:
+    - /home/fill/.ssh/id_rsa.pub
+    - /home/fill/.ssh/id_rsa_mypc.pub
+    - /home/fill/.ssh/id_rsa_rtdc.pub
+
+# ============================== Отключить ввод sudo пароля для root ===============================
+
+- name: Отключить ввод sudo пароля для root
+  become: true
+  copy:
+    dest: /etc/sudoers.d/root
+    content: "root ALL=(ALL) NOPASSWD:ALL"
+    mode: 0440
+
+# ========================================= Блок для RedHat ========================================
+# ==================================================================================================
+
+- name: Block for RedHat
+  when: ansible_os_family == "RedHat"
+  become: true
+  block:
+    # ========================================= Upgrade system =========================================
+
+    - name: Обновление системы RedHat
+      throttle: 1
+      ignore_errors: true
+      become: true
+      ansible.builtin.yum:
+        name: "*"
+        state: latest
+
+    # ======================================= Поменять hostname ========================================
+
+    - name: Поменять hostname
+      become: true
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+
+    # ============================================== DNS ===============================================
+
+    - name: Скопировать файл ручной настройки DNS
+      become: true
+      ansible.builtin.copy:
+        src: 90-dns-none.conf
+        dest: /etc/NetworkManager/conf.d/90-dns-none.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Restart NetworkManager
+
+    - name: Прописать собственные DNS
+      become: true
+      ansible.builtin.template:
+        src: dns/resolv.conf.j2
+        dest: /etc/resolv.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Restart NetworkManager
+
+    # ============================================= Chrony =============================================
+
+    - name: Копирование файла chrony.conf
+      become: true
+      ansible.builtin.template:
+        src: ntp/chrony.conf.j2
+        dest: /etc/chrony.conf
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Restart NTP Alma
+      become: true
+      ansible.builtin.service:
+        state: restarted
+        daemon_reload: true
+        name: chronyd
+
+# ========================================= Блок для Ubuntu ========================================
+# ==================================================================================================
+
+- name: Block for Ubuntu
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+    ## ======================================= Поменять hostname ========================================
+    #
+    #    - name: Поменять hostname
+    #      become: true
+    #      ansible.builtin.hostname:
+    #        name: "{{inventory_hostname}}"
+    #
+
+    # ===================================== Добавление репозитория =====================================
+
+    - name: Добавление ключа и репозитория
+      block:
+        - name: Добавление ключа
+          become: true
+          ansible.builtin.get_url:
+            url: http://192.168.2.45:8081/repository/gpg_keys/myoffline_repository_ubuntu.gpg
+            dest: /etc/apt/trusted.gpg.d/myoffline_repository_ubuntu.gpg
+
+    - name: Добавление репозитория
+      become: true
+      ansible.builtin.apt_repository:
+        repo: "deb http://192.168.2.45:8081/repository/myoffline_repository_ubuntu stable main"
+        state: present
+
+    # ========================================= Upgrade system =========================================
+
+    - name: Обновление системы Ubuntu
+      throttle: 1
+      ignore_errors: true
+      ansible.builtin.apt:
+        update_cache: true
+        force_apt_get: true
+      become: true
+
+    - name: Upgrade
+      ansible.builtin.apt:
+        upgrade: dist
+      become: true
+
+    # ============================= Отключение вводу пароля для пользователей ==========================
+
+    - name: Отключить ввод sudo пароля для fill
+      become: true
+      copy:
+        dest: /etc/sudoers.d/fill
+        content: "fill ALL=(ALL) NOPASSWD:ALL"
+        mode: 0440
+
+    # ============================================== DNS ===============================================
+
+    - name: Прописать собственные DNS
+      become: true
+      ansible.builtin.template:
+        src: dns/resolved.conf.j2
+        dest: /etc/systemd/resolved.conf
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Restart systemd-resolved
+      become: true
+      ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: true
+        name: systemd-resolved
+
+    # ============================================== NTP ===============================================
+
+    - name: Install NTP Ubuntu
+      become: true
+      ansible.builtin.apt:
+        name: ntp
+
+    - name: Копирование файла ntp.conf
+      become: true
+      ansible.builtin.template:
+        src: ntp/ntp.conf.j2
+        dest: /etc/ntp.conf
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Restart NTP Ubuntu
+      become: true
+      ansible.builtin.service:
+        state: restarted
+        name: ntp
+
+# ==================================================================================================
+
+- name: Set timezone to Europe/Moscow
+  become: true
+  community.general.timezone:
+    name: Europe/Moscow
+
+- name: Reboot
+  throttle: 1
+  become: true
+  ansible.builtin.reboot:

@@ -1,4 +1,0 @@
-[Ansible-Ubuntu-Clients]
-ansible-client1 ansible_host=192.168.2.21
-ansible-client2 ansible_host=192.168.2.22
-ansible-client3 ansible_host=192.168.2.23
