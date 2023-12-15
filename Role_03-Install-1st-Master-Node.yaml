@@ -1,0 +1,8 @@
+---
+
+- name: Prepare VM
+  hosts: "all"
+
+  roles:
+    - role: 03-Install-1st-Master-Node
+      when: "'master1' in ansible_hostname"

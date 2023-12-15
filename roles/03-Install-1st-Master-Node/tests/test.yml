@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - 01-prepare-vm-for-k8s
+    - 03-Install-1st-Master-Node

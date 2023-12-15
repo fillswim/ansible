@@ -1,0 +1,27 @@
+---
+# tasks file for 03-Install-1st-Master-Node
+
+# ============================================== Ping ==============================================
+
+- name: Ping
+  become: true
+  ansible.builtin.ping:
+
+# ==================================== Apply kubeadm-config.yaml ===================================
+
+- name: Создание папки /root/kubeadm
+  ansible.builtin.file:
+    path: /root/kubeadm
+    state: directory
+    owner: root
+    group: root
+    mode: "0775"
+
+- name: Copy kubeadm-config.yaml
+  become: true
+  ansible.builtin.template:
+    src: kubeadm-config.yaml.j2
+    dest: /root/kubeadm/kubeadm-config.yaml
+    owner: root
+    group: root
+    mode: "0644"
