@@ -2,6 +2,7 @@
 ansible_user:                   root
 ansible_ssh_private_key_file:   /home/fill/.ssh/id_rsa
 ansible_python_interpreter:     auto_silent
+# ansible_python_interpreter:     /usr/bin/python3
 
 kubernetes_major_version:       1.28
 kubernetes_minor_version:       1.28.4
@@ -33,3 +34,8 @@ cluster_service_network:        "10.96.0.0/16"
 
 # DNS
 cluster_dns_server_ip:          10.96.0.10
+
+# CNI Driver (Calico)
+
+calico_operator_version:        3.26.3
+calico_operator_link:           "https://raw.githubusercontent.com/projectcalico/calico/v{{ calico_operator_version }}/manifests/tigera-operator.yaml"

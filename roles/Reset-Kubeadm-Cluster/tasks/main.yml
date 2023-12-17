@@ -1,0 +1,25 @@
+---
+# tasks file for Reset-Kubeadm-Cluster
+
+# ============================================== Ping ==============================================
+
+- name: Ping
+  become: true
+  ansible.builtin.ping:
+
+# ========================================= Kubeadm Reset ==========================================
+
+- name: Kubeadm Reset
+  ansible.builtin.shell: kubeadm reset --force
+
+- name: Delete /etc/cni/net.d
+  ansible.builtin.file:
+    path: /etc/cni/net.d
+    state: absent
+
+# ============================================= Reboot =============================================
+
+- name: Reboot
+  throttle: 1
+  become: true
+  ansible.builtin.reboot:

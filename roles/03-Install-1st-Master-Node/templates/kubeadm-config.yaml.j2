@@ -17,7 +17,7 @@ nodeRegistration:
   name: {{ ansible_facts.fqdn }}                            # Имя первой control ноды
   taints:
   - effect: NoSchedule
-    key: node-role.kubernetes.io/master
+    key: node-role.kubernetes.io/control-plane
 
 # ====================================== ClusterConfiguration =======================================
 ---
