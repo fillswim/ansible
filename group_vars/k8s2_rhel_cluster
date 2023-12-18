@@ -34,6 +34,7 @@ cluster_service_network:        "10.96.0.0/16"
 
 # DNS
 cluster_dns_server_ip:          10.96.0.10
+nodelocaldns_local_ip:          169.254.25.10
 
 # CNI Driver (Calico)
 

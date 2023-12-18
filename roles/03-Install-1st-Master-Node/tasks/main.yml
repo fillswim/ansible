@@ -7,6 +7,16 @@
   become: true
   ansible.builtin.ping:
 
+# ======================== Checking that the cluster has already been created ======================
+
+- name: Checking that the cluster has already been created
+  stat:
+    path: "/etc/kubernetes/pki/ca.key"
+  register: kubeadm_ca
+
+- meta: end_play
+  when: kubeadm_ca.stat.exists
+
 # ==================================== Apply kubeadm-config.yaml ===================================
 
 - name: Создание папки /root/kubeadm
@@ -106,6 +116,21 @@
   notify:
     - Restart kubelet
 
+# ========================================== NodeLocalDNS ==========================================
+
+- name: Copy nodelocaldns-daemonset.yaml
+  become: true
+  ansible.builtin.template:
+    src: nodelocaldns-daemonset.yaml.j2
+    dest: ~/kubeadm/nodelocaldns-daemonset.yaml
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Apply nodelocaldns-daemonset.yaml
+  kubernetes.core.k8s:
+    src: ~/kubeadm/nodelocaldns-daemonset.yaml
+    state: present
 # ============================================= Reboot =============================================
 
 - name: Reboot
