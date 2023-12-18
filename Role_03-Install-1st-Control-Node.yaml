@@ -1,8 +1,8 @@
 ---
 
-- name: Prepare VM
-  hosts: "all"
+- name: Install 1st Control Node
+  hosts: k8s2_rhel_masters[0]
 
   roles:
     - role: 03-Install-1st-Control-Node
-      when: "'master1' in ansible_hostname"
+      # when: "'master1' in ansible_hostname"

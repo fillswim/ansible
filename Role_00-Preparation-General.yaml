@@ -1,8 +1,7 @@
 ---
 
-- name: Prepare VM
+- name: Preparation General
   hosts: "all"
-  # serial: 1
 
   roles:
     - role: 00-preparation-general

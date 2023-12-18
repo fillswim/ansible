@@ -1,0 +1,14 @@
+---
+# tasks file for 04-Adding-Other-Control-Nodes
+
+- name: Preparation to join nodes
+  ansible.builtin.include_tasks: 01-Preparation.yaml
+  when: inventory_hostname == groups['k8s_masters'][0]
+
+- name: Join other Control nodes
+  ansible.builtin.include_tasks: 02-Join-Control-Nodes.yaml
+  when: inventory_hostname != groups['k8s_masters'][0]
+
+- name: General yaml
+  ansible.builtin.include_tasks: 03-General.yaml
+  when: inventory_hostname == groups['k8s_masters'][0]
