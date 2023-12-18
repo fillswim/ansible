@@ -4,5 +4,5 @@
   hosts: "all"
 
   roles:
-    - role: 03-Install-1st-Master-Node
+    - role: 03-Install-1st-Control-Node
       when: "'master1' in ansible_hostname"
