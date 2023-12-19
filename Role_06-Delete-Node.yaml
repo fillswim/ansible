@@ -1,0 +1,7 @@
+---
+- name: Delete Node
+  order: sorted
+  hosts: "all"
+
+  roles:
+    - role: 06-Delete-Node

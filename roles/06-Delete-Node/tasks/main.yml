@@ -1,0 +1,36 @@
+---
+# tasks file for 06-Delete-Control-Node
+
+# ============================================== Ping ==============================================
+
+- name: Ping any Master
+  become: true
+  run_once: true
+  ansible.builtin.ping:
+  when: inventory_hostname in groups['k8s_masters']
+
+- name: Ping Worker
+  become: true
+  ansible.builtin.ping:
+  when: ansible_fqdn in deleted_host
+
+# ========================================= kubectl delete =========================================
+
+- name: kubectl delete node {{ deleted_host }}
+  become: true
+  run_once: true
+  ansible.builtin.shell: kubectl delete node "{{ deleted_host }}"
+  register: delete_output
+  when: inventory_hostname in groups['k8s_masters']
+
+- name: Print result
+  run_once: true
+  ansible.builtin.debug:
+    var: delete_output.stdout
+
+# ========================================== kubeadm reset =========================================
+
+- name: Kubeadm reset
+  become: true
+  ansible.builtin.shell: kubeadm reset --force
+  when: ansible_fqdn in deleted_host
