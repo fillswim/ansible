@@ -4,7 +4,6 @@
 - name: Ping
   become: true
   ansible.builtin.ping:
-
 # =========================== Checking that the node is already attached ===========================
 
 - name: Checking that the node is already attached

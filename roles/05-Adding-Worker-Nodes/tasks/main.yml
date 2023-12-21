@@ -7,4 +7,5 @@
 
 - name: Join Worker nodes
   ansible.builtin.include_tasks: 02-Join-Worker-Nodes.yaml
-  when: inventory_hostname in groups['k8s_workers']
+  # when: inventory_hostname in groups['k8s_workers']
+  when: inventory_hostname in added_worker_nodes | default(groups['k8s_workers'])
