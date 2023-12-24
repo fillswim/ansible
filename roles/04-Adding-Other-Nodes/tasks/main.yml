@@ -1,0 +1,56 @@
+---
+# tasks file for 04-Adding-Other-Nodes
+
+# ============================================== Ping ==============================================
+
+- name: Начало выполнения Playbook-а
+  become: true
+  ansible.builtin.ping:
+
+# ======================================= Block on Master[1] =======================================
+
+- name: Block on the 1-st Master
+  become: true
+  when:
+    - inventory_hostname == groups['k8s_masters'][0]      # Выполняется только на 1-м Мастере
+  block:
+
+    # ========================= Get join_path =========================
+
+    - name: Get join_path
+      ansible.builtin.shell: kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | cut -c9-
+      register: join_path
+
+    - name: Create variable join_path
+      ansible.builtin.set_fact:
+        join_path: "{{ join_path.stdout }}"
+
+    - name: Show join_path
+      ansible.builtin.debug:
+        var: join_path
+
+# ====================================== Block on Added Masters ====================================
+
+- name: Block on Added Master
+  become: true
+  when: # Выполняется на всех мастерах, кроме первого, или на указанном мастере (added_node)
+    - inventory_hostname in groups['k8s_masters'][1:]
+      or ((added_node is defined) and ("'master' in added_node") and (added_node in groups['k8s_masters'][1:]))
+  block:
+
+    - name: Show join_path on Other Control Nodes
+      ansible.builtin.debug:
+        var: hostvars[groups['k8s_masters'][0]].join_path
+
+# ====================================== Block on Added Workers ====================================
+
+- name: Block on Added Workers
+  become: true
+  when: # Выполняется (по дефолту) на всех воркерах, кроме первого, или на указанном воркере (added_node)
+    - inventory_hostname in groups['k8s_workers']
+      or ((added_node is defined) and ("'worker' in added_node")  and (added_node in groups['k8s_workers']))
+  block:
+
+    - name: Show join_path on Worker Nodes
+      ansible.builtin.debug:
+        var: hostvars[groups['k8s_masters'][0]].join_path
