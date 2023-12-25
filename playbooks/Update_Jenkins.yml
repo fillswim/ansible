@@ -1,4 +1,7 @@
 ---
+
+# ansible-playbook -i inventory/jenkins_servers.ini playbooks/Update_Jenkins.yml -b
+
 - name: Update Jenkins
   hosts: jenkins_master
 
@@ -20,7 +23,7 @@
     - name: Download jenkins.war
       become: true
       ansible.builtin.get_url:
-        url: https://updates.jenkins.io/download/war/2.401.3/jenkins.war
+        url: https://updates.jenkins.io/download/war/2.426.2/jenkins.war
         dest: "{{ source_file }}"
         mode: '0664'
         force: true

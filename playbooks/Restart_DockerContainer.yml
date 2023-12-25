@@ -1,0 +1,10 @@
+---
+- name: Restart DockerContainer
+  hosts: wg_servers
+
+  tasks:
+    - name: Restart image 1
+      ansible.builtin.shell: docker restart wg-easy
+
+    - name: Restart image 2
+      ansible.builtin.shell: docker restart 3x-ui

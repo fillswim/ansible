@@ -27,8 +27,8 @@
     key: "{{ item }}"
   with_file:
     - /home/fill/.ssh/id_rsa.pub
-    - /home/fill/.ssh/id_rsa_mypc.pub
-    - /home/fill/.ssh/id_rsa_rtdc.pub
+    - /home/fill/.ssh-others/id_rsa_mypc.pub
+    - /home/fill/.ssh-others/id_rsa_rtdc.pub
 
 - name: Добавление SSH ключа к пользователю fill
   ansible.posix.authorized_key:
@@ -37,8 +37,8 @@
     key: "{{ item }}"
   with_file:
     - /home/fill/.ssh/id_rsa.pub
-    - /home/fill/.ssh/id_rsa_mypc.pub
-    - /home/fill/.ssh/id_rsa_rtdc.pub
+    - /home/fill/.ssh-others/id_rsa_mypc.pub
+    - /home/fill/.ssh-others/id_rsa_rtdc.pub
 
 # ============================== Отключить ввод sudo пароля для root ===============================
 

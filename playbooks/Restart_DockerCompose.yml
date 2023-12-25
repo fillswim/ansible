@@ -1,5 +1,5 @@
 ---
-- name: Restart WireGuard
+- name: Restart DockerCompose
   hosts: wg_servers
 
   tasks:
