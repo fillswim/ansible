@@ -1,9 +1,0 @@
----
-
-- name: Adding-Other-Control-Nodes
-  order: sorted
-  serial: 1
-  hosts: k8s_masters
-
-  roles:
-    - role: 04-Adding-Other-Control-Nodes

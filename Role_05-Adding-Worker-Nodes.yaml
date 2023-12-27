@@ -1,9 +1,0 @@
----
-
-- name: Adding-Worker-Nodes
-  order: sorted
-  serial: 1
-  hosts: k8s_masters[0],k8s_workers
-
-  roles:
-    - role: 05-Adding-Worker-Nodes
