@@ -14,8 +14,7 @@
 # ansible -i hosts_k8s_alma.yaml all -m ping
 
 - name: Role Ping
-  # hosts: "all"
-  hosts: k8s_masters[0]
+  hosts: "all"
 
   roles:
     - role: ping
