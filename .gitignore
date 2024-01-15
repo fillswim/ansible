@@ -5,3 +5,5 @@ venv/
 ENV/
 .venv/
 .conda
+group_vars/wgs_servers
+inventory/wgs_servers.ini

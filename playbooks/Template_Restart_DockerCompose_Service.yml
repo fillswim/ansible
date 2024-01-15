@@ -1,0 +1,16 @@
+---
+
+# ansible-playbook -i inventory/wgs_servers.ini playbooks/Template_Restart_DockerCompose_Service.yml -b --extra-var "host=wgs_servers project_folder=/root/VPN/wg-easy-https service_name=wg-easy"
+
+- name: Restart Docker Compose Service
+  hosts: "{{ host }}"
+
+  tasks:
+
+    - name: Restart Docker Compose Service
+      community.docker.docker_compose:
+        project_src: "{{ project_folder }}"
+        files:
+          - docker-compose.yml
+        services: "{{ service_name }}"
+        restarted: true
