@@ -15,5 +15,19 @@
     api_token_id: "{{ proxmox_token_id }}"
     api_token_secret: "{{ proxmox_token }}"
     api_host: "{{ proxmox_host }}"
-    name: K8s2-RHEL-Worker2
+    name: "{{ item }}"
     state: "{{ vm_action }}"
+    timeout: 300
+  with_items:
+     - K8s1-RHEL-Master1
+     - K8s1-RHEL-Master2
+     - K8s1-RHEL-Master3
+     - K8s1-RHEL-Worker1
+     - K8s1-RHEL-Worker2
+     - K8s1-RHEL-Worker3
+     - K8s1-RHEL-Worker4
+     - K8s1-RHEL-Storage1
+     - K8s1-RHEL-Storage2
+     - K8s1-RHEL-Storage3
+     - K8s1-RHEL-Storage4
+
