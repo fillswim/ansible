@@ -1,0 +1,19 @@
+---
+# tasks file for Proxmox-VM-Action
+
+# ============================================== Ping ==============================================
+
+- name: Ping my servers
+  become: true
+  ansible.builtin.ping:
+
+# ============================================= Action =============================================
+
+- name: Start VM
+  community.general.proxmox_kvm:
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ proxmox_token }}"
+    api_host: "{{ proxmox_host }}"
+    name: K8s2-RHEL-Worker2
+    state: "{{ vm_action }}"
