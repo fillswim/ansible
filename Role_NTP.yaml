@@ -1,0 +1,7 @@
+---
+
+- name: NTP
+  hosts: "all"
+
+  roles:
+    - role: NTP
