@@ -44,10 +44,10 @@
 
 - name: Отключить ввод sudo пароля для root
   become: true
-  copy:
+  ansible.builtin.copy:
     dest: /etc/sudoers.d/root
     content: "root ALL=(ALL) NOPASSWD:ALL"
-    mode: 0440
+    mode: "0440"
 
 # ========================================= Блок для RedHat ========================================
 # ==================================================================================================
@@ -124,27 +124,27 @@
   block:
 
     # ======================================= Поменять hostname ========================================
-    
-    - name: Поменять hostname
-      become: true
-      ansible.builtin.hostname:
-        name: "{{inventory_hostname}}"
+
+    # - name: Поменять hostname
+    #   become: true
+    #   ansible.builtin.hostname:
+    #     name: "{{inventory_hostname}}"
 
     # ===================================== Добавление репозитория =====================================
 
-    - name: Добавление ключа и репозитория
-      block:
-        - name: Добавление ключа
-          become: true
-          ansible.builtin.get_url:
-            url: http://192.168.2.45:8081/repository/gpg_keys/myoffline_repository_ubuntu.gpg
-            dest: /etc/apt/trusted.gpg.d/myoffline_repository_ubuntu.gpg
+    # - name: Добавление ключа и репозитория
+    #   block:
+    #     - name: Добавление ключа
+    #       become: true
+    #       ansible.builtin.get_url:
+    #         url: http://192.168.2.45:8081/repository/gpg_keys/myoffline_repository_ubuntu.gpg
+    #         dest: /etc/apt/trusted.gpg.d/myoffline_repository_ubuntu.gpg
 
-    - name: Добавление репозитория
-      become: true
-      ansible.builtin.apt_repository:
-        repo: "deb http://192.168.2.45:8081/repository/myoffline_repository_ubuntu stable main"
-        state: present
+    # - name: Добавление репозитория
+    #   become: true
+    #   ansible.builtin.apt_repository:
+    #     repo: "deb http://192.168.2.45:8081/repository/myoffline_repository_ubuntu stable main"
+    #     state: present
 
     # ========================================= Upgrade system =========================================
 
@@ -165,10 +165,10 @@
 
     - name: Отключить ввод sudo пароля для fill
       become: true
-      copy:
+      ansible.builtin.copy:
         dest: /etc/sudoers.d/fill
         content: "fill ALL=(ALL) NOPASSWD:ALL"
-        mode: 0440
+        mode: "0440"
 
     # ============================================== DNS ===============================================
 

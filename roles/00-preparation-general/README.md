@@ -25,3 +25,13 @@ K8s2-RHEL:
 ```bash
 ansible-playbook -i inventory/k8s2_rhel.ini Role_00-Preparation-General.yaml -kK
 ```
+
+#### OCFS:
+```bash
+ansible-playbook -i inventory/ocgs-vms.ini Role_00-Preparation-General.yaml -kK
+```
+
+#### Nexus:
+```bash
+ansible-playbook -i inventory/nexus.ini Role_00-Preparation-General.yaml -b
+```

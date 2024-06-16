@@ -4,11 +4,11 @@
   become: true
   ansible.builtin.ping:
 
-- name: Print current user
-  become: true
-  ansible.builtin.shell: whoami
-  register: results
+# - name: Print current user
+#   become: true
+#   ansible.builtin.shell: whoami
+#   register: results
 
-- name: Print results of current user
-  ansible.builtin.debug:
-    var: results.stdout
+# - name: Print results of current user
+#   ansible.builtin.debug:
+#     var: results.stdout
