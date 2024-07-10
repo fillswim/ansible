@@ -30,15 +30,15 @@
     - /home/fill/.ssh-others/id_rsa_mypc.pub
     - /home/fill/.ssh-others/id_rsa_rtdc.pub
 
-- name: Добавление SSH ключа к пользователю fill
-  ansible.posix.authorized_key:
-    user: fill
-    state: present
-    key: "{{ item }}"
-  with_file:
-    - /home/fill/.ssh/id_rsa.pub
-    - /home/fill/.ssh-others/id_rsa_mypc.pub
-    - /home/fill/.ssh-others/id_rsa_rtdc.pub
+# - name: Добавление SSH ключа к пользователю fill
+#   ansible.posix.authorized_key:
+#     user: fill
+#     state: present
+#     key: "{{ item }}"
+#   with_file:
+#     - /home/fill/.ssh/id_rsa.pub
+#     - /home/fill/.ssh-others/id_rsa_mypc.pub
+#     - /home/fill/.ssh-others/id_rsa_rtdc.pub
 
 # ============================== Отключить ввод sudo пароля для root ===============================
 
@@ -68,10 +68,10 @@
 
     # ======================================= Поменять hostname ========================================
 
-    - name: Поменять hostname
-      become: true
-      ansible.builtin.hostname:
-        name: "{{ inventory_hostname }}"
+    # - name: Поменять hostname
+    #   become: true
+    #   ansible.builtin.hostname:
+    #     name: "{{ inventory_hostname }}"
 
     # ============================================== DNS ===============================================
 

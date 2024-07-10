@@ -1,25 +1,30 @@
 ---
-- name: Docker install playbook
-  hosts: "{{ selected_hosts }}"
+# tasks file for Install-Docker
 
-  # Set password
-  # ansible-playbook Install_Docker.yaml --extra-var "selected_hosts=ansible_linux1 groupname=docker username=filldocker password=******"  -b -K
+# ============================================== Ping ==============================================
 
-  vars:
-    docker_gpg_path: /etc/apt/keyrings/docker.asc
-    docker_gpg_link: https://download.docker.com/linux/ubuntu/gpg
-    docker_repo_link: https://download.docker.com/linux/ubuntu
-    os_architecture: amd64
+- name: Ping my servers
+  become: true
+  ansible.builtin.ping:
 
-  tasks:
-    - name: Ping my servers
-      ansible.builtin.ping:
+# ========================================= Блок для Ubuntu ========================================
+# ==================================================================================================
 
-    - name: Update system
+- name: Block for Ubuntu
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+
+    # ======================================= Upgrade system =======================================
+
+    - name: Обновление системы Ubuntu
+      throttle: 1
       ansible.builtin.apt:
         update_cache: true
         force_apt_get: true
       become: true
+
+    # ===================================== Установка пакетов ======================================
 
     - name: Install packages
       become: true
@@ -29,7 +34,9 @@
           - curl
           - gnupg
 
-    - name: Create folder for Key if it does not exist
+    # ================================== Добавление репозитория ====================================
+
+    - name: Create /etc/apt/keyrings
       ansible.builtin.file:
         path: /etc/apt/keyrings
         state: directory
@@ -49,10 +56,6 @@
         mode: '0644'
         force: true
 
-    - name: Show Distribution Release
-      ansible.builtin.debug:
-        var: ansible_distribution_release
-
     - name: Add Docker GPG apt Key
       become: true
       ansible.builtin.apt_key:
@@ -62,15 +65,20 @@
     - name: Add Docker Repository
       become: true
       ansible.builtin.apt_repository:
-        repo: deb [arch={{ os_architecture }} signed-by={{ docker_gpg_path }}] {{ docker_repo_link }} {{ ansible_distribution_release }} stable
+        repo: "{{ docker_deb_url }}"
         state: present
         update_cache: true
 
-    - name: Update system
-      become: true
+    # ======================================= Upgrade system =======================================
+
+    - name: Обновление системы Ubuntu
+      throttle: 1
       ansible.builtin.apt:
         update_cache: true
         force_apt_get: true
+      become: true
+
+    # ===================================== Установка Docker =======================================
 
     - name: Install Docker
       become: true
@@ -81,6 +89,8 @@
           - containerd.io
           - docker-buildx-plugin
           - docker-compose-plugin
+
+    # ========================================= Проверка ===========================================
 
     - name: Verify that you can run Docker
       become: true
@@ -94,22 +104,3 @@
     - name: Show hello-world output
       ansible.builtin.debug:
         msg: "{{ results.container.Output }}"
-
-    - name: Add group
-      become: true
-      ansible.builtin.group:
-        name: "{{ groupname }}"
-        state: present
-
-    - name: Add user
-      become: true
-      ansible.builtin.user:
-        name: "{{ username }}"
-        create_home: true
-        shell: /bin/bash
-        password: "{{ password | password_hash('sha512') }}"
-        groups: docker
-        append: true
-
-    - name: Reset SSH connection to allow user changes to affect ansible user
-      ansible.builtin.meta: reset_connection
