@@ -9,13 +9,13 @@
 
 # ============================================= Whoami =============================================
 
-- name: Whoami
-  ansible.builtin.shell: whoami
-  register: whoami_results
+# - name: Whoami
+#   ansible.builtin.shell: whoami
+#   register: whoami_results
 
-- name: Whoami print
-  ansible.builtin.debug:
-    var: whoami_results.stdout
+# - name: Whoami print
+#   ansible.builtin.debug:
+#     var: whoami_results.stdout
 
 # ========================================== Add SSH keys ==========================================
 
@@ -58,13 +58,13 @@
   block:
     # ========================================= Upgrade system =========================================
 
-    - name: Обновление системы RedHat
-      throttle: 1
-      ignore_errors: true
-      become: true
-      ansible.builtin.yum:
-        name: "*"
-        state: latest
+    # - name: Обновление системы RedHat
+    #   throttle: 1
+    #   ignore_errors: true
+    #   become: true
+    #   ansible.builtin.yum:
+    #     name: "*"
+    #     state: latest
 
     # ======================================= Поменять hostname ========================================
 
@@ -148,18 +148,18 @@
 
     # ========================================= Upgrade system =========================================
 
-    - name: Обновление системы Ubuntu
-      throttle: 1
-      ignore_errors: true
-      ansible.builtin.apt:
-        update_cache: true
-        force_apt_get: true
-      become: true
+    # - name: Обновление системы Ubuntu
+    #   throttle: 1
+    #   ignore_errors: true
+    #   ansible.builtin.apt:
+    #     update_cache: true
+    #     force_apt_get: true
+    #   become: true
 
-    - name: Upgrade
-      ansible.builtin.apt:
-        upgrade: dist
-      become: true
+    # - name: Upgrade
+    #   ansible.builtin.apt:
+    #     upgrade: dist
+    #   become: true
 
     # ============================= Отключение вводу пароля для пользователей ==========================
 
