@@ -1,0 +1,7 @@
+---
+
+- name: Proxy repository
+  hosts: "all"
+
+  roles:
+    - role: Proxy-repository

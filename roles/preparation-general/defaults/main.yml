@@ -12,3 +12,5 @@ my_domen: fillswim.local
 ntp_servers:
   - 192.168.2.1
   - 192.168.88.1
+
+proxy_repository_url: "http://192.168.2.18:3142"

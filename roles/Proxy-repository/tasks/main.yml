@@ -1,0 +1,33 @@
+---
+# tasks file for Proxy-repository
+
+# ========================================= Блок для Ubuntu ========================================
+# ==================================================================================================
+
+- name: Block for Ubuntu
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+
+    - name: Скопировать 02aptproxy
+      become: true
+      ansible.builtin.template:
+        src: 02aptproxy.j2
+        dest: /etc/apt/apt.conf.d/02aptproxy
+        owner: root
+        group: root
+        mode: "0644"
+
+    # ========================================= Upgrade system =========================================
+
+    - name: Обновление системы Ubuntu
+      throttle: 1
+      ansible.builtin.apt:
+        update_cache: true
+        force_apt_get: true
+      become: true
+
+    - name: Upgrade
+      ansible.builtin.apt:
+        upgrade: dist
+      become: true

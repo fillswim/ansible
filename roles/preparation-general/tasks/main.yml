@@ -28,17 +28,15 @@
   with_file:
     - /home/fill/.ssh/id_rsa.pub
     - /home/fill/.ssh-others/id_rsa_mypc.pub
-    - /home/fill/.ssh-others/id_rsa_rtdc.pub
 
-# - name: Добавление SSH ключа к пользователю fill
-#   ansible.posix.authorized_key:
-#     user: fill
-#     state: present
-#     key: "{{ item }}"
-#   with_file:
-#     - /home/fill/.ssh/id_rsa.pub
-#     - /home/fill/.ssh-others/id_rsa_mypc.pub
-#     - /home/fill/.ssh-others/id_rsa_rtdc.pub
+- name: Добавление SSH ключа к пользователю fill
+  ansible.posix.authorized_key:
+    user: fill
+    state: present
+    key: "{{ item }}"
+  with_file:
+    - /home/fill/.ssh/id_rsa.pub
+    - /home/fill/.ssh-others/id_rsa_mypc.pub
 
 # ============================== Отключить ввод sudo пароля для root ===============================
 
@@ -148,18 +146,27 @@
 
     # ========================================= Upgrade system =========================================
 
-    # - name: Обновление системы Ubuntu
-    #   throttle: 1
-    #   ignore_errors: true
-    #   ansible.builtin.apt:
-    #     update_cache: true
-    #     force_apt_get: true
-    #   become: true
+    - name: Добавить proxy
+      become: true
+      ansible.builtin.template:
+        src: 02aptproxy.j2
+        dest: /etc/apt/apt.conf.d/02aptproxy
+        owner: root
+        group: root
+        mode: "0644"
 
-    # - name: Upgrade
-    #   ansible.builtin.apt:
-    #     upgrade: dist
-    #   become: true
+    - name: Обновление системы Ubuntu
+      throttle: 1
+      ignore_errors: true
+      ansible.builtin.apt:
+        update_cache: true
+        force_apt_get: true
+      become: true
+
+    - name: Upgrade
+      ansible.builtin.apt:
+        upgrade: dist
+      become: true
 
     # ============================= Отключение вводу пароля для пользователей ==========================
 

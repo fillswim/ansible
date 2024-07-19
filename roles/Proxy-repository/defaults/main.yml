@@ -1,0 +1,4 @@
+---
+# defaults file for Proxy-repository
+
+proxy_repository_url: "http://192.168.2.18:3142"

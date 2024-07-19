@@ -17,7 +17,7 @@ ansible-playbook -i inventory/graylog-ubuntu.ini Ping.yaml -b
 
 # Jenkins
 ```bash
-ansible-playbook -i inventory/jenkins.ini Ping.yaml -b
+ansible-playbook -i inventory/jenkins.ini Ping.yaml -kK -b
 ```
 
 # Terraform
