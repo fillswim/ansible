@@ -25,7 +25,7 @@ ansible-playbook Helm_Template_Install.yml
 ansible-playbook -i inventory/test-ubuntu.ini general.yaml -b
 ```
 
-# Test Oracle Linux
+# Test Oracle
 ```bash
 ansible-playbook -i inventory/test-oracle.ini general.yaml -b
 ```

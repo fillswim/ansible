@@ -11,3 +11,6 @@
     - role: dns
     - role: chrony
     - role: timezone
+    - role: repository-local
+    - role: install
+    - role: reboot
