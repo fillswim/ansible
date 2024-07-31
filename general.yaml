@@ -1,0 +1,13 @@
+---
+# General playbook
+
+- name: General playbook
+  hosts: "all"
+
+  roles:
+    - role: ping
+    - role: ssh-keys
+    - role: sudoers
+    - role: dns
+    - role: chrony
+    - role: timezone

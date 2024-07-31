@@ -1,0 +1,32 @@
+---
+# tasks file for NTP
+
+# ========================================= Блок для Ubuntu ========================================
+# ==================================================================================================
+
+- name: Block for Ubuntu
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+
+    # ============================================== NTP ===============================================
+
+    - name: Install NTP Ubuntu
+      become: true
+      ansible.builtin.apt:
+        name: ntp
+
+    - name: Копирование файла ntp.conf
+      become: true
+      ansible.builtin.template:
+        src: ntp.conf.j2
+        dest: /etc/ntp.conf
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Restart NTP Ubuntu
+      become: true
+      ansible.builtin.service:
+        state: restarted
+        name: ntp

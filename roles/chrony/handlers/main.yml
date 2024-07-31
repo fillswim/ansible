@@ -1,0 +1,16 @@
+---
+# handlers file for chrony
+
+- name: Restart Chrony Oracle
+  become: true
+  ansible.builtin.service:
+    state: restarted
+    name: chronyd
+    enabled: true
+
+- name: Restart Chrony Ubuntu
+  become: true
+  ansible.builtin.service:
+    state: restarted
+    name: chrony
+    enabled: true

@@ -1,0 +1,9 @@
+---
+
+# Chrony
+
+- name: Chrony
+  hosts: "all"
+
+  roles:
+    - role: chrony

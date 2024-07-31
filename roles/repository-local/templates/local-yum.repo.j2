@@ -1,0 +1,20 @@
+[ol9_baseos_latest_local]
+name=Oracle Linux 9 BaseOS Latest (local)
+baseurl={{ local_oracle_repository_url }}/yum/ol9_baseos_latest/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ol9
+gpgcheck=1
+enabled=1
+
+[ol9_appstream_local]
+name=Oracle Linux 9 Application Stream Packages (local)
+baseurl={{ local_oracle_repository_url }}/yum/ol9_appstream/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ol9
+gpgcheck=1
+enabled=1
+
+[ol9_UEKR7_local]
+name=Oracle Linux 9 UEK Release 7 (local)
+baseurl={{ local_oracle_repository_url }}/yum/ol9_UEKR7/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ol9
+gpgcheck=1
+enabled=1

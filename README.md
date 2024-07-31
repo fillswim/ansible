@@ -17,3 +17,20 @@ ansible-playbook Helm_Template_Install.yml
                  helm_namespace=default 
                  file=/home/fill/K8SManifests/HelmChart_values_gifservice.yaml"
 ```
+
+### General playbook
+
+# Test Ubuntu
+```bash
+ansible-playbook -i inventory/test-ubuntu.ini general.yaml -b
+```
+
+# Test Oracle Linux
+```bash
+ansible-playbook -i inventory/test-oracle.ini general.yaml -b
+```
+
+# Repository Oracle
+```bash
+ansible-playbook -i inventory/repository-oracle.ini general.yaml -b
+```

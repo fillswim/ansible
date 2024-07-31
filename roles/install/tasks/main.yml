@@ -1,0 +1,25 @@
+---
+# tasks file for install
+
+- name: Block for RedHat
+  when: ansible_os_family == "RedHat"
+  become: true
+  block:
+
+    - name: Install packages in Oracle Linux
+      ansible.builtin.dnf:
+        name:
+          - nano
+          - mc
+          - bind-utils
+
+- name: Block for Ubuntu
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+
+    - name: Install packages in Ubuntu
+      ansible.builtin.apt:
+        pkg:
+          - nano
+          - mc

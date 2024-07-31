@@ -1,0 +1,9 @@
+---
+
+# Timezone
+
+- name: Timezone
+  hosts: "all"
+
+  roles:
+    - role: timezone

@@ -1,0 +1,9 @@
+---
+
+# Install packages
+
+- name: Install packages
+  hosts: "all"
+
+  roles:
+    - role: install

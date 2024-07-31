@@ -1,0 +1,17 @@
+---
+# tasks file for change-hostname
+
+# ======================================= Поменять hostname ========================================
+
+- name: Print ansible_hostname - hostname на ВМ
+  ansible.builtin.debug:
+    var: ansible_hostname
+
+- name: Print inventory_hostname - hostname в inventory
+  ansible.builtin.debug:
+    var: inventory_hostname
+
+- name: Поменять hostname c "{{ ansible_hostname }}" на "{{ inventory_hostname }}"
+  become: true
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"

@@ -1,0 +1,44 @@
+---
+# tasks file for chrony
+
+- name: Block for RedHat
+  when: ansible_os_family == "RedHat"
+  become: true
+  block:
+
+    - name: Установка chrony в Oracle Linux
+      ansible.builtin.dnf:
+        name:
+          - chrony
+
+    - name: Копирование файла chrony.conf
+      become: true
+      ansible.builtin.template:
+        src: chrony-oracle.conf.j2
+        dest: /etc/chrony.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Restart Chrony Oracle
+
+- name: Block for Ubuntu
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+
+    - name: Установка chrony в Ubuntu
+      ansible.builtin.apt:
+        pkg:
+          - chrony
+
+    - name: Копирование файла chrony.conf
+      become: true
+      ansible.builtin.template:
+        src: chrony-ubuntu.conf.j2
+        dest: /etc/chrony/chrony.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Restart Chrony Ubuntu

@@ -1,0 +1,9 @@
+---
+
+# Sudoers
+
+- name: Sudoers
+  hosts: "all"
+
+  roles:
+    - role: sudoers

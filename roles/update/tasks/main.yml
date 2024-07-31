@@ -1,0 +1,33 @@
+---
+# tasks file for update
+
+- name: Block for RedHat
+  when: ansible_os_family == "RedHat"
+  become: true
+  block:
+
+    - name: Обновление системы RedHat
+      throttle: 1
+      # ignore_errors: true
+      become: true
+      ansible.builtin.yum:
+        name: "*"
+        state: latest
+
+- name: Block for Ubuntu
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+
+    - name: Обновление системы Ubuntu
+      throttle: 1
+      # ignore_errors: true
+      ansible.builtin.apt:
+        update_cache: true
+        force_apt_get: true
+      become: true
+
+    - name: Upgrade
+      ansible.builtin.apt:
+        upgrade: dist
+      become: true

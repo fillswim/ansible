@@ -1,0 +1,9 @@
+---
+
+# SSH-keys
+
+- name: SSH-keys
+  hosts: "all"
+
+  roles:
+    - role: ssh-keys

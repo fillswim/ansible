@@ -1,0 +1,12 @@
+---
+# defaults file for local-repository
+
+# Ubuntu
+local_ubuntu_repository_url: "http://192.168.2.18"
+# local_ubuntu_repository_url: "http://repository-ubuntu.fillswim.local"
+
+# Oracle
+local_oracle_repository_url: "http://192.168.2.19"
+# local_oracle_repository_url: "http://repository-oracle.fillswim.local"
+local_oracle_gpg_key_url: "https://yum.oracle.com/RPM-GPG-KEY-oracle-ol9"
+local_oracle_gpg_key_path: "/etc/pki/rpm-gpg/RPM-GPG-KEY-ol9"

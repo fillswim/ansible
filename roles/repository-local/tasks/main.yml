@@ -1,0 +1,60 @@
+---
+# tasks file for local-repository
+
+- name: Block for RedHat
+  when: ansible_os_family == "RedHat"
+  become: true
+  block:
+
+    - name: Отключение стандартных репозиториев
+      community.general.dnf_config_manager:
+        name:
+          - ol9_baseos_latest
+          - ol9_appstream
+          - ol9_UEKR7
+        state: disabled
+
+    - name: Download GPG key
+      ansible.builtin.get_url:
+        url: "{{ local_oracle_gpg_key_url }}"
+        dest: "{{ local_oracle_gpg_key_path }}"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Import GPG key
+      ansible.builtin.rpm_key:
+        state: present
+        key: "{{ local_oracle_gpg_key_path }}"
+
+    - name: Копирование файла local-yum.repo
+      become: true
+      ansible.builtin.template:
+        src: local-yum.repo.j2
+        dest: /etc/yum.repos.d/local-yum.repo
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Обновить кэш
+      ansible.builtin.dnf:
+        update_cache: true
+
+    - name: Обновить все пакеты
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+
+- name: Block for Ubuntu
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+
+    - name: Копирование файла sources.list
+      become: true
+      ansible.builtin.template:
+        src: sources.list.j2
+        dest: /etc/apt/sources.list
+        owner: root
+        group: root
+        mode: "0644"

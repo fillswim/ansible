@@ -1,0 +1,7 @@
+---
+# defaults file for chrony
+
+# NTP серверы
+chrony_ntp_servers:
+  - 192.168.2.1
+  - 192.168.88.1

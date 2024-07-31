@@ -40,3 +40,13 @@ ansible-playbook -i inventory/nexus.ini Preparation-General.yaml -b
 ansible-playbook -i inventory/repository-ubuntu.ini Preparation-General.yaml -b
 ```
 
+# Repository Oracle Linux:
+```bash
+ansible-playbook -i inventory/repository-ol.ini Preparation-General.yaml -b
+```
+
+# Test Oracle Linux:
+```bash
+ansible-playbook -i inventory/test-ol.ini Preparation-General.yaml -b
+```
+

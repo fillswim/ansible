@@ -17,7 +17,7 @@
 #   ansible.builtin.debug:
 #     var: whoami_results.stdout
 
-# ========================================== Add SSH keys ==========================================
+# ========================================== Add SSH keys + ==========================================
 
 - name: Добавление SSH ключа к пользователю root
   become: true
@@ -29,16 +29,16 @@
     - /home/fill/.ssh/id_rsa.pub
     - /home/fill/.ssh-others/id_rsa_mypc.pub
 
-- name: Добавление SSH ключа к пользователю fill
-  ansible.posix.authorized_key:
-    user: fill
-    state: present
-    key: "{{ item }}"
-  with_file:
-    - /home/fill/.ssh/id_rsa.pub
-    - /home/fill/.ssh-others/id_rsa_mypc.pub
+# - name: Добавление SSH ключа к пользователю fill
+#   ansible.posix.authorized_key:
+#     user: fill
+#     state: present
+#     key: "{{ item }}"
+#   with_file:
+#     - /home/fill/.ssh/id_rsa.pub
+#     - /home/fill/.ssh-others/id_rsa_mypc.pub
 
-# ============================== Отключить ввод sudo пароля для root ===============================
+# ============================== Отключить ввод sudo пароля для root + ===============================
 
 - name: Отключить ввод sudo пароля для root
   become: true
@@ -54,7 +54,7 @@
   when: ansible_os_family == "RedHat"
   become: true
   block:
-    # ========================================= Upgrade system =========================================
+    # ========================================= Upgrade system + =========================================
 
     # - name: Обновление системы RedHat
     #   throttle: 1
@@ -64,14 +64,14 @@
     #     name: "*"
     #     state: latest
 
-    # ======================================= Поменять hostname ========================================
+    # ======================================= Поменять hostname + ========================================
 
     # - name: Поменять hostname
     #   become: true
     #   ansible.builtin.hostname:
     #     name: "{{ inventory_hostname }}"
 
-    # ============================================== DNS ===============================================
+    # ============================================== DNS + ===============================================
 
     - name: Скопировать файл ручной настройки DNS
       become: true
@@ -144,16 +144,16 @@
     #     repo: "deb http://192.168.2.45:8081/repository/myoffline_repository_ubuntu stable main"
     #     state: present
 
-    # ========================================= Upgrade system =========================================
+    # ========================================= Upgrade system + =========================================
 
-    - name: Добавить proxy
-      become: true
-      ansible.builtin.template:
-        src: 02aptproxy.j2
-        dest: /etc/apt/apt.conf.d/02aptproxy
-        owner: root
-        group: root
-        mode: "0644"
+    # - name: Добавить proxy
+    #   become: true
+    #   ansible.builtin.template:
+    #     src: 02aptproxy.j2
+    #     dest: /etc/apt/apt.conf.d/02aptproxy
+    #     owner: root
+    #     group: root
+    #     mode: "0644"
 
     - name: Обновление системы Ubuntu
       throttle: 1
@@ -168,7 +168,7 @@
         upgrade: dist
       become: true
 
-    # ============================= Отключение вводу пароля для пользователей ==========================
+    # ============================= Отключение вводу пароля для пользователей + ==========================
 
     - name: Отключить ввод sudo пароля для fill
       become: true
@@ -177,7 +177,7 @@
         content: "fill ALL=(ALL) NOPASSWD:ALL"
         mode: "0440"
 
-    # ============================================== DNS ===============================================
+    # ============================================== DNS + ===============================================
 
     - name: Прописать собственные DNS
       become: true
@@ -219,12 +219,12 @@
 
 # ==================================================================================================
 
-- name: Set timezone to Europe/Moscow
+- name: Set timezone to Europe/Moscow +
   become: true
   community.general.timezone:
     name: Europe/Moscow
 
-- name: Reboot
+- name: Reboot +
   throttle: 1
   become: true
   ansible.builtin.reboot:

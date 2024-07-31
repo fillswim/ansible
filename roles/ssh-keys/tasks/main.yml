@@ -1,0 +1,23 @@
+---
+# tasks file for ssh-keys
+
+# ========================================== Add SSH keys ==========================================
+
+- name: Добавление SSH ключа к пользователю root
+  become: true
+  ansible.posix.authorized_key:
+    user: root
+    state: present
+    key: "{{ item }}"
+  with_file:
+    - /home/fill/.ssh/id_rsa.pub
+    - /home/fill/.ssh-others/id_rsa_mypc.pub
+
+# - name: Добавление SSH ключа к пользователю fill
+#   ansible.posix.authorized_key:
+#     user: fill
+#     state: present
+#     key: "{{ item }}"
+#   with_file:
+#     - /home/fill/.ssh/id_rsa.pub
+#     - /home/fill/.ssh-others/id_rsa_mypc.pub

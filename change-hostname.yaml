@@ -1,0 +1,9 @@
+---
+
+# Change hostname
+
+- name: Change hostname
+  hosts: "all"
+
+  roles:
+    - role: change-hostname

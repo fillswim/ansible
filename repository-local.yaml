@@ -1,0 +1,7 @@
+---
+
+- name: Local repository
+  hosts: "all"
+
+  roles:
+    - role: repository-local

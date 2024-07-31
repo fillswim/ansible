@@ -1,0 +1,11 @@
+---
+# tasks file for sudoers
+
+# ============================== Отключить ввод sudo пароля для root ===============================
+
+- name: Отключить ввод sudo пароля для root
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/root
+    content: "root ALL=(ALL) NOPASSWD:ALL"
+    mode: "0440"

@@ -4,4 +4,4 @@
   hosts: "all"
 
   roles:
-    - role: Proxy-repository
+    - role: repository-proxy
