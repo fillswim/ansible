@@ -58,3 +58,15 @@
         owner: root
         group: root
         mode: "0644"
+
+    - name: Update Ubuntu
+      throttle: 1
+      ansible.builtin.apt:
+        update_cache: true
+        force_apt_get: true
+      become: true
+
+    - name: Upgrade Ubuntu
+      ansible.builtin.apt:
+        upgrade: dist
+      become: true
