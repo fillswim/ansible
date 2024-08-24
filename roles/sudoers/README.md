@@ -9,3 +9,8 @@ ansible-playbook -i inventory/test-ubuntu.ini sudoers.yaml -b
 ```bash
 ansible-playbook -i inventory/test-ol.ini sudoers.yaml -b
 ```
+
+# K8s1 Redos
+```bash
+ansible-playbook -i inventory/k8s1-redos.ini sudoers.yaml -b
+```

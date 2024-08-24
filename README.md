@@ -34,3 +34,7 @@ ansible-playbook -i inventory/test-oracle.ini general.yaml -b
 ```bash
 ansible-playbook -i inventory/repository-oracle.ini general.yaml -b
 ```
+# K8s1 Redos
+```bash
+ansible-playbook -i inventory/k8s1-redos.ini general.yaml -b
+```

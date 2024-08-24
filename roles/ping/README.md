@@ -45,3 +45,8 @@ ansible-playbook -i inventory/k8s1-rhel.ini Ping.yaml -b
 ansible-playbook -i inventory/repository-ubuntu.ini Ping.yaml -b
 ```
 
+# K8s1-Redos
+```bash
+ansible-playbook -i inventory/k8s1-redos.ini Ping.yaml -b
+```
+

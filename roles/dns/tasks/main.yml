@@ -2,11 +2,11 @@
 # tasks file for DNS
 
 - name: Block for RedHat
-  when: ansible_os_family == "RedHat"
+  when: ansible_os_family == "RedHat" or ansible_os_family == "RED"
   become: true
   block:
 
-    - name: Скопировать файл ручной настройки DNS
+    - name: Скопировать файл ручной настройки DNS (RedHat)
       become: true
       ansible.builtin.copy:
         src: 90-dns-none.conf
@@ -17,7 +17,7 @@
       notify:
         - Restart NetworkManager
 
-    - name: Прописать собственные DNS
+    - name: Прописать собственные DNS (RedHat)
       become: true
       ansible.builtin.template:
         src: resolv.conf.j2
@@ -33,7 +33,7 @@
   become: true
   block:
 
-    - name: Прописать собственные DNS
+    - name: Прописать собственные DNS (Debian)
       become: true
       ansible.builtin.template:
         src: resolved.conf.j2
@@ -42,7 +42,7 @@
         group: root
         mode: "0644"
 
-    - name: Restart systemd-resolved
+    - name: Restart systemd-resolved (Debian)
       become: true
       ansible.builtin.systemd:
         state: restarted
