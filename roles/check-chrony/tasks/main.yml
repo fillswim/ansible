@@ -1,0 +1,90 @@
+---
+# tasks file for check-chrony
+
+# ================================ Блок вопроса ================================
+
+# Выполняется на первом хосте группы all
+- name: Блок вопроса
+  delegate_to: "{{ groups['all'][0] }}"
+  run_once: true
+  block:
+
+    - name: Задать вопрос
+      ansible.builtin.pause:
+        prompt: |
+          Для проверки времени на хостах наберите                   - date
+          Для проверки источников chrony наберите                   - sources
+          Для запуска принудительной синхронизации времени наберите - makestep
+          Для перезапуска chrony наберите                           - restart
+      register: answer
+
+    - name: Пересохранить факт
+      ansible.builtin.set_fact:
+        answer: "{{ answer.user_input | lower }}"
+
+    - name: Вывод answer
+      ansible.builtin.debug:
+        var: hostvars[groups['all'][0]].answer
+
+# ============================ Блок проверки времени ===========================
+
+# Опрашивается факт "answer" на первом хосте группы all
+- name: Блок "Date"
+  when:
+    - "hostvars[groups['all'][0]].answer == 'date'"
+  block:
+
+    - name: Check date
+      changed_when: false
+      ansible.builtin.command: "date"
+      register: date
+
+    - name: Вывод date
+      ansible.builtin.debug:
+        var: date.stdout
+
+
+# ======================= Блок проверки источников Chrony ======================
+
+- name: Блок "Sources"
+  when:
+    - "hostvars[groups['all'][0]].answer == 'sources'"
+  block:
+
+    - name: Check chrony sources
+      changed_when: false
+      ansible.builtin.command: "chronyc sources"
+      register: chronyc_sources
+
+    - name: Вывод chrony sources
+      ansible.builtin.debug:
+        var: chronyc_sources.stdout
+
+# ================== Блок принудительной синхронизации Chrony ==================
+
+- name: Блок "Chronyc makestep"
+  when:
+    - "hostvars[groups['all'][0]].answer == 'makestep'"
+  block:
+
+    - name: Check chrony sources
+      changed_when: false
+      ansible.builtin.command: "chronyc makestep"
+      register: chronyc_makestep
+
+    - name: Вывод chronyc makestep
+      ansible.builtin.debug:
+        var: chronyc_makestep.stdout
+
+# =========================== Блок перезапуска Chrony ==========================
+
+- name: Блок "Restart chrony"
+  when:
+    - "hostvars[groups['all'][0]].answer == 'restart'"
+  block:
+
+    - name: Restart chrony
+      ansible.builtin.service:
+        state: restarted
+        name: chronyd
+      register: restart_chrony

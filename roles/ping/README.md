@@ -50,3 +50,8 @@ ansible-playbook -i inventory/repository-ubuntu.ini Ping.yaml -b
 ansible-playbook -i inventory/k8s1-redos.ini Ping.yaml -b
 ```
 
+# All
+```bash
+ansible-playbook -i inventory/all.ini Ping.yaml -b
+```
+

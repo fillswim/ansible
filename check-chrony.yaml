@@ -1,0 +1,7 @@
+---
+
+- name: Check chrony
+  hosts: "all"
+
+  roles:
+    - role: test
