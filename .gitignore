@@ -7,3 +7,6 @@ ENV/
 .conda
 group_vars/wgs_servers
 inventory/wgs_servers.ini
+
+.inventory/
+.group_vars/

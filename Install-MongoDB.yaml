@@ -1,0 +1,8 @@
+---
+# Install MongoDB
+
+- name: Install MongoDB
+  hosts: mongodb-cluster
+
+  roles:
+    - role: Install-MongoDB

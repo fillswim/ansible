@@ -55,3 +55,18 @@ ansible-playbook -i inventory/k8s1-redos.ini Ping.yaml -b
 ansible-playbook -i inventory/all.ini Ping.yaml -b
 ```
 
+# Openstack
+```bash
+ansible-playbook -i inventory/openstack.ini Ping.yaml -b
+```
+
+# Graylog
+```bash
+ansible-playbook -i inventory/graylog.ini Ping.yaml -b
+```
+
+# K8s1-RHEL
+```bash
+ansible-playbook -i inventory/k8s1-rhel.ini Ping.yaml -b
+```
+

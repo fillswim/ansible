@@ -2,7 +2,7 @@
 # tasks file for local-repository
 
 - name: Block for RedHat
-  when: ansible_os_family == "RedHat"
+  when: ansible_os_family == "RedHat" and ansible_distribution == "OracleLinux"
   become: true
   block:
 
@@ -43,7 +43,7 @@
     - name: Обновить все пакеты
       ansible.builtin.dnf:
         name: "*"
-        state: latest
+        state: present
 
 - name: Block for Ubuntu
   when: ansible_os_family == "Debian"

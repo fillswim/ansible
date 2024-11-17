@@ -1,0 +1,7 @@
+---
+# defaults file for Install MongoDB
+
+mongodb_gpg_link: https://www.mongodb.org/static/pgp/server-8.0.asc
+mongodb_gpg_path: /usr/share/keyrings/mongodb-server-8.0.gpg
+mongodb_repo_link: https://repo.mongodb.org/apt/ubuntu
+os_architecture: amd64,arm64

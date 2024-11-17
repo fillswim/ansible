@@ -14,3 +14,8 @@ ansible-playbook -i inventory/test-ol.ini sudoers.yaml -b
 ```bash
 ansible-playbook -i inventory/k8s1-redos.ini sudoers.yaml -b
 ```
+
+# OpenStack
+```bash
+ansible-playbook -i inventory/openstack.ini sudoers.yaml -b
+```

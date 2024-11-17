@@ -1,0 +1,9 @@
+---
+# handlers file for chrony
+
+- name: Restart ssh Ubuntu
+  become: true
+  ansible.builtin.service:
+    state: restarted
+    name: ssh
+    enabled: true

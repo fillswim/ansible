@@ -38,3 +38,39 @@ ansible-playbook -i inventory/repository-oracle.ini general.yaml -b
 ```bash
 ansible-playbook -i inventory/k8s1-redos.ini general.yaml -b
 ```
+
+# MAAS
+```bash
+ansible-playbook -i inventory/maas.ini general.yaml -b
+```
+
+# OpenStack
+```bash
+ansible-playbook -i inventory/openstack.ini general.yaml -b
+```
+
+# K8s1-Ubuntu-Lab
+```bash
+ansible-playbook -i inventory/k8s1-ubuntu-lab.ini general.yaml -b
+```
+
+# NTP
+```bash
+ansible-playbook -i inventory/ntp.ini general.yaml -b
+```
+
+# Graylog
+```bash
+ansible-playbook -i inventory/graylog.ini general.yaml -b
+```
+
+# Minio
+```bash
+ansible-playbook -i inventory/minio-ubuntu.ini general.yaml -b
+```
+
+# K8s1-RHEL
+```bash
+ansible-playbook -i inventory/k8s1-rhel.ini general.yaml -b -kK
+```
+

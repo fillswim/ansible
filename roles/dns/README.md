@@ -14,3 +14,8 @@ ansible-playbook -i inventory/test-oracle.ini dns.yaml -b
 ```bash
 ansible-playbook -i inventory/k8s1-redos.ini dns.yaml -b
 ```
+
+# OpenStack
+```bash
+ansible-playbook -i inventory/openstack.ini dns.yaml -b
+```

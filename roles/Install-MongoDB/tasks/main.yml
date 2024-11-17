@@ -1,0 +1,64 @@
+---
+
+- name: Ping my servers
+  become: true
+  ansible.builtin.ping:
+
+- name: Install packages (Block for Ubuntu)
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+
+    - name: Install packages in Ubuntu
+      ansible.builtin.apt:
+        pkg:
+          - gnupg
+          - curl
+
+- name: Delete old MongoDB GPG key file
+  become: true
+  ansible.builtin.file:
+    path: "{{ mongodb_gpg_path }}"
+    state: absent
+
+- name: Add MongoDB GPG apt Key (Old format)
+  become: true
+  ansible.builtin.shell: |
+    curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
+    sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg \
+    --dearmor
+  args:
+    creates: /usr/share/keyrings/mongodb-server-8.0.gpg
+
+- name: Add MongoDB Repository
+  become: true
+  ansible.builtin.apt_repository:
+    repo: deb [arch={{ os_architecture }} signed-by={{ mongodb_gpg_path }}] {{ mongodb_repo_link }} jammy/mongodb-org/8.0 multiverse
+    state: present
+    update_cache: true
+    filename: mongodb-org-8.0
+
+- name: Install MongoDB (Block for Ubuntu)
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+
+    - name: Обновление системы Ubuntu
+      become: true
+      throttle: 1
+      ansible.builtin.apt:
+        update_cache: true
+        force_apt_get: true
+
+    - name: Install Install MongoDB Community Server
+      become: true
+      ansible.builtin.apt:
+        name: mongodb-org
+
+- name: Enable mongod
+  become: true
+  ansible.builtin.service:
+    state: started
+    daemon_reload: true
+    name: mongod
+    enabled: true

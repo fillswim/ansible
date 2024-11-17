@@ -6,11 +6,16 @@
   become: true
   block:
 
-    - name: Обновление системы RedHat
-      throttle: 1
-      # ignore_errors: true
-      become: true
-      ansible.builtin.yum:
+    # - name: Обновление системы RedHat
+    #   throttle: 1
+    #   # ignore_errors: true
+    #   become: true
+    #   ansible.builtin.yum:
+    #     name: "*"
+    #     state: latest
+
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
         name: "*"
         state: latest
 

@@ -41,7 +41,7 @@
     state: "{{ vm_action }}"
     timeout: 300
   with_items:
-     - K8s1-RHEL-Storage1
-     - K8s1-RHEL-Storage2
-     - K8s1-RHEL-Storage3
-     - K8s1-RHEL-Storage4
+    - K8s1-RHEL-Storage1
+    - K8s1-RHEL-Storage2
+    - K8s1-RHEL-Storage3
+    - K8s1-RHEL-Storage4
