@@ -10,3 +10,6 @@ inventory/wgs_servers.ini
 
 .inventory/
 .group_vars/
+
+inventory/
+group_vars/

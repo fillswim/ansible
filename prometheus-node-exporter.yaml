@@ -1,0 +1,9 @@
+---
+
+- name: Install Prometheus Node Exporter
+  hosts: "all"
+
+  roles:
+    - role: prometheus.prometheus.node_exporter
+      when: "'k8s' not in inventory_hostname"
+      become: true

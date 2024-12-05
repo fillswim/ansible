@@ -7,3 +7,4 @@
 
   roles:
     - role: dns
+      when: "'dns' not in inventory_hostname"

@@ -70,3 +70,8 @@ ansible-playbook -i inventory/graylog.ini Ping.yaml -b
 ansible-playbook -i inventory/k8s1-rhel.ini Ping.yaml -b
 ```
 
+# Prometheus Server
+```bash
+ansible-playbook -i inventory/prometheus.ini Ping.yaml -b
+```
+

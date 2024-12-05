@@ -10,8 +10,13 @@
     - role: passwordauthentication-no
     - role: sudoers
     - role: dns
-    - role: chrony
-    - role: timezone
+      when: "'dns' not in inventory_hostname"
     - role: repository-local
+      when: "'repository' not in inventory_hostname"
+    - role: chrony
+      when: "'ntp' not in inventory_hostname"
+    - role: timezone
     - role: install
+    - role: prometheus.prometheus.node_exporter
+      when: "'k8s' not in inventory_hostname"
     - role: reboot

@@ -2,7 +2,8 @@
 # tasks file for DNS
 
 - name: Block for RedHat
-  when: ansible_os_family == "RedHat" or ansible_os_family == "RED"
+  when:
+    - ansible_os_family == "RedHat" or ansible_os_family == "RED"
   become: true
   block:
 
@@ -29,7 +30,8 @@
         - Restart NetworkManager
 
 - name: Block for Ubuntu
-  when: ansible_os_family == "Debian"
+  when:
+    - ansible_os_family == "Debian"
   become: true
   block:
 
