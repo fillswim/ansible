@@ -46,7 +46,7 @@
         state: present
 
 - name: Block for Ubuntu
-  when: ansible_os_family == "Debian"
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "22.04"
   become: true
   block:
 

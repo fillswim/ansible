@@ -23,6 +23,7 @@ ansible-playbook -i inventory/ntp.ini general.yaml -b
 ansible-playbook -i inventory/dns.ini ssh-keys.yaml -b -kK
 ansible-playbook -i inventory/dns.ini ping.yaml -b
 ansible-playbook -i inventory/dns.ini dns.yaml -b
+ansible-playbook -i inventory/dns.ini repository-local.yaml -b
 ansible-playbook -i inventory/dns.ini general.yaml -b
 ```
 
@@ -61,6 +62,9 @@ ansible-playbook -i inventory/nexus.ini general.yaml -b
 
 # Graylog
 ```bash
+ansible-playbook -i inventory/graylog.ini ping.yaml -b
+ansible-playbook -i inventory/graylog.ini change-hostname.yaml -b
+ansible-playbook -i inventory/graylog.ini repository-local.yaml -b
 ansible-playbook -i inventory/graylog.ini general.yaml -b
 ```
 

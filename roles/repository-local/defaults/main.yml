@@ -2,8 +2,8 @@
 # defaults file for local-repository
 
 # Ubuntu
-local_ubuntu_repository_url: "http://192.168.2.18"
-# local_ubuntu_repository_url: "http://repository-ubuntu.fillswim.local"
+# local_ubuntu_repository_url: "http://192.168.2.18"
+local_ubuntu_repository_url: "http://repository-ubuntu.fillswim.local"
 
 # Oracle
 local_oracle_repository_url: "http://192.168.2.19"
