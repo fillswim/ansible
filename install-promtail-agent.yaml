@@ -1,0 +1,9 @@
+---
+
+# Install Promtail Agent
+
+- name: Install Promtail Agent
+  hosts: "all"
+
+  roles:
+    - role: install-promtail-agent

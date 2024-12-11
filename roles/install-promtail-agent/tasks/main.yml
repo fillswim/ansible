@@ -1,0 +1,91 @@
+---
+
+- name: Создание папку "{{ download_folder }}"
+  ansible.builtin.file:
+    path: "{{ download_folder }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Скачать promtail в "{{ download_folder }}"
+  ansible.builtin.get_url:
+    url: "{{ nexus_raw_repository }}/repository/archives/promtail/{{ promtail_version }}/{{ promtail_archive_name }}"
+    dest: "{{ download_folder }}/{{ promtail_archive_name }}"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Block for Ubuntu
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+
+    - name: Установка unzip в Ubuntu
+      ansible.builtin.apt:
+        pkg:
+          - unzip
+
+- name: Распаковать promtail в "{{ download_folder }}"
+  become: true
+  ansible.builtin.unarchive:
+    src: "{{ download_folder }}/{{ promtail_archive_name }}"
+    dest: "{{ download_folder }}"
+    remote_src: true
+
+- name: Скопировать promtail в "{{ promtail_folder }}"
+  become: true
+  ansible.builtin.copy:
+    src: "{{ download_folder }}/{{ promtail_file_name }}"
+    dest: "{{ promtail_folder }}/promtail"
+    remote_src: true
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Создание папку "{{ promtail_config_folder }}"
+  ansible.builtin.file:
+    path: "{{ promtail_config_folder }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Создание папку "{{ promtail_logs_folder }}"
+  ansible.builtin.file:
+    path: "{{ promtail_logs_folder }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Скопировать promtail-local-config.yaml
+  become: true
+  ansible.builtin.template:
+    src: promtail-local-config.yaml.j2
+    dest: /etc/promtail/promtail-local-config.yaml
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Скопировать promtail.service в "/etc/systemd/system/"
+  become: true
+  ansible.builtin.template:
+    src: promtail.service.j2
+    dest: /etc/systemd/system/promtail.service
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Запустить сервис promtail
+  ansible.builtin.systemd_service:
+    name: promtail
+    state: started
+    enabled: true
+    daemon_reload: true
+
+- name: Перезапустить сервис promtail
+  ansible.builtin.systemd_service:
+    name: promtail
+    state: restarted
+    enabled: true

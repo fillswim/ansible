@@ -1,0 +1,14 @@
+---
+# vars file for install-promtail-agent
+
+# Working folder
+download_folder: "/root/download"
+
+# Nexus repository
+nexus_raw_repository: "http://nexus.fillswim.local:8081"
+
+# Promtail version
+promtail_version: "v3.3.1"
+
+# Loki server
+loki_server_url: "http://loki.fillswim.local"

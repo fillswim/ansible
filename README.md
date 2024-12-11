@@ -68,6 +68,13 @@ ansible-playbook -i inventory/graylog.ini repository-local.yaml -b
 ansible-playbook -i inventory/graylog.ini general.yaml -b
 ```
 
+# Test Ubuntu
+```bash
+ansible-playbook -i inventory/test-ubuntu.ini ping.yaml -b
+ansible-playbook -i inventory/test-ubuntu.ini general.yaml -b
+ansible-playbook -i inventory/test-ubuntu.ini install-promtail-agent.yaml -b
+```
+
 # ==================================================================================================
 
 # K8s1 Redos

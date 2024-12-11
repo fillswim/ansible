@@ -1,0 +1,11 @@
+---
+# defaults file for install-promtail-agent
+
+# Archive and file name
+promtail_archive_name: "promtail-linux-amd64.zip"
+promtail_file_name: "promtail-linux-amd64"
+
+# Folder name
+promtail_folder: "/usr/local/bin"
+promtail_config_folder: "/etc/promtail"
+promtail_logs_folder: "/etc/promtail/logs"
