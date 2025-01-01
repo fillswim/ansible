@@ -29,3 +29,8 @@ ansible-playbook -i inventory/maas.ini ssh-keys.yaml -b -kK
 ```bash
 ansible-playbook -i inventory/k8s1-ubuntu-lab.ini ssh-keys.yaml -b
 ```
+
+# GitLab Runners
+```bash
+ansible-playbook -i inventory/gitlab-runners.ini ssh-keys.yaml -b
+```

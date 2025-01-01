@@ -44,6 +44,13 @@ ansible-playbook -i inventory/repository-oracle.ini prometheus-node-exporter.yam
 ansible-playbook -i inventory/terraform.ini general.yaml -b
 ```
 
+# Jenkins
+```bash
+ansible-playbook -i inventory/jenkins.ini ssh-keys.yaml -b -kK
+ansible-playbook -i inventory/jenkins.ini general.yaml -b
+ansible-playbook -i inventory/jenkins.ini change-hostname.yaml -b
+```
+
 # Minio
 ```bash
 ansible-playbook -i inventory/minio.ini general.yaml -b
@@ -73,6 +80,12 @@ ansible-playbook -i inventory/graylog.ini general.yaml -b
 ansible-playbook -i inventory/test-ubuntu.ini ping.yaml -b
 ansible-playbook -i inventory/test-ubuntu.ini general.yaml -b
 ansible-playbook -i inventory/test-ubuntu.ini install-promtail-agent.yaml -b
+```
+
+# GitLab Runners
+```bash
+ansible-playbook -i inventory/gitlab-runners.ini general.yaml -b
+ansible-playbook -i inventory/gitlab-runners.ini Install-Docker.yaml -b
 ```
 
 # ==================================================================================================
