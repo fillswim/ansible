@@ -90,6 +90,24 @@
           - docker-buildx-plugin
           - docker-compose-plugin
 
+    - name: Enable Docker service
+      become: true
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Вывод переменной docker_user
+      ansible.builtin.debug:
+        msg: "{{ docker_user }}"
+
+    - name: Add user to docker group
+      become: true
+      ansible.builtin.user:
+        name: "{{ docker_user }}"
+        groups: docker
+        append: true
+
     # ========================================= Проверка ===========================================
 
     - name: Verify that you can run Docker

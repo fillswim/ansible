@@ -1,0 +1,89 @@
+---
+
+# ================================ Запрос токена ===============================
+
+- name: Запрос токена через API OpenStack
+  ansible.builtin.uri:
+    url: "{{ openstack_url }}/{{ openstack_url_auth_postfix }}"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body_format: json
+    body:
+      auth:
+        identity:
+          methods: ["password"]
+          password:
+            user:
+              name: "{{ openstack_user }}"
+              domain: { id: "{{ openstack_domain }}" }
+              password: "{{ openstack_password }}"
+        scope:
+          project:
+            name: "{{ openstack_project }}"
+            domain: { id: "{{ openstack_domain }}" }
+    status_code: 201
+    return_content: true
+  register: auth_response
+
+- name: Извлечение токена из заголовков
+  ansible.builtin.set_fact:
+    openstack_token: "{{ auth_response.x_subject_token }}"
+
+- name: Вывод токена
+  ansible.builtin.debug:
+    msg: "OpenStack Token: {{ openstack_token }}"
+
+# ============================= Получение Inventory ============================
+
+- name: Выполнение команды bash через shell
+  ansible.builtin.shell: |
+    curl -s -H "X-Auth-Token: {{ openstack_token }}" \
+          -H "Content-Type: application/json" \
+          "{{ openstack_url }}/{{ openstack_url_compute_postfix }}" | \
+    jq -r '.servers[] | "\(.name) ansible_host=\(.addresses | to_entries[0].value[0].addr)"' | \
+    awk '{printf "%-50s %s\n", $1, $2}' | \
+    sort -t '.' -k2,2n -k3,3n -k4,4n
+  register: instance_list
+
+- name: Вывод списка инстансов
+  ansible.builtin.debug:
+    msg: "{{ instance_list.stdout }}"
+
+# ============================== Сохранение в файл =============================
+
+# - name: Сохранение текущей даты в переменную
+#   ansible.builtin.date:
+#     format: "%Y-%m-%d %H:%M:%S"
+#     utc: false
+#   register: current_date
+
+# - name: Вывод даты
+#   ansible.builtin.debug:
+#     msg: "Текущая дата: {{ current_date.ansible_date_time }}"
+
+- name: Выполнение команды date
+  shell: date "+%Y-%m-%d %H:%M:%S"
+  register: date_output
+
+- name: Вывод даты
+  ansible.builtin.debug:
+    msg: "Текущая дата: {{ date_output.stdout }}"
+
+- name: Remove file (delete file)
+  ansible.builtin.file:
+    path: "{{ path_for_ready_made_inventory }}/{{ openstack_project }}.ini"
+    state: absent
+
+- name: Добавить статические строки в файл
+  ansible.builtin.blockinfile:
+    path: "{{ path_for_ready_made_inventory }}/{{ openstack_project }}.ini"
+    create: true
+    mode: '0644'
+    marker: "# {mark} Added {{ date_output.stdout }}"
+    block: |
+      ansible_user:                   {{ openstack_user }}
+      ansible_ssh_private_key_file:   ~/.ssh/id_rsa
+      ansible_python_interpreter:     auto_silent
+
+      {{ instance_list.stdout }}

@@ -9,3 +9,32 @@
     dest: /etc/sudoers.d/root
     content: "root ALL=(ALL) NOPASSWD:ALL"
     mode: "0440"
+
+- name: Отключить ввод sudo пароля для ubuntu
+  become: true
+  when:
+    - "'openstack' in inventory_hostname"
+    - ansible_distribution == "Ubuntu"
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/ubuntu
+    content: "ubuntu ALL=(ALL) NOPASSWD:ALL"
+    mode: "0440"
+
+- name: Отключить ввод sudo пароля для stack
+  become: true
+  when:
+    - "'openstack' in inventory_hostname"
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/stack
+    content: "stack ALL=(ALL) NOPASSWD:ALL"
+    mode: "0440"
+
+- name: Отключить ввод sudo пароля для cloud-user
+  become: true
+  when:
+    - "'openstack' in inventory_hostname"
+    - ansible_distribution == "Rocky" or ansible_distribution == "OracleLinux"
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/cloud-user
+    content: "cloud-user ALL=(ALL) NOPASSWD:ALL"
+    mode: "0440"

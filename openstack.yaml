@@ -1,0 +1,10 @@
+---
+
+- name: OpenStack
+  hosts: "all"
+
+  roles:
+    - role: chrony
+    - role: timezone
+    - role: sudoers
+    - role: ssh-keys

@@ -1,0 +1,18 @@
+---
+openstack_url: "http://192.168.42.11"
+openstack_url_auth_postfix: "identity/v3/auth/tokens"
+openstack_url_compute_postfix: "compute/v2.1/servers/detail"
+
+openstack_domain: "default"
+
+path_for_ready_made_inventory: "/home/fill/ansible/roles/openstack-inventory/ready_made_inventory"
+
+# Admin
+# openstack_project: "admin"
+# openstack_user: "admin"
+# openstack_password: "GY4yFrVoDpqY"
+
+# Demo-tf
+openstack_project: "demo-tf"
+openstack_user: "demo-tf"
+openstack_password: "123qweasd"

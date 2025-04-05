@@ -1,0 +1,10 @@
+---
+
+# ansible-playbook openstack-inventory.yaml
+
+- name: OpenStack Inventory
+  hosts: localhost
+  gather_facts: false
+
+  roles:
+    - role: openstack-inventory

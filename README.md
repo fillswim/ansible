@@ -88,6 +88,18 @@ ansible-playbook -i inventory/gitlab-runners.ini general.yaml -b
 ansible-playbook -i inventory/gitlab-runners.ini Install-Docker.yaml -b
 ```
 
+# OpenStack
+```bash
+ansible-playbook -i inventory/openstack.ini ping.yaml -b
+ansible-playbook -i inventory/openstack.ini chrony.yaml -b
+ansible-playbook -i inventory/openstack.ini timezone.yaml -b
+ansible-playbook -i inventory/openstack.ini sudoers.yaml -b
+ansible-playbook -i inventory/openstack.ini ssh-keys.yaml -b
+ansible-playbook -i inventory/openstack.ini ssh-keys.yaml -b -kK
+ansible-playbook -i inventory/openstack.ini openstack.yaml -b
+ansible-playbook -i inventory/openstack.ini install-docker.yaml -b
+```
+
 # ==================================================================================================
 
 # K8s1 Redos
@@ -95,9 +107,19 @@ ansible-playbook -i inventory/gitlab-runners.ini Install-Docker.yaml -b
 ansible-playbook -i inventory/k8s1-redos.ini general.yaml -b
 ```
 
+# Test Redos
+```bash
+ansible-playbook -i inventory/test-redos.ini dns.yaml -b
+```
+
 # MAAS
 ```bash
+ansible-playbook -i inventory/maas.ini ping.yaml -b
 ansible-playbook -i inventory/maas.ini general.yaml -b
+ansible-playbook -i inventory/maas.ini dns.yaml -b
+
+ansible-playbook -i inventory/maas.ini chrony.yaml -b
+ansible-playbook -i inventory/maas.ini timezone.yaml -b
 ```
 
 # OpenStack
@@ -113,6 +135,7 @@ ansible-playbook -i inventory/k8s1-ubuntu-lab.ini general.yaml -b
 # K8s1-RHEL
 ```bash
 ansible-playbook -i inventory/k8s1-rhel.ini general.yaml -b -kK
+ansible-playbook -i inventory/k8s1-rhel.ini ssh-keys.yaml -b -kK
 ```
 
 

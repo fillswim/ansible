@@ -1,0 +1,10 @@
+---
+# tasks file for openstack
+
+- name: Ping my servers
+  become: true
+  ansible.builtin.ping:
+
+- name: Fetch all Identity (Keystone) projects
+  openstack.cloud.project_info:
+    cloud: openstack

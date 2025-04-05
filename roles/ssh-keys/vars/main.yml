@@ -1,0 +1,7 @@
+---
+
+ssh_keys:
+  - /home/fill/.ssh/id_ed25519.pub
+  - /home/fill/.ssh-others/id_ed25519_dell.pub
+  - /home/fill/.ssh-others/id_ed25519-CT-WN-001221.pub
+  - /home/fill/.ssh-others/id_ed25519-sys-adm-altlinux-1.pub
