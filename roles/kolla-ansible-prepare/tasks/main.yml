@@ -1,5 +1,11 @@
 ---
 
+- name: Установить пароль для пользователя
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    password: "{{ '123qweasd' | password_hash('sha512') }}"
+
 - name: Создать файл sources.list
   become: true
   when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "24.04"
@@ -109,3 +115,15 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     remote_src: true
+
+- name: Включить docker-proxy
+  become: true
+  ansible.builtin.template:
+    src: "daemon.json.j2"
+    dest: "/etc/docker/daemon.json"
+    mode: "0644"
+    owner: "root"
+    group: "root"
+    # remote_src: true
+  notify:
+    - Restart docker
