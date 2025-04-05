@@ -122,3 +122,7 @@
     - name: Show hello-world output
       ansible.builtin.debug:
         msg: "{{ results.container.Output }}"
+
+    - name: Перезагрузка системы
+      become: true
+      ansible.builtin.reboot:

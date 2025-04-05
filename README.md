@@ -98,6 +98,8 @@ ansible-playbook -i inventory/openstack.ini ssh-keys.yaml -b
 ansible-playbook -i inventory/openstack.ini ssh-keys.yaml -b -kK
 ansible-playbook -i inventory/openstack.ini openstack.yaml -b
 ansible-playbook -i inventory/openstack.ini install-docker.yaml -b
+
+ansible-playbook -i inventory/openstack.ini kolla-ansible-prepare.yaml -b
 ```
 
 # ==================================================================================================

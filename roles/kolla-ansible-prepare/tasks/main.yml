@@ -1,0 +1,111 @@
+---
+
+- name: Создать файл sources.list
+  become: true
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "24.04"
+  ansible.builtin.copy:
+    src: sources.list
+    dest: /etc/apt/sources.list
+    mode: "0644"
+
+- name: Обновить список пакетов
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
+
+- name: Install packages
+  become: true
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git
+    - python3-dev
+    - libffi-dev
+    - gcc
+    - libssl-dev
+    - libdbus-glib-1-dev
+    - python3-venv
+
+- name: Создать папки
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  with_items:
+    - /opt/cni
+    - /opt/cni/bin/
+    - /home/{{ ansible_user }}/kolla-ansible-temp
+
+- name: Создать venv
+  become: true
+  ansible.builtin.command:
+    cmd: "python3 -m venv /home/{{ ansible_user }}/kolla-ansible-temp/.venv"
+
+- name: Chown venv
+  become: true
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/kolla-ansible-temp/.venv"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Install pip
+  become: true
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    state: present
+    executable: "/home/{{ ansible_user }}/kolla-ansible-temp/.venv/bin/pip"
+  with_items:
+    - "pip"
+    - "docker"
+    - dbus-python
+
+# - name: Install docker
+#   become: true
+#   ansible.builtin.pip:
+#     name: "docker"
+#     state: present
+#     executable: "/home/{{ ansible_user }}/kolla-ansible-temp/.venv/bin/pip"
+
+- name: Install kolla-ansible
+  become: true
+  ansible.builtin.pip:
+    name: "git+https://opendev.org/openstack/kolla-ansible@master"
+    state: present
+    executable: "/home/{{ ansible_user }}/kolla-ansible-temp/.venv/bin/pip"
+
+- name: Создать папку для kolla
+  become: true
+  ansible.builtin.file:
+    path: "/etc/kolla"
+    state: directory
+    mode: "0755"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Копировать конфигурационные файлы
+  become: true
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/etc/kolla/"
+    mode: "0644"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    remote_src: true
+  with_items:
+    - /home/{{ ansible_user }}/kolla-ansible-temp/.venv/share/kolla-ansible/etc_examples/kolla/globals.yml
+    - /home/{{ ansible_user }}/kolla-ansible-temp/.venv/share/kolla-ansible/etc_examples/kolla/passwords.yml
+
+- name: Копировать inventory
+  become: true
+  ansible.builtin.copy:
+    src: "/home/{{ ansible_user }}/kolla-ansible-temp/.venv/share/kolla-ansible/ansible/inventory/all-in-one"
+    dest: "/home/{{ ansible_user }}/kolla-ansible-temp/"
+    mode: "0644"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    remote_src: true
