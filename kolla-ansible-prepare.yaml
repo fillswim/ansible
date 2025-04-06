@@ -4,9 +4,9 @@
   hosts: "all"
 
   roles:
-    # - role: chrony
-    # - role: timezone
-    # - role: sudoers
-    # - role: ssh-keys
-    # - role: install-docker
+    - role: chrony
+    - role: timezone
+    - role: sudoers
+    - role: ssh-keys
+    - role: install-docker
     - role: kolla-ansible-prepare
