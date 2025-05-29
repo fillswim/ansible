@@ -7,3 +7,10 @@
     state: restarted
     name: ssh
     enabled: true
+
+- name: Restart ssh RedHat
+  become: true
+  ansible.builtin.service:
+    state: restarted
+    name: sshd
+    enabled: true

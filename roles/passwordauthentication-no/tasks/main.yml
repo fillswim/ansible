@@ -1,24 +1,56 @@
 ---
 # tasks PasswordAuthentication No
 
-- name: Replace line first time
+- name: Block for RedHat
+  when: ansible_os_family == "RedHat" or ansible_os_family == "RED"
   become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '#PasswordAuthentication yes'
-    line: 'PasswordAuthentication no'
-    state: present
-    backup: false
-  notify:
-    - Restart ssh Ubuntu
+  block:
 
-- name: Replace line second time
+    - name: Replace line first time
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '#PasswordAuthentication yes'
+        line: 'PasswordAuthentication no'
+        state: present
+        backup: false
+      notify:
+        - Restart ssh RedHat
+
+    - name: Replace line second time
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: 'PasswordAuthentication yes'
+        line: 'PasswordAuthentication no'
+        state: present
+        backup: false
+      notify:
+        - Restart ssh RedHat
+
+- name: Block for Ubuntu
+  when: ansible_os_family == "Debian"
   become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: 'PasswordAuthentication yes'
-    line: 'PasswordAuthentication no'
-    state: present
-    backup: false
-  notify:
-    - Restart ssh Ubuntu
+  block:
+
+    - name: Replace line first time
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '#PasswordAuthentication yes'
+        line: 'PasswordAuthentication no'
+        state: present
+        backup: false
+      notify:
+        - Restart ssh Ubuntu
+
+    - name: Replace line second time
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: 'PasswordAuthentication yes'
+        line: 'PasswordAuthentication no'
+        state: present
+        backup: false
+      notify:
+        - Restart ssh Ubuntu

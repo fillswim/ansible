@@ -121,6 +121,7 @@ ansible-playbook -i inventory/test-redos.ini dns.yaml -b
 # MAAS
 ```bash
 ansible-playbook -i inventory/maas.ini ping.yaml -b
+ansible-playbook -i inventory/maas.ini ssh-keys.yaml -b
 ansible-playbook -i inventory/maas.ini general.yaml -b
 ansible-playbook -i inventory/maas.ini dns.yaml -b
 
@@ -142,7 +143,6 @@ ansible-playbook -i inventory/k8s1-ubuntu-lab.ini general.yaml -b
 ```bash
 ansible-playbook -i inventory/k8s1-rhel.ini general.yaml -b -kK
 ansible-playbook -i inventory/k8s1-rhel.ini ssh-keys.yaml -b -kK
+ansible-playbook -i inventory/k8s1-rhel.ini ping.yaml -b
+ansible-playbook -i inventory/k8s1-rhel.ini update.yaml -b
 ```
-
-
-
