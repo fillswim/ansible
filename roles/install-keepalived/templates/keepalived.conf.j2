@@ -1,0 +1,16 @@
+vrrp_instance {{ vrrp_instance }} {
+  
+  interface {{ ansible_facts.default_ipv4.interface }}              # interface to monitor
+  state {{ state }}                # MASTER on master, BACKUP on slaves
+
+  virtual_router_id {{ virtual_router_id }}
+  priority {{ priority }}                # 101 on master, 100 on slaves
+
+  virtual_ipaddress {
+    {{ virtual_ipaddress }}          # virtual ip address
+  }
+
+  # track_script {
+  #   chk_haproxy
+  # }
+}

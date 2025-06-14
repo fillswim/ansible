@@ -146,3 +146,9 @@ ansible-playbook -i inventory/k8s1-rhel.ini ssh-keys.yaml -b -kK
 ansible-playbook -i inventory/k8s1-rhel.ini ping.yaml -b
 ansible-playbook -i inventory/k8s1-rhel.ini update.yaml -b
 ```
+
+# Test-keepalived
+```bash
+ansible-playbook -i inventory/test-keepalived.ini ping.yaml -b
+ansible-playbook -i inventory/test-keepalived.ini install-keepalived.yaml -b
+```

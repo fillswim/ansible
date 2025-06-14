@@ -1,0 +1,9 @@
+---
+
+# Install packages
+
+- name: Install Keepalived
+  hosts: "all"
+
+  roles:
+    - role: install-keepalived

@@ -1,0 +1,24 @@
+---
+
+- name: Enable IP forwarding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: true
+    state: present
+    reload: true
+
+- name: Install keepalived
+  ansible.builtin.package:
+    name: keepalived
+    state: present
+
+- name: Copy keepalived.conf to master
+  ansible.builtin.template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - Restart keepalived
