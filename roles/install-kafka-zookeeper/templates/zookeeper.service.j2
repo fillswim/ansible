@@ -5,7 +5,7 @@ After=network.target remote-fs.target
 
 [Service]
 Type=simple
-User=kafka
+User={{ kafka_username }}
 ExecStart={{ kafka_folder }}/bin/zookeeper-server-start.sh {{ kafka_folder }}/config/zookeeper.properties
 ExecStop={{ kafka_folder }}/bin/zookeeper-server-stop.sh
 ExecReload=/bin/kill -HUP $MAINPID
