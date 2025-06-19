@@ -1,0 +1,135 @@
+---
+
+# ================================================
+#                  Install Kafka
+# ================================================
+
+- name: Install packages
+  ansible.builtin.package:
+    name:
+      - java-21-openjdk
+    state: present
+
+- name: Создание папки "{{ project_folder }}"
+  ansible.builtin.file:
+    path: "{{ project_folder }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0775"
+
+- name: Download Kafka
+  ansible.builtin.get_url:
+    url: "{{ kafka_url }}"
+    dest: "{{ project_folder }}/kafka.tgz"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Add group "{{ kafka_groupname }}"
+  become: true
+  ansible.builtin.group:
+    name: "{{ kafka_groupname }}"
+    state: present
+
+- name: Add user "{{ kafka_username }}"
+  become: true
+  ansible.builtin.user:
+    name: "{{ kafka_username }}"
+    system: true
+    groups: "{{ kafka_groupname }}"
+    comment: "{{ kafka_user_comment }}"
+    append: true
+
+- name: Создание папки "{{ kafka_folder }}"
+  ansible.builtin.file:
+    state: directory
+    path: "{{ kafka_folder }}"
+    owner: "{{ kafka_username }}"
+    group: "{{ kafka_groupname }}"
+    mode: "0755"
+  register: kafka_folder_created
+
+- name: Extract Kafka
+  become: true
+  when: kafka_folder_created.changed
+  ansible.builtin.unarchive:
+    src: "{{ project_folder }}/kafka.tgz"
+    dest: "{{ kafka_folder }}"
+    owner: "{{ kafka_username }}"
+    group: "{{ kafka_groupname }}"
+    remote_src: true
+    extra_opts: [--strip-components=1]
+
+# ================================================
+#                  Install Zookeeper
+# ================================================
+
+- name: Создание папки "{{ zookeeper_folder }}"
+  ansible.builtin.file:
+    state: directory
+    path: "{{ zookeeper_folder }}"
+    owner: "{{ kafka_username }}"
+    group: "{{ kafka_groupname }}"
+    mode: "0755"
+
+- name: Создание папки "{{ zookeeper_folder }}/version-2"
+  ansible.builtin.file:
+    state: directory
+    path: "{{ zookeeper_folder }}/version-2"
+    owner: "{{ kafka_username }}"
+    group: "{{ kafka_groupname }}"
+    mode: "0755"
+
+- name: Creating "{{ zookeeper_folder }}/myid"
+  copy:
+    dest: "{{ zookeeper_folder }}/myid"
+    owner: "{{ kafka_username }}"
+    group: "{{ kafka_groupname }}"
+    mode: "0644"
+    content: |
+      {{zoo_id}}
+
+- name: Создать "zookeeper.service"
+  become: true
+  ansible.builtin.template:
+    src: zookeeper.service.j2
+    dest: "/etc/systemd/system/zookeeper.service"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Скопировать "zookeeper.properties"
+  become: true
+  ansible.builtin.template:
+    src: zookeeper.properties.j2
+    dest: "{{ kafka_folder }}/config/zookeeper.properties"
+    owner: "{{ kafka_username }}"
+    group: "{{ kafka_groupname }}"
+    mode: "0644"
+  notify:
+    - Start Zookeeper
+
+# ================================================
+#                  Настройка Kafka
+# ================================================
+
+- name: Создать "kafka.service"
+  become: true
+  ansible.builtin.template:
+    src: kafka.service.j2
+    dest: "/etc/systemd/system/kafka.service"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Скопировать "server.properties" для Kafka
+  become: true
+  ansible.builtin.template:
+    src: "server.properties.j2"
+    dest: "{{ kafka_folder }}/config/server.properties"
+    owner: "{{ kafka_username }}"
+    group: "{{ kafka_groupname }}"
+    mode: "0644"
+  notify:
+    - Start Kafka

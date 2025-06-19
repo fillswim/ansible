@@ -1,0 +1,17 @@
+---
+
+- name: Start Zookeeper
+  become: true
+  ansible.builtin.systemd_service:
+    state: started
+    name: zookeeper
+    enabled: true
+    daemon_reload: true
+
+- name: Start Kafka
+  become: true
+  ansible.builtin.systemd_service:
+    state: started
+    name: kafka
+    enabled: true
+    daemon_reload: true

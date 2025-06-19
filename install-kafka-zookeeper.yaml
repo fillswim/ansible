@@ -1,0 +1,9 @@
+---
+
+# Install packages
+
+- name: Install Kafka Zookeeper
+  hosts: "all"
+
+  roles:
+    - role: install-kafka-zookeeper

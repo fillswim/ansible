@@ -1,0 +1,15 @@
+---
+
+project_folder: "/root/kafka-install"
+# Kafka версии 3.4.0 (с Zookeeper)
+kafka_url: "https://archive.apache.org/dist/kafka/3.4.0/kafka_2.13-3.4.0.tgz"
+
+kafka_groupname: "kafka"
+kafka_username: kafka
+kafka_user_comment: "Kafka broker user service"
+
+kafka_folder: "/opt/kafka"
+zookeeper_folder: "/opt/zookeeper"
+
+kafka_log_folder: "/tmp/kafka-logs"
+kafka_offsets_topic_replication_factor: 3

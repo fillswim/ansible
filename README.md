@@ -152,3 +152,9 @@ ansible-playbook -i inventory/k8s1-rhel.ini update.yaml -b
 ansible-playbook -i inventory/test-keepalived.ini ping.yaml -b
 ansible-playbook -i inventory/test-keepalived.ini install-keepalived.yaml -b
 ```
+
+# Kafka Zookeeper
+```bash
+ansible-playbook -i inventory/kafka-zoo.ini ping.yaml -b
+ansible-playbook -i inventory/kafka-zoo.ini install-kafka-zookeeper.yaml -b
+```
