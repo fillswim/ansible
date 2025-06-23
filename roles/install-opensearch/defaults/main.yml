@@ -1,0 +1,8 @@
+---
+
+opensearch_repo_url: "https://artifacts.opensearch.org/releases/bundle/opensearch/3.x/opensearch-3.x.repo"
+opensearch_repo_file: "/etc/yum.repos.d/opensearch-3.x.repo"
+
+opensearch_cluster_name: "test-opensearch-cluster"
+opensearch_data_folder: "/var/lib/opensearch"
+opensearch_logs_folder: "/var/log/opensearch"

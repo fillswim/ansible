@@ -1,0 +1,9 @@
+---
+
+# Install packages
+
+- name: Install OpenSearch
+  hosts: "all"
+
+  roles:
+    - role: install-opensearch

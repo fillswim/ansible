@@ -158,3 +158,9 @@ ansible-playbook -i inventory/test-keepalived.ini install-keepalived.yaml -b
 ansible-playbook -i inventory/kafka-zoo.ini ping.yaml -b
 ansible-playbook -i inventory/kafka-zoo.ini install-kafka-zookeeper.yaml -b
 ```
+
+# Test OpenSearch
+```bash
+ansible-playbook -i inventory/test-opensearch.ini ping.yaml -b
+ansible-playbook -i inventory/test-opensearch.ini install-opensearch.yaml -b
+```
