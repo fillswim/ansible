@@ -99,7 +99,7 @@
     group: root
     mode: "0644"
 
-- name: Скопировать "zookeeper.properties"
+- name: Скопировать "zookeeper.properties" в "{{ kafka_folder }}/config/zookeeper.properties"
   become: true
   ansible.builtin.template:
     src: zookeeper.properties.j2
@@ -123,7 +123,7 @@
     group: root
     mode: "0644"
 
-- name: Скопировать "server.properties" для Kafka
+- name: Скопировать "server.properties" для Kafka в "{{ kafka_folder }}/config/server.properties"
   become: true
   ansible.builtin.template:
     src: "server.properties.j2"
