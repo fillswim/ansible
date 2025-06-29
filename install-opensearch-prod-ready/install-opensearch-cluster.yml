@@ -1,0 +1,8 @@
+---
+
+- name: Opensearch installation & configuration
+  hosts: os-cluster
+  gather_facts: true
+  
+  roles:
+    - role: install-opensearch-cluster

@@ -1,0 +1,21 @@
+cluster.name: "{{ os_cluster_name }}"
+
+node.name: "{{ inventory_hostname }}"
+
+# Path to directory where to store the data (separate multiple locations by comma):
+path.data: {{ data_path }}
+#
+# Path to log files:
+path.logs: {{ logs_path }}
+
+network.host: "{{ hostvars[inventory_hostname]['ip'] }}"
+
+http.port: 9200
+
+bootstrap.memory_lock: true
+
+discovery.seed_hosts: ["{{ os_nodes }}"]
+
+cluster.initial_master_nodes: ["{{ os_master_nodes }}"]
+
+node.roles: [{{ hostvars[inventory_hostname]['roles'] }}]

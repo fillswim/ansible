@@ -1,0 +1,39 @@
+---
+
+# =========================================================
+#                     Создание папки
+# =========================================================
+- name: Проверка существования папки "{{ create_folder_path }}"
+  ansible.builtin.stat:
+    path: "{{ create_folder_path }}"
+  register: stat_output
+
+- name: Создание папки "{{ create_folder_path }}"
+  ansible.builtin.file:
+    path: "{{ create_folder_path }}"
+    state: directory
+    owner: "{{ create_folder_owner }}"
+    group: "{{ create_folder_group }}"
+    mode: "{{ create_folder_mode }}"
+  when:
+    - stat_output.stat.exists is false
+
+# =========================================================
+#                     Для OpenSearch
+# =========================================================
+- name: Создание папки "{{ create_folder_path }}/data"
+  ansible.builtin.file:
+    path: "{{ create_folder_path }}/data"
+    state: directory
+    owner: "{{ create_folder_owner }}"
+    group: "{{ create_folder_group }}"
+    mode: "{{ create_folder_mode }}"
+
+- name: Создание папки "{{ create_folder_path }}/logs"
+  ansible.builtin.file:
+    path: "{{ create_folder_path }}/logs"
+    state: directory
+    owner: "{{ create_folder_owner }}"
+    group: "{{ create_folder_group }}"
+    mode: "{{ create_folder_mode }}"
+# =========================================================

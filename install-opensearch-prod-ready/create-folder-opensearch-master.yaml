@@ -1,0 +1,6 @@
+---
+- name: Create Folder OpenSearch (Master)
+  hosts: master
+
+  roles:
+    - role: create-folder-opensearch

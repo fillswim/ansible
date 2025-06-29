@@ -1,0 +1,7 @@
+---
+- name: Create LVM Partition
+  hosts: data
+
+  roles:
+    - role: create-lvm-partition
+    - role: create-folder-opensearch

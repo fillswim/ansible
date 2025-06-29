@@ -1,0 +1,13 @@
+---
+
+# Ping
+
+- name: Role Ping
+  hosts: "all"
+  # hosts: "os-cluster"
+  # hosts: "master"
+  # hosts: "data"
+  # hosts: "dashboards"
+
+  roles:
+    - role: ping
