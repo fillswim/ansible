@@ -161,12 +161,6 @@ ansible-playbook -i inventory/kafka-zoo.ini install-kafka-zookeeper.yaml -b
 
 # Test OpenSearch
 ```bash
-ansible-playbook -i inventory/test-opensearch.ini ping.yaml -b
-ansible-playbook -i inventory/test-opensearch.ini install-opensearch.yaml -b
-```
-
-# Test OpenSearch Prod Ready
-```bash
-ansible-playbook -i inventories/opensearch/hosts-ubuntu ping.yaml -b
-ansible-playbook -i inventories/opensearch/hosts-ubuntu.yaml ping.yaml -b
+ansible-playbook  -i inventory/test-opensearch-cluster-1.yaml ping.yaml -b
+ansible-playbook  -i inventory/test-opensearch-cluster-1.yaml install-opensearch.yaml -b
 ```

@@ -1,8 +1,35 @@
 ---
-
+# =========================================================================
+#                              Yum repository
+# =========================================================================
 opensearch_repo_url: "https://artifacts.opensearch.org/releases/bundle/opensearch/3.x/opensearch-3.x.repo"
 opensearch_repo_file: "/etc/yum.repos.d/opensearch-3.x.repo"
+# =========================================================================
+#                               All nodes
+# =========================================================================
+# По hostname
+# opensearch_nodes: |-
+#   {% for item in groups[opensearch_all_nodes_inventory_group_name] -%}
+#     {{ item }}{% if not loop.last %}","{% endif %}
+#   {%- endfor %}
 
-opensearch_cluster_name: "test-opensearch-cluster"
-opensearch_data_folder: "/var/lib/opensearch"
-opensearch_logs_folder: "/var/log/opensearch"
+# По IP
+opensearch_nodes: |-
+  {% for item in groups[opensearch_all_nodes_inventory_group_name] -%}
+    {{ hostvars[item].ansible_host }}{% if not loop.last %}","{% endif %}
+  {%- endfor %}
+
+# =========================================================================
+#                               Master nodes
+# =========================================================================
+# По hostname
+opensearch_master_nodes: |-
+  {% for item in groups[opensearch_masters_inventory_group_name] -%}
+    {{ item }}{% if not loop.last %}","{% endif %}
+  {%- endfor %}
+
+# По IP
+# opensearch_master_nodes: |-
+#   {% for item in groups[opensearch_masters_inventory_group_name] -%}
+#     {{ hostvars[item].ansible_host }}{% if not loop.last %}","{% endif %}
+#   {%- endfor %}

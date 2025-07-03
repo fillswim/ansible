@@ -1,7 +1,0 @@
----
-- name: Create LVM Partition
-  hosts: master
-  # hosts: all
-
-  roles:
-    - role: Create-LVM-Partition
