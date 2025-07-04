@@ -1,8 +1,0 @@
----
-
-- name: Opensearch Prod Ready
-  hosts: os-cluster
-  gather_facts: true
-  
-  roles:
-    - role: install-opensearch-prod-ready
