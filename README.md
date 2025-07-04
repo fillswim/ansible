@@ -159,8 +159,10 @@ ansible-playbook -i inventory/kafka-zoo.ini ping.yaml -b
 ansible-playbook -i inventory/kafka-zoo.ini install-kafka-zookeeper.yaml -b
 ```
 
-# Test OpenSearch
+# OpenSearch
 ```bash
-ansible-playbook  -i inventory/test-opensearch-cluster-1.yaml ping.yaml -b
-ansible-playbook  -i inventory/test-opensearch-cluster-1.yaml install-opensearch.yaml -b
+ansible-playbook -i inventory/test-opensearch-cluster-1.yaml ping.yaml -b
+ansible-playbook -i inventory/test-opensearch-cluster-1.yaml create-lvm-partition.yaml -b
+ansible-playbook -i inventory/test-opensearch-cluster-1.yaml install-opensearch.yaml \
+    --extra-vars "opensearch_admin_password=7FBEa3J853N2c7U8" -b
 ```

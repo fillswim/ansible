@@ -1,5 +1,9 @@
 ---
 
+# ==============================================================================
+#                                Установка OpenSearch
+# ==============================================================================
+
 - name: Block for RedHat
   when: ansible_os_family == "RedHat" or ansible_os_family == "RED"
   become: true
@@ -40,6 +44,46 @@
     owner: opensearch
     group: opensearch
     mode: "0640"
+
+# ==============================================================================
+#                                Создание папок
+# ==============================================================================
+
+# Создание папки "data" для OpenSearch
+- name: Проверка существования папки "{{ opensearch_data_folder }}"
+  ansible.builtin.stat:
+    path: "{{ opensearch_data_folder }}"
+  register: data_folder_output
+
+- name: Создание папки "{{ opensearch_data_folder }}"
+  when:
+    - data_folder_output.stat.exists is false
+  ansible.builtin.file:
+    path: "{{ opensearch_data_folder }}"
+    state: directory
+    owner: "{{ opensearch_user }}"
+    group: "{{ opensearch_group }}"
+    mode: "0750"
+
+# Создание папки "logs" для OpenSearch
+- name: Проверка существования папки "{{ opensearch_logs_folder }}"
+  ansible.builtin.stat:
+    path: "{{ opensearch_logs_folder }}"
+  register: logs_folder_output
+
+- name: Создание папки "{{ opensearch_logs_folder }}"
+  when:
+    - logs_folder_output.stat.exists is false
+  ansible.builtin.file:
+    path: "{{ opensearch_logs_folder }}"
+    state: directory
+    owner: "{{ opensearch_user }}"
+    group: "{{ opensearch_group }}"
+    mode: "0750"
+
+# ==============================================================================
+#                     Копирование конфигурационных файлов
+# ==============================================================================
 
 - name: Скопировать "opensearch.yml" для RedHat
   become: true
