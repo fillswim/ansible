@@ -6,4 +6,4 @@
   hosts: "all"
 
   roles:
-    - role: install-opensearch
+    - role: install-opensearch-my

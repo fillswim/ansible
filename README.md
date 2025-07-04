@@ -159,10 +159,18 @@ ansible-playbook -i inventory/kafka-zoo.ini ping.yaml -b
 ansible-playbook -i inventory/kafka-zoo.ini install-kafka-zookeeper.yaml -b
 ```
 
-# OpenSearch
+# OpenSearch My
 ```bash
 ansible-playbook -i inventory/test-opensearch-cluster-1.yaml ping.yaml -b
 ansible-playbook -i inventory/test-opensearch-cluster-1.yaml create-lvm-partition.yaml -b
-ansible-playbook -i inventory/test-opensearch-cluster-1.yaml install-opensearch.yaml \
+ansible-playbook -i inventory/test-opensearch-cluster-1.yaml install-opensearch-my.yaml \
     --extra-vars "opensearch_admin_password=7FBEa3J853N2c7U8" -b
+```
+
+# OpenSearch Prod Ready
+```bash
+ansible-playbook -i inventory/test-opensearch-cluster-prod-ready-1.yaml ping.yaml -b
+ansible-playbook -i inventory/test-opensearch-cluster-prod-ready-1.yaml create-lvm-partition.yaml -b
+ansible-playbook -i inventory/test-opensearch-cluster-prod-ready-1.yaml install-opensearch-prod-ready.yaml \
+    --extra-vars "admin_password=myStrongPassword@123! kibanaserver_password=Test@6789 logstash_password=Test@456" -b
 ```
