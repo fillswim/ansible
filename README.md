@@ -174,3 +174,19 @@ ansible-playbook -i inventory/test-opensearch-cluster-prod-ready-1.yaml create-l
 ansible-playbook -i inventory/test-opensearch-cluster-prod-ready-1.yaml install-opensearch-prod-ready.yaml \
     --extra-vars "admin_password=myStrongPassword@123! kibanaserver_password=Test@6789 logstash_password=Test@456" -b
 ```
+
+# ==============================================================================
+#                                  K8s1 Alma VM
+# ==============================================================================
+
+ansible-playbook -i inventory/k8s1-alma-vm.yaml ping.yaml -b
+ansible-playbook -i inventory/k8s1-alma-vm.yaml general.yaml -b
+
+# ==============================================================================
+#                                  K8s1 Alma LXC
+# ==============================================================================
+
+ansible-playbook -i inventory/k8s1-alma-vm.yaml ping.yaml -b
+ansible-playbook -i inventory/k8s1-alma-vm.yaml general.yaml -b
+
+# ==============================================================================
