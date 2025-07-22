@@ -11,7 +11,7 @@
 
     - name: Start Apache and Enable it on every boot
       become: true
-      ansible.builtin.service:
+      ansible.builtin.systemd_service:
         name: httpd
         state: started
         enabled: true

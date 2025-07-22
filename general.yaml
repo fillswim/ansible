@@ -11,10 +11,6 @@
     - role: sudoers
     - role: dns
       when: "'dns' not in inventory_hostname"
-    # - role: repository-local
-    #   when:
-    #     - "'repository' not in inventory_hostname"
-    #     - "'dns' not in inventory_hostname"
     - role: chrony
       when: "'ntp' not in inventory_hostname"
     - role: timezone

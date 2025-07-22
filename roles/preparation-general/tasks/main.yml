@@ -108,7 +108,7 @@
 
     - name: Restart NTP Alma
       become: true
-      ansible.builtin.service:
+      ansible.builtin.systemd_service:
         state: restarted
         daemon_reload: true
         name: chronyd
@@ -213,7 +213,7 @@
 
     - name: Restart NTP Ubuntu
       become: true
-      ansible.builtin.service:
+      ansible.builtin.systemd_service:
         state: restarted
         name: ntp
 

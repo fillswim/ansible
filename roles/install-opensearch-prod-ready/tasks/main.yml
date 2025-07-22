@@ -32,7 +32,7 @@
   ansible.builtin.command: sed -i '/cluster.initial_master_nodes/d' "{{ os_conf_dir }}/opensearch.yml"
 
 - name: Make sure opensearch is started
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: opensearch
     state: started
     enabled: true

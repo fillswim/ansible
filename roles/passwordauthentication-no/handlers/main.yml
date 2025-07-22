@@ -3,14 +3,14 @@
 
 - name: Restart ssh Ubuntu
   become: true
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     state: restarted
     name: ssh
     enabled: true
 
 - name: Restart ssh RedHat
   become: true
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     state: restarted
     name: sshd
     enabled: true

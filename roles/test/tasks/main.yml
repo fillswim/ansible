@@ -84,7 +84,7 @@
   block:
 
     - name: Restart chrony
-      ansible.builtin.service:
+      ansible.builtin.systemd_service:
         state: restarted
         name: chronyd
       register: restart_chrony

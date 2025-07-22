@@ -24,7 +24,7 @@
   ansible.builtin.import_tasks: dashboards.yml
 
 - name: Make sure opensearch dashboards is started
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     name: dashboards
     state: started
     enabled: true

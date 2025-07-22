@@ -37,7 +37,7 @@
             - "gb.png"
 
         - name: Restart Apache for Debian
-          ansible.builtin.service:
+          ansible.builtin.systemd_service:
             name: apache2
             state: restarted
 
@@ -68,6 +68,6 @@
             - "gb.png"
 
         - name: Restart Apache Handler for RedHat
-          ansible.builtin.service:
+          ansible.builtin.systemd_service:
             name: httpd
             state: restarted

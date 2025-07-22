@@ -176,17 +176,22 @@ ansible-playbook -i inventory/test-opensearch-cluster-prod-ready-1.yaml install-
 ```
 
 # ==============================================================================
-#                                  K8s1 Alma VM
+#                                K8s1 Alma Linux
 # ==============================================================================
 
-ansible-playbook -i inventory/k8s1-alma-vm.yaml ping.yaml -b
-ansible-playbook -i inventory/k8s1-alma-vm.yaml general.yaml -b
+```bash
+ansible -i k8s1-alma-vm.yaml all \
+    -m setup \
+    -u=cloud-user \
+    --ssh-common-args="-o StrictHostKeyChecking=no" \
+    -b \
+    > k8s1-alma-vm-setup.json
+```
 
-# ==============================================================================
-#                                  K8s1 Alma LXC
-# ==============================================================================
+source .venv/bin/activate
+ansible-playbook -i inventory/k8s1-alma.yaml ping.yaml -b
+ansible-playbook -i inventory/k8s1-alma.yaml update.yaml -b
 
-ansible-playbook -i inventory/k8s1-alma-vm.yaml ping.yaml -b
-ansible-playbook -i inventory/k8s1-alma-vm.yaml general.yaml -b
+ansible-playbook -i inventory/k8s1-alma.yaml general.yaml -b
 
 # ==============================================================================

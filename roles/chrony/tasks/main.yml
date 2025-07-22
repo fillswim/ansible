@@ -2,11 +2,13 @@
 # tasks file for chrony
 
 - name: Block for RedHat
-  when: ansible_os_family == "RedHat" or ansible_os_family == "RED"
+  when: 
+    - ansible_os_family == "RedHat" or ansible_os_family == "RED"
+    - ansible_virtualization_type != "lxc"
   become: true
   block:
 
-    - name: Установка chrony в Oracle Linux
+    - name: Установка chrony RedHat
       ansible.builtin.dnf:
         name:
           - chrony
@@ -20,10 +22,12 @@
         group: root
         mode: "0644"
       notify:
-        - Restart Chrony Oracle
+        - Restart Chrony RedHat
 
 - name: Block for Ubuntu
-  when: ansible_os_family == "Debian"
+  when: 
+    - ansible_os_family == "Debian"
+    - ansible_virtualization_type != "lxc"
   become: true
   block:
 

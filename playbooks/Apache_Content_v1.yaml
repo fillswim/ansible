@@ -26,7 +26,7 @@
             mode: '0664'
 
         - name: Restart Apache for Debian
-          ansible.builtin.service:
+          ansible.builtin.systemd_service:
             name: apache2
             state: restarted
 
@@ -46,6 +46,6 @@
             mode: '0664'
 
         - name: Restart Apache Handler for RedHat
-          ansible.builtin.service:
+          ansible.builtin.systemd_service:
             name: httpd
             state: restarted

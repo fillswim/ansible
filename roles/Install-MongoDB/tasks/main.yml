@@ -57,7 +57,7 @@
 
 - name: Enable mongod
   become: true
-  ansible.builtin.service:
+  ansible.builtin.systemd_service:
     state: started
     daemon_reload: true
     name: mongod
