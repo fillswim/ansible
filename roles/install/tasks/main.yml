@@ -1,26 +1,35 @@
 ---
 # tasks file for install
 
-- name: Block for RedHat
-  when: ansible_os_family == "RedHat" or ansible_os_family == "RED"
-  become: true
-  block:
+- name: Установка пакетов
+  ansible.builtin.package:
+    name:
+      - nano
+      - mc
+      - mc
+      - unzip
+    state: present
 
-    - name: Install packages in Oracle Linux
-      ansible.builtin.dnf:
-        name:
-          - nano
-          - mc
-          - bind-utils
+- name: Установка специфических пакетов на RedHat
+  when:
+    - ansible_os_family == "RedHat" or ansible_os_family == "RED"
+  ansible.builtin.dnf:
+    name:
+      - bind-utils
 
-- name: Block for Ubuntu
-  when: ansible_os_family == "Debian"
-  become: true
-  block:
+# - name: Установка специфических пакетов на "Ubuntu"
+#   when:
+#     - ansible_os_family == "Ubuntu"
+#   ansible.builtin.package:
+#     name:
+#       - open-iscsi
+#       - nfs-common
+#       - apache2-utils
 
-    - name: Install packages in Ubuntu
-      ansible.builtin.apt:
-        pkg:
-          - nano
-          - mc
-          - unzip
+# - name: Установка специфических пакетов на "Altlinux"
+#   when:
+#     - ansible_os_family == "Altlinux"
+#   ansible.builtin.package:
+#     name:
+#       - open-iscsi
+#       - apache2-full

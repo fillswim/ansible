@@ -19,4 +19,4 @@
     #   when: "'k8s' not in inventory_hostname"
     # - role: install-promtail-agent
     #   when: "'k8s' not in inventory_hostname"
-    - role: reboot
+    # - role: reboot

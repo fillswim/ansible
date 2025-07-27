@@ -20,21 +20,20 @@
     key: "{{ item }}"
   with_file: "{{ ssh_keys }}"
 
-- name: Добавление SSH ключа к пользователю ubuntu
+# - name: Добавление SSH ключа к пользователю ubuntu
+#   when:
+#     - ansible_distribution == "Ubuntu"
+#   ansible.posix.authorized_key:
+#     user: ubuntu
+#     state: present
+#     key: "{{ item }}"
+#   with_file: "{{ ssh_keys }}"
+
+- name: Добавление SSH ключа к пользователю "cloud-user"
   when:
     - ansible_distribution == "Ubuntu"
-    # - "'openstack' in inventory_hostname"
   ansible.posix.authorized_key:
-    user: ubuntu
-    state: present
-    key: "{{ item }}"
-  with_file: "{{ ssh_keys }}"
-
-- name: Добавление SSH ключа к пользователю stack
-  when:
-    - "'openstack' in inventory_hostname"
-  ansible.posix.authorized_key:
-    user: stack
+    user: cloud-user
     state: present
     key: "{{ item }}"
   with_file: "{{ ssh_keys }}"

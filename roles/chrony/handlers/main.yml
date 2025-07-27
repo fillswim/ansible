@@ -4,13 +4,13 @@
 - name: Restart Chrony RedHat
   become: true
   ansible.builtin.systemd_service:
-    state: restarted
     name: chronyd
+    state: restarted
     enabled: true
 
 - name: Restart Chrony Ubuntu
   become: true
   ansible.builtin.systemd_service:
-    state: restarted
     name: chrony
+    state: restarted
     enabled: true
