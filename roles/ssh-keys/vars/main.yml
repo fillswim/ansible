@@ -1,7 +1,12 @@
 ---
 
 ssh_keys:
-  - /home/fill/.ssh/id_ed25519.pub
-  - /home/fill/.ssh-others/id_ed25519_dell.pub
-  - /home/fill/.ssh-others/id_ed25519-CT-WN-001221.pub
-  - /home/fill/.ssh-others/id_ed25519-sys-adm-altlinux-1.pub
+  - /home/fill/.ssh/id_ed25519.pub                                # ansible-ubuntu (VM)
+  - /home/fill/.ssh-others/id_ed25519-dell.pub                    # Dell (Windows)
+  - /home/fill/.ssh-others/id_ed25519-CT-WN-001221.pub            # CT-WN-001221 (Windows)
+  - /home/fill/.ssh-others/id_ed25519-ansible-altlinux.pub        # ansible-altlinux (VM)
+  - /home/fill/.ssh-others/id_ed25519-terraform-ubuntu.pub        # terraform-ubuntu (VM)
+  - /home/fill/.ssh-others/id_ed25519-wsl-ubuntu-dell.pub         # wsl-ubuntu-dell (WSL)
+  - /home/fill/.ssh-others/id_ed25519-wsl-ubuntu-CT-WN-001221.pub # wsl-ubuntu-CT-WN-001221 (WSL)
+  - /home/fill/.ssh-others/id_ed25519-wsl-almalinux-9.pub         # wsl-almalinux-9 (WSL)
+  - /home/fill/.ssh-others/id_ed25519-wsl-almalinux-10.pub        # wsl-almalinux-10 (WSL)

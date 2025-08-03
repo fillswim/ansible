@@ -20,30 +20,25 @@
     key: "{{ item }}"
   with_file: "{{ ssh_keys }}"
 
-# - name: Добавление SSH ключа к пользователю ubuntu
-#   when:
-#     - ansible_distribution == "Ubuntu"
-#   ansible.posix.authorized_key:
-#     user: ubuntu
-#     state: present
-#     key: "{{ item }}"
-#   with_file: "{{ ssh_keys }}"
+- name: Вывести пользователей с UID >= 1000
+  shell: "awk -F: '$3 >= 1000 && $3 < 65534 { print $1 }' /etc/passwd"
+  register: user_list
 
-- name: Добавление SSH ключа к пользователю "cloud-user"
-  when:
-    - ansible_distribution == "Ubuntu"
-  ansible.posix.authorized_key:
-    user: cloud-user
-    state: present
-    key: "{{ item }}"
-  with_file: "{{ ssh_keys }}"
+- name: Показать пользователей
+  debug:
+    var: user_list.stdout_lines
 
-- name: Добавление SSH ключа к пользователю cloud-user
-  when:
-    - ansible_distribution == "Rocky" or ansible_distribution == "OracleLinux"
-    - "'openstack' in inventory_hostname"
+- name: Сформировать пары пользователь-ключ
+  set_fact:
+    user_key_pairs: "{{ user_list.stdout_lines | product(ssh_keys) | list }}"
+
+# - name: Показать пары пользователь-ключ
+#   debug:
+#     var: user_key_pairs
+
+- name: Добавить SSH ключи
   ansible.posix.authorized_key:
-    user: cloud-user
+    user: "{{ item.0 }}"
+    key: "{{ lookup('file', item.1) }}"
     state: present
-    key: "{{ item }}"
-  with_file: "{{ ssh_keys }}"
+  loop: "{{ user_key_pairs }}"

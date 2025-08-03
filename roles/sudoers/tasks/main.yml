@@ -10,12 +10,18 @@
     content: "root ALL=(ALL) NOPASSWD:ALL"
     mode: "0440"
 
-# - name: Отключить ввод sudo пароля для cloud-user
-#   become: true
-#   when:
-#     - "'openstack' in inventory_hostname"
-#     - ansible_distribution == "Rocky" or ansible_distribution == "OracleLinux"
-#   ansible.builtin.copy:
-#     dest: /etc/sudoers.d/cloud-user
-#     content: "cloud-user ALL=(ALL) NOPASSWD:ALL"
-#     mode: "0440"
+- name: Вывести пользователей с UID >= 1000
+  shell: "awk -F: '$3 >= 1000 && $3 < 65534 { print $1 }' /etc/passwd"
+  register: user_list
+
+- name: Показать пользователей
+  debug:
+    var: user_list.stdout_lines
+
+- name: Отключить ввод sudo пароля для пользователей
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/{{ item }}
+    content: "{{ item }} ALL=(ALL) NOPASSWD:ALL"
+    mode: "0440"
+  loop: "{{ user_list.stdout_lines }}"

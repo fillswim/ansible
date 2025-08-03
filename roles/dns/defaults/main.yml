@@ -1,9 +1,0 @@
----
-# defaults file for DNS
-
-# DNS серверы
-# dns_nameservers:
-#   - 192.168.2.11
-#   - 192.168.2.12
-
-# dns_my_domen: fillswim.local
