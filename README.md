@@ -193,8 +193,10 @@ ansible-playbook -i inventory/k8s1-alma.yaml ping.yaml -b
 ansible-playbook -i inventory/k8s1-alma.yaml update.yaml -b
 
 ansible-playbook -i inventory/k8s1-alma.yaml general.yaml -b
+<!-- 
 ansible-playbook -i inventory/k8s1-alma.yaml ssh-keys.yaml -b
 ansible-playbook -i inventory/k8s1-alma.yaml passwordauthentication-no.yaml -b
 ansible-playbook -i inventory/k8s1-alma.yaml sudoers.yaml -b
+-->
 
 # ==============================================================================
