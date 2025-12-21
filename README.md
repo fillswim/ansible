@@ -174,7 +174,12 @@ ansible-playbook -i inventory/test-opensearch-cluster-prod-ready-1.yaml create-l
 ansible-playbook -i inventory/test-opensearch-cluster-prod-ready-1.yaml install-opensearch-prod-ready.yaml \
     --extra-vars "admin_password=myStrongPassword@123! kibanaserver_password=Test@6789 logstash_password=Test@456" -b
 ```
-
+# ==============================================================================
+#                                K8s1 RHEL Linux
+# ==============================================================================
+ansible-playbook -i inventory/k8s1-rhel.ini ping.yaml -b
+ansible-playbook -i inventory/k8s1-rhel.ini update.yaml -b
+ansible-playbook -i inventory/k8s1-rhel.ini general.yaml -b
 # ==============================================================================
 #                                K8s1 Alma Linux
 # ==============================================================================
@@ -198,5 +203,16 @@ ansible-playbook -i inventory/k8s1-alma.yaml ssh-keys.yaml -b
 ansible-playbook -i inventory/k8s1-alma.yaml passwordauthentication-no.yaml -b
 ansible-playbook -i inventory/k8s1-alma.yaml sudoers.yaml -b
 -->
+# ==============================================================================
+#                                K8s2 Alma Linux
+# ==============================================================================
+ansible-playbook -i inventory/k8s2-alma.yaml ping.yaml -b
+ansible-playbook -i inventory/k8s2-alma.yaml update.yaml -b
 
+ansible-playbook -i inventory/k8s2-alma.yaml general.yaml -b
+# ==============================================================================
+#                              K8s1 Altlinux Linux
+# ==============================================================================
+ansible-playbook -i inventory/k8s1-altlinux.yaml ping.yaml -b
+ansible-playbook -i inventory/k8s1-altlinux.yaml ssh-keys.yaml -b
 # ==============================================================================

@@ -21,19 +21,19 @@
   with_file: "{{ ssh_keys }}"
 
 - name: Вывести пользователей с UID >= 1000
-  shell: "awk -F: '$3 >= 1000 && $3 < 65534 { print $1 }' /etc/passwd"
+  ansible.builtin.shell: "awk -F: '$3 >= 1000 && $3 < 65534 { print $1 }' /etc/passwd"
   register: user_list
 
 - name: Показать пользователей
-  debug:
+  ansible.builtin.debug:
     var: user_list.stdout_lines
 
 - name: Сформировать пары пользователь-ключ
-  set_fact:
+  ansible.builtin.set_fact:
     user_key_pairs: "{{ user_list.stdout_lines | product(ssh_keys) | list }}"
 
 # - name: Показать пары пользователь-ключ
-#   debug:
+#   ansible.builtin.debug:
 #     var: user_key_pairs
 
 - name: Добавить SSH ключи

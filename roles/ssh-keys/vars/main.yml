@@ -10,3 +10,5 @@ ssh_keys:
   - /home/fill/.ssh-others/id_ed25519-wsl-ubuntu-CT-WN-001221.pub # wsl-ubuntu-CT-WN-001221 (WSL)
   - /home/fill/.ssh-others/id_ed25519-wsl-almalinux-9.pub         # wsl-almalinux-9 (WSL)
   - /home/fill/.ssh-others/id_ed25519-wsl-almalinux-10.pub        # wsl-almalinux-10 (WSL)
+  - /home/fill/.ssh-others/id_ed25519-ansible-redos-73.pub        # ansible-redos-73 (VM)
+  - /home/fill/.ssh-others/id_ed25519-ansible-redos-80.pub        # ansible-redos-80 (VM)
