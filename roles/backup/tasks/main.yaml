@@ -1,0 +1,70 @@
+---
+# tasks file for backup_files
+
+- name: Ping
+  ansible.builtin.ping:
+
+- name: Создать папку на Мастере
+  delegate_to: localhost
+  run_once: true
+  ansible.builtin.file:
+    path: "{{ backup_local_directory }}"
+    owner: "{{ backup_directory_owner }}"
+    group: "{{ backup_directory_group }}"
+    state: directory
+    mode: "0775"
+
+- name: Блок для бэкапирования файлов
+  when:
+    - backup_files is defined
+  become: true
+  block:
+
+    - name: Создать папку на "{{ ansible_hostname }}"
+      delegate_to: localhost
+      ansible.builtin.file:
+        path: "{{ backup_local_directory }}/{{ ansible_hostname }}"
+        owner: "{{ backup_directory_owner }}"
+        group: "{{ backup_directory_group }}"
+        state: directory
+        mode: "0775"
+
+    - name: Копирование файлов с удаленной машины на Мастер
+      ansible.builtin.fetch:
+        src: "{{ item }}"
+        dest: "{{ backup_local_directory }}/{{ ansible_hostname }}/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@{{ item | basename }}"
+        flat: true
+      loop: "{{ backup_files }}"
+
+- name: Блок для бэкапирования директорий
+  when:
+    - backup_folders is defined
+  become: true
+  block:
+
+    - name: Создать папку на "{{ ansible_hostname }}"
+      delegate_to: localhost
+      ansible.builtin.file:
+        path: "{{ backup_local_directory }}/{{ ansible_hostname }}"
+        owner: "{{ backup_directory_owner }}"
+        group: "{{ backup_directory_group }}"
+        state: directory
+        mode: "0775"
+
+    - name: Создать архив с папками
+      community.general.archive:
+        path: "{{ backup_folders }}"
+        dest: "/tmp/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@backup.tar.gz"
+        format: "gz"
+        mode: "0755"
+
+    - name: Скопировать файл backup.tar.gz на Мастер
+      ansible.builtin.fetch:
+        src: "/tmp/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@backup.tar.gz"
+        dest: "{{ backup_local_directory }}/{{ ansible_hostname }}/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@backup.tar.gz"
+        flat: true
+
+    - name: Удалить файл backup.tar.gz на "{{ ansible_hostname }}"
+      ansible.builtin.file:
+        path: "/tmp/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@backup.tar.gz"
+        state: absent

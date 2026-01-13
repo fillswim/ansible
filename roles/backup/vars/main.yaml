@@ -1,0 +1,7 @@
+---
+# vars file for backup_files
+
+# Папка на Мастере
+backup_local_directory: "/home/fill/backup"
+backup_directory_owner: "fill"
+backup_directory_group: "fill"

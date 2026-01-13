@@ -233,6 +233,7 @@ ansible-playbook -i inventory/portainer.yaml install-docker.yaml -b
 ansible-playbook -i inventory/angie.yaml ping.yaml -b
 ansible-playbook -i inventory/angie.yaml general.yaml -b
 ansible-playbook -i inventory/angie.yaml install-alloy.yaml -b
+ansible-playbook -i inventory/angie.yaml backup.yaml -b
 # ==============================================================================
 
 # ==============================================================================

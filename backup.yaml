@@ -1,0 +1,7 @@
+---
+
+- name: Backup
+  hosts: "all"
+
+  roles:
+    - role: backup
