@@ -1,0 +1,25 @@
+---
+# defaults file for Install-Alloy
+
+temp_folder: "/root/download"
+alloy_tar_url: "https://github.com/grafana/alloy/releases/download/v1.12.1/alloy-linux-amd64.zip"
+alloy_tar_name: "alloy-linux-amd64.zip"
+
+# Username
+alloy_username: alloy
+# alloy_folder: "/usr/local/bin/alloy"
+
+# Install directory
+alloy_install_folder: "/usr/local/bin"
+
+# Environment file
+alloy_environment_folder: "/etc/default"
+alloy_environment_file: "alloy"
+
+# Config
+# alloy check-config /etc/alloy/config.alloy
+alloy_config_folder: "/etc/alloy"
+alloy_config_file: "config.alloy"
+
+# Working directory
+alloy_working_folder: "/var/lib/alloy"

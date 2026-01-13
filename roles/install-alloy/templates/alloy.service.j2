@@ -1,0 +1,18 @@
+[Unit]
+Description=Vendor-neutral programmable observability pipelines.
+Documentation=https://grafana.com/docs/alloy/
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Restart=always
+User=alloy
+Environment=HOSTNAME=%H
+EnvironmentFile=/etc/default/alloy
+WorkingDirectory={{ alloy_working_folder }}
+ExecStart={{ alloy_install_folder }}/alloy run $CUSTOM_ARGS --storage.path={{ alloy_working_folder }} {{ alloy_config_folder }}/{{ alloy_config_file }}
+ExecReload=/usr/bin/env kill -HUP $MAINPID
+TimeoutStopSec=20s
+
+[Install]
+WantedBy=multi-user.target

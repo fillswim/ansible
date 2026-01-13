@@ -180,6 +180,7 @@ ansible-playbook -i inventory/test-opensearch-cluster-prod-ready-1.yaml install-
 ansible-playbook -i inventory/k8s1-rhel.ini ping.yaml -b
 ansible-playbook -i inventory/k8s1-rhel.ini update.yaml -b
 ansible-playbook -i inventory/k8s1-rhel.ini general.yaml -b
+ansible-playbook -i inventory/k8s1-rhel.ini ssh-keys.yaml -b
 # ==============================================================================
 #                                K8s1 Alma Linux
 # ==============================================================================
@@ -210,9 +211,47 @@ ansible-playbook -i inventory/k8s2-alma.yaml ping.yaml -b
 ansible-playbook -i inventory/k8s2-alma.yaml update.yaml -b
 
 ansible-playbook -i inventory/k8s2-alma.yaml general.yaml -b
+ansible-playbook -i inventory/k8s2-alma.yaml install-alloy.yaml -b
 # ==============================================================================
 #                              K8s1 Altlinux Linux
 # ==============================================================================
 ansible-playbook -i inventory/k8s1-altlinux.yaml ping.yaml -b
 ansible-playbook -i inventory/k8s1-altlinux.yaml ssh-keys.yaml -b
 # ==============================================================================
+
+# ==============================================================================
+#                                 Portainer
+# ==============================================================================
+ansible-playbook -i inventory/portainer.yaml ping.yaml -b
+ansible-playbook -i inventory/portainer.yaml general.yaml -b
+ansible-playbook -i inventory/portainer.yaml install-docker.yaml -b
+# ==============================================================================
+
+# ==============================================================================
+#                                 Angie BLNS
+# ==============================================================================
+ansible-playbook -i inventory/angie.yaml ping.yaml -b
+ansible-playbook -i inventory/angie.yaml general.yaml -b
+ansible-playbook -i inventory/angie.yaml install-alloy.yaml -b
+# ==============================================================================
+
+# ==============================================================================
+#                                 MinIO
+# ==============================================================================
+ansible-playbook -i inventory/minio.yaml ping.yaml -b
+ansible-playbook -i inventory/minio.yaml general.yaml -b
+ansible-playbook -i inventory/minio.yaml install-alloy.yaml -b
+
+# ==============================================================================
+#                        Kafka and ZooKeeper (Alma Linux)
+# ==============================================================================
+ansible-playbook -i inventory/kafka-zoo.yaml ping.yaml -b
+ansible-playbook -i inventory/kafka-zoo.yaml general.yaml -b
+ansible-playbook -i inventory/kafka-zoo.yaml install-alloy.yaml -b
+
+# ==============================================================================
+#                        Kafka and ZooKeeper (ADCM)
+# ==============================================================================
+ansible-playbook -i inventory/kafka-adcm.yaml ping.yaml -b
+ansible-playbook -i inventory/kafka-adcm.yaml general.yaml -b
+ansible-playbook -i inventory/kafka-adcm.yaml install-alloy.yaml -b

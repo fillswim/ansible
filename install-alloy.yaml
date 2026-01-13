@@ -1,0 +1,9 @@
+---
+
+# Install Alloy
+
+- name: Install Alloy
+  hosts: "all"
+
+  roles:
+    - role: install-alloy

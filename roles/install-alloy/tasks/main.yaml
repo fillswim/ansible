@@ -1,0 +1,117 @@
+---
+
+# ================================================================
+#                      Создать пользователя
+# ================================================================
+
+
+- name: Create user "{{ alloy_username }}"
+  ansible.builtin.user:
+    name: "{{ alloy_username }}"
+    state: present
+    shell: /bin/bash
+    system: true
+    create_home: false
+    append: true
+    groups: systemd-journal
+
+# ================================================================
+#                          Install Alloy
+# ================================================================
+
+- name: Создание папку "{{ temp_folder }}"
+  ansible.builtin.file:
+    path: "{{ temp_folder }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Download Alloy
+  ansible.builtin.get_url:
+    url: "{{ alloy_tar_url }}"
+    dest: "{{ temp_folder }}/{{ alloy_tar_name }}"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Распаковать Alloy в "{{ temp_folder }}"
+  ansible.builtin.unarchive:
+    src: "{{ temp_folder }}/{{ alloy_tar_name }}"
+    dest: "{{ temp_folder }}"
+    remote_src: true
+
+- name: Скопировать Alloy в "{{ alloy_install_folder }}"
+  become: true
+  ansible.builtin.copy:
+    src: "{{ temp_folder }}/alloy-linux-amd64"
+    dest: "{{ alloy_install_folder }}/alloy"
+    owner: root
+    group: root
+    mode: "0755"
+    remote_src: true
+
+# ================================================================
+#                        Environment Alloy
+# ================================================================
+
+- name: Создание папку "{{ alloy_environment_folder }}"
+  ansible.builtin.file:
+    path: "{{ alloy_environment_folder }}"
+    state: directory
+    owner: "{{ alloy_username }}"
+    group: "{{ alloy_username }}"
+    mode: "0755"
+
+- name: Скопировать environment file в "{{ alloy_environment_folder }}"
+  ansible.builtin.template:
+    src: "{{ alloy_environment_file }}.j2"
+    dest: "{{ alloy_environment_folder }}/{{ alloy_environment_file }}"
+    owner: "{{ alloy_username }}"
+    group: "{{ alloy_username }}"
+    mode: "0644"
+
+# ================================================================
+#                      Сконфигурировать Alloy
+# ================================================================
+
+- name: Создание папку "{{ alloy_config_folder }}"
+  ansible.builtin.file:
+    path: "{{ alloy_config_folder }}"
+    state: directory
+    owner: "{{ alloy_username }}"
+    group: "{{ alloy_username }}"
+    mode: "0755"
+
+- name: Скопировать "{{ alloy_config_file }}"
+  ansible.builtin.template:
+    src: "{{ alloy_config_file }}.j2"
+    dest: "{{ alloy_config_folder }}/{{ alloy_config_file }}"
+    owner: "{{ alloy_username }}"
+    group: "{{ alloy_username }}"
+    mode: "0644"
+    backup: true
+
+# ================================================================
+#                      Рабочая директория Alloy
+# ================================================================
+
+- name: Создание папку "{{ alloy_working_folder }}"
+  ansible.builtin.file:
+    path: "{{ alloy_working_folder }}"
+    state: directory
+    owner: "{{ alloy_username }}"
+    group: "{{ alloy_username }}"
+    mode: "0755"
+
+# ================================================================
+#                       Скопировать alloy.service
+# ================================================================
+
+- name: Создание alloy.service
+  ansible.builtin.template:
+    src: alloy.service.j2
+    dest: "/etc/systemd/system/alloy.service"
+    owner: root
+    group: root
+    mode: "0644"

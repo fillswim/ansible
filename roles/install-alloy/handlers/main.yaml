@@ -1,0 +1,8 @@
+---
+
+- name: Start Alloy
+  become: true
+  ansible.builtin.systemd_service:
+    name: alloy
+    state: started
+    enabled: true
