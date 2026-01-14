@@ -256,3 +256,4 @@ ansible-playbook -i inventory/kafka-zoo.yaml install-alloy.yaml -b
 ansible-playbook -i inventory/kafka-adcm.yaml ping.yaml -b
 ansible-playbook -i inventory/kafka-adcm.yaml general.yaml -b
 ansible-playbook -i inventory/kafka-adcm.yaml install-alloy.yaml -b
+ansible-playbook -i inventory/kafka-adcm.yaml backup.yaml -b
