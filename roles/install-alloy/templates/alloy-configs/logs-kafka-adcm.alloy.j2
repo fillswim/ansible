@@ -1,0 +1,16 @@
+// ===================================================
+//                      Kafka Logs
+// ===================================================
+
+local.file_match "kafka_logs" {
+	path_targets = [
+		{
+			"__path__" = "/var/log/kafka/*.log",
+		},
+	]
+}
+
+loki.source.file "kafka_scrape" {
+	targets    = local.file_match.kafka_logs.targets
+	forward_to = [loki.process.add_labels.receiver]
+}

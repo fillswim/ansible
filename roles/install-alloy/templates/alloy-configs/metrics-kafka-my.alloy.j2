@@ -1,0 +1,24 @@
+// ===================================================
+//                    Kafka Metrics
+// ===================================================
+
+prometheus.exporter.kafka "kafka_metrics" {
+	kafka_uris = ["kafka-zoo-1:9092"]
+}
+
+prometheus.scrape "kafka_scrape" {
+	targets    = prometheus.exporter.kafka.kafka_metrics.targets
+	forward_to = [prometheus.relabel.kafka_relabel.receiver]
+}
+
+// Замена лейбла instance="kafka-zoo-1:9092" на instance="kafka-zoo-1"
+prometheus.relabel "kafka_relabel" {
+	forward_to = [prometheus.remote_write.mimir.receiver]
+
+	rule {
+		source_labels = ["instance"]
+		regex         = "(.+):\\d+" // Ищет всё до двоеточия с портом
+		target_label  = "instance"
+		replacement   = "$1" // Оставляет только имя хоста
+	}
+}

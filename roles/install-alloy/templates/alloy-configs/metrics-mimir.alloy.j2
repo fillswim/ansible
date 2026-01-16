@@ -1,0 +1,21 @@
+// ===================================================
+//                   Remote Write Mimir
+// ===================================================
+
+prometheus.remote_write "mimir" {
+	external_labels = {
+		env = "test",
+		app = "angie",
+	}
+
+	endpoint {
+		url     = "https://mimir.fillswim.local/api/v1/push"
+		headers = {
+			"X-Scope-OrgID" = "fillswim",
+		}
+
+		tls_config {
+			insecure_skip_verify = true
+		}
+	}
+}

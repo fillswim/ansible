@@ -1,0 +1,21 @@
+// ===================================================
+//                    Node Metrics
+// ===================================================
+
+prometheus.exporter.unix "node" { }
+
+prometheus.scrape "node" {
+	targets         = prometheus.exporter.unix.node.targets
+	scrape_interval = "15s"
+
+	forward_to = [prometheus.relabel.filter_metrics.receiver]
+}
+
+prometheus.relabel "filter_metrics" {
+	rule {
+		source_labels = ["__name__"]
+		regex         = "node_cpu_seconds_total"
+		action        = "keep"
+	}
+	forward_to = [prometheus.remote_write.mimir.receiver]
+}

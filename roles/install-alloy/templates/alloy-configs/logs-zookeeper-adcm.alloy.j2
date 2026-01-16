@@ -1,0 +1,16 @@
+// ===================================================
+//                      Zookeeper Logs
+// ===================================================
+
+local.file_match "zookeeper_logs" {
+	path_targets = [
+		{
+			"__path__" = "/var/log/zookeeper/*.log",
+		},
+	]
+}
+
+loki.source.file "zookeeper_logs" {
+	targets    = local.file_match.zookeeper_logs.targets
+	forward_to = [loki.process.add_labels.receiver]
+}

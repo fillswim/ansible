@@ -24,6 +24,10 @@
   become: true
   block:
 
+    # ============================================
+    #               Install Alloy
+    # ============================================
+
     - name: Install Alloy in Altlinux
       community.general.apt_rpm:
         pkg:
@@ -32,6 +36,22 @@
         update_cache: true
       notify:
         - Start Alloy
+
+    # ============================================
+    #             Сконфигурировать Alloy
+    # ============================================
+
+    - name: Angie Logs
+      when:
+        - alloy_components is defined
+      ansible.builtin.template:
+        src: "alloy-configs/{{ item }}.alloy.j2"
+        dest: "{{ alloy_config_folder }}/{{ item }}.alloy"
+        owner: "{{ alloy_username }}"
+        group: "{{ alloy_username }}"
+        mode: "0644"
+        backup: true
+      loop: "{{ alloy_components }}"
 
 # ================================================================
 #                         Not Altlinux

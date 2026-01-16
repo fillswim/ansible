@@ -1,0 +1,20 @@
+// ===================================================
+//                  systemd-journal
+// ===================================================
+
+// занесение в лейбл "unit" значений сервисов из systemd-journal
+loki.relabel "journal" {
+	forward_to = []
+
+	rule {
+		source_labels = ["__journal__systemd_unit"]
+		target_label  = "unit"
+	}
+}
+
+// Чтение журналов из systemd-journal
+loki.source.journal "journal_logs" {
+	labels        = {job = "systemd-journal"}
+	relabel_rules = loki.relabel.journal.rules
+	forward_to    = [loki.process.add_labels.receiver]
+}
