@@ -1,0 +1,23 @@
+// ===================================================
+//                      Dmesg
+// ===================================================
+
+// Замена значения лейбла "unit" на "kernel"
+loki.relabel "dmesg" {
+	forward_to = []
+
+	rule {
+		// принудительно назначаем значение "kernel" в лейбл "unit"
+		target_label = "unit"
+		replacement  = "kernel"
+	}
+}
+
+// чтение сообщений ядра из dmesg
+loki.source.journal "dmesg_logs" {
+
+	// фильтруем только сообщения ядра
+	matches       = "_TRANSPORT=kernel"
+	relabel_rules = loki.relabel.dmesg.rules
+	forward_to    = [loki.process.add_labels.receiver]
+}

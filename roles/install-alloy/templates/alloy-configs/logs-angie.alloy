@@ -1,0 +1,16 @@
+// ===================================================
+//                      Angie Logs
+// ===================================================
+
+local.file_match "angie_logs" {
+	path_targets = [
+		{
+			"__path__" = "/var/log/angie/*.log",
+		},
+	]
+}
+
+loki.source.file "angie_scrape" {
+	targets    = local.file_match.angie_logs.targets
+	forward_to = [loki.process.add_labels.receiver]
+}

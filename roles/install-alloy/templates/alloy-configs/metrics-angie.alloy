@@ -1,0 +1,23 @@
+// ===================================================
+//                    Angie Metrics
+// ===================================================
+
+discovery.relabel "angie_relabel_instance" {
+	targets = [
+		{"__address__" = "localhost:80"},
+	]
+
+	rule {
+		target_label = "instance"
+		replacement  = constants.hostname
+	}
+}
+
+prometheus.scrape "angie" {
+	targets = discovery.relabel.angie_relabel_instance.output
+
+	metrics_path    = "/p8s"
+	scrape_interval = "15s"
+
+	forward_to = [prometheus.remote_write.mimir.receiver]
+}

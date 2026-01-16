@@ -1,0 +1,23 @@
+// ===================================================
+//                    HAProxy Metrics
+// ===================================================
+
+discovery.relabel "haproxy_relabel_instance" {
+	targets = [
+		{"__address__" = "localhost:8405"},
+	]
+
+	rule {
+		target_label = "instance"
+		replacement  = constants.hostname
+	}
+}
+
+prometheus.scrape "haproxy" {
+	targets = discovery.relabel.haproxy_relabel_instance.output
+
+	metrics_path    = "/metrics"
+	scrape_interval = "15s"
+
+	forward_to = [prometheus.remote_write.mimir.receiver]
+}

@@ -1,0 +1,13 @@
+// ===================================================
+//              Добавление label "host"
+// ===================================================
+
+// Добавление label "host"
+loki.process "add_labels" {
+	stage.static_labels {
+		values = {
+			"host" = sys.env("HOSTNAME"),
+		}
+	}
+	forward_to = [loki.write.loki_endpoint.receiver]
+}
