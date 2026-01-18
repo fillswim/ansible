@@ -10,7 +10,7 @@ User=alloy
 Environment=HOSTNAME=%H
 EnvironmentFile=/etc/default/alloy
 WorkingDirectory={{ alloy_working_folder }}
-ExecStart={{ alloy_install_folder }}/alloy run $CUSTOM_ARGS --storage.path={{ alloy_working_folder }} {{ alloy_config_folder }}/{{ alloy_config_file }}
+ExecStart={{ alloy_install_folder }}/alloy run $CUSTOM_ARGS --server.http.listen-addr={{ ansible_host }}:12345 --storage.path={{ alloy_working_folder }} {{ alloy_config_folder }}
 ExecReload=/usr/bin/env kill -HUP $MAINPID
 TimeoutStopSec=20s
 

@@ -1,22 +1,29 @@
 // ===================================================
-//                   Write Loki
+//                 Remote Write Loki
 // ===================================================
 
 loki.write "loki_endpoint" {
+
+
+  	external_labels = {
+{% for k in external_labels %}
+    	{{ "%-10s"|format(k) }} = "{{ external_labels[k] }}",
+{% endfor %}
+  	}
+
+
 	endpoint {
-		url     = "https://loki.fillswim.local/loki/api/v1/push"
+		url     = "{{ loki_url }}"
 		headers = {
-			"X-Scope-OrgID" = "fillswim",
+			"X-Scope-OrgID" = "{{ tenant_id }}",
 		}
 
 		tls_config {
 			insecure_skip_verify = true
 		}
 	}
-	external_labels = {
-		env = "test",
-		app = "angie",
-	}
+
+
 }
 
 // ===================================================

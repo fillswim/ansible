@@ -6,3 +6,25 @@
     name: alloy
     state: started
     enabled: true
+    daemon_reload: true
+
+- name: Restart Alloy
+  become: true
+  when:
+    - alloy_validate.stdout == ""
+    - ansible_os_family != "Altlinux"
+  ansible.builtin.systemd_service:
+    name: alloy
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: Restart Alloy Altlinux
+  become: true
+  when:
+    - ansible_os_family == "Altlinux"
+  ansible.builtin.systemd_service:
+    name: alloy
+    state: restarted
+    enabled: true
+    daemon_reload: true

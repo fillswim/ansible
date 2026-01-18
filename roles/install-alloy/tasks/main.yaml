@@ -37,6 +37,20 @@
       notify:
         - Start Alloy
 
+    # ============================================
+    #   Скопировать alloy.service (Altlinux)
+    # ============================================
+
+    - name: Создание alloy.service (original)
+      ansible.builtin.template:
+        src: alloy.service-altlinux.j2
+        dest: "/lib/systemd/system/alloy.service"
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Restart Alloy Altlinux
+
 # ================================================================
 #                         Not Altlinux
 # ================================================================
@@ -50,7 +64,7 @@
     #               Install Alloy
     # ============================================
 
-    - name: Создание папку "{{ temp_folder }}"
+    - name: Создание временной папки "{{ temp_folder }}"
       ansible.builtin.file:
         path: "{{ temp_folder }}"
         state: directory
@@ -81,12 +95,14 @@
         group: root
         mode: "0755"
         remote_src: true
+      notify:
+        - Start Alloy
 
     # ============================================
     #              Environment Alloy
     # ============================================
 
-    - name: Создание папку "{{ alloy_environment_folder }}"
+    - name: Создание папку окружения Alloy "{{ alloy_environment_folder }}"
       ansible.builtin.file:
         path: "{{ alloy_environment_folder }}"
         state: directory
@@ -106,7 +122,7 @@
     #             Сконфигурировать Alloy
     # ============================================
 
-    - name: Создание папку "{{ alloy_config_folder }}"
+    - name: Создание папку конфигурации Alloy "{{ alloy_config_folder }}"
       ansible.builtin.file:
         path: "{{ alloy_config_folder }}"
         state: directory
@@ -114,20 +130,11 @@
         group: "{{ alloy_username }}"
         mode: "0755"
 
-    # - name: Скопировать "{{ alloy_config_file }}"
-    #   ansible.builtin.template:
-    #     src: "{{ alloy_config_file }}.j2"
-    #     dest: "{{ alloy_config_folder }}/{{ alloy_config_file }}"
-    #     owner: "{{ alloy_username }}"
-    #     group: "{{ alloy_username }}"
-    #     mode: "0644"
-    #     backup: true
-
     # ============================================
     #           Рабочая директория Alloy
     # ============================================
 
-    - name: Создание папку "{{ alloy_working_folder }}"
+    - name: Создание рабочую директорию Alloy "{{ alloy_working_folder }}"
       ansible.builtin.file:
         path: "{{ alloy_working_folder }}"
         state: directory
@@ -136,30 +143,71 @@
         mode: "0755"
 
     # ============================================
-    #           Скопировать alloy.service
+    #   Скопировать alloy.service (Not Altlinux)
     # ============================================
 
-    - name: Создание alloy.service
+    - name: Создание alloy.service (original)
       ansible.builtin.template:
-        src: alloy.service.j2
+        src: alloy.service-original.j2
         dest: "/etc/systemd/system/alloy.service"
         owner: root
         group: root
         mode: "0644"
+      notify:
+        - Restart Alloy
 
+# ================================================================
+#                    Сконфигурировать Alloy
+# ================================================================
 
-# ============================================
-#             Сконфигурировать Alloy
-# ============================================
-
-- name: Скопировать конфигурационные файлы Alloy
+- name: Скопировать конфигурационные файлы Alloy (Not Altlinux)
   when:
     - alloy_components is defined
+    - ansible_os_family != "Altlinux"
   ansible.builtin.template:
     src: "alloy-configs/{{ item }}.alloy.j2"
     dest: "{{ alloy_config_folder }}/{{ item }}.alloy"
     owner: "{{ alloy_username }}"
     group: "{{ alloy_username }}"
     mode: "0644"
-    backup: true
+    # backup: true
   loop: "{{ alloy_components }}"
+  notify:
+    - Restart Alloy
+
+- name: Скопировать конфигурационные файлы Alloy (Altlinux)
+  when:
+    - alloy_components is defined
+    - ansible_os_family == "Altlinux"
+  ansible.builtin.template:
+    src: "alloy-configs/{{ item }}.alloy.j2"
+    dest: "{{ alloy_config_folder }}/{{ item }}.alloy"
+    owner: "{{ alloy_username }}"
+    group: "{{ alloy_username }}"
+    mode: "0644"
+    # backup: true
+  loop: "{{ alloy_components }}"
+  notify:
+    - Restart Alloy Altlinux
+
+- name: Alloy validate
+  changed_when: false
+  when:
+    - ansible_os_family != "Altlinux"
+  ansible.builtin.shell: |
+    {{ alloy_install_folder }}/alloy validate {{ alloy_config_folder }}
+  register: alloy_validate
+
+# ================================================================
+#                        Check Alloy Status
+# ================================================================
+
+- name: Check Alloy Status
+  changed_when: false
+  ansible.builtin.systemd:
+    name: alloy
+  register: check_alloy_status
+
+- name: Print Alloy Status
+  ansible.builtin.debug:
+    msg: "Alloy status is {{ check_alloy_status.status.ActiveState }}"

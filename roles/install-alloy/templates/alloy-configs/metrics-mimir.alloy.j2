@@ -1,12 +1,9 @@
 // ===================================================
-//                   Remote Write Mimir
+//                  Remote Write Mimir
 // ===================================================
 
 prometheus.remote_write "mimir" {
-	external_labels = {
-		env = "test",
-		app = "angie",
-	}
+
 
   	external_labels = {
 {% for k in external_labels %}
@@ -14,14 +11,15 @@ prometheus.remote_write "mimir" {
 {% endfor %}
   	}
 
+
 	endpoint {
-		url     = "https://mimir.fillswim.local/api/v1/push"
+		url     = "{{ mimir_url }}"
 		headers = {
-			"X-Scope-OrgID" = "fillswim",
+			"X-Scope-OrgID" = "{{ tenant_id }}",
 		}
 
 		tls_config {
 			insecure_skip_verify = true
 		}
 	}
-}
+} 
