@@ -8,6 +8,12 @@ prometheus.remote_write "mimir" {
 		app = "angie",
 	}
 
+  	external_labels = {
+{% for k in external_labels %}
+    	{{ "%-10s"|format(k) }} = "{{ external_labels[k] }}",
+{% endfor %}
+  	}
+
 	endpoint {
 		url     = "https://mimir.fillswim.local/api/v1/push"
 		headers = {

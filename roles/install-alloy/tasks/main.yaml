@@ -37,22 +37,6 @@
       notify:
         - Start Alloy
 
-    # ============================================
-    #             Сконфигурировать Alloy
-    # ============================================
-
-    - name: Angie Logs
-      when:
-        - alloy_components is defined
-      ansible.builtin.template:
-        src: "alloy-configs/{{ item }}.alloy.j2"
-        dest: "{{ alloy_config_folder }}/{{ item }}.alloy"
-        owner: "{{ alloy_username }}"
-        group: "{{ alloy_username }}"
-        mode: "0644"
-        backup: true
-      loop: "{{ alloy_components }}"
-
 # ================================================================
 #                         Not Altlinux
 # ================================================================
@@ -130,14 +114,14 @@
         group: "{{ alloy_username }}"
         mode: "0755"
 
-    - name: Скопировать "{{ alloy_config_file }}"
-      ansible.builtin.template:
-        src: "{{ alloy_config_file }}.j2"
-        dest: "{{ alloy_config_folder }}/{{ alloy_config_file }}"
-        owner: "{{ alloy_username }}"
-        group: "{{ alloy_username }}"
-        mode: "0644"
-        backup: true
+    # - name: Скопировать "{{ alloy_config_file }}"
+    #   ansible.builtin.template:
+    #     src: "{{ alloy_config_file }}.j2"
+    #     dest: "{{ alloy_config_folder }}/{{ alloy_config_file }}"
+    #     owner: "{{ alloy_username }}"
+    #     group: "{{ alloy_username }}"
+    #     mode: "0644"
+    #     backup: true
 
     # ============================================
     #           Рабочая директория Alloy
@@ -162,3 +146,20 @@
         owner: root
         group: root
         mode: "0644"
+
+
+# ============================================
+#             Сконфигурировать Alloy
+# ============================================
+
+- name: Скопировать конфигурационные файлы Alloy
+  when:
+    - alloy_components is defined
+  ansible.builtin.template:
+    src: "alloy-configs/{{ item }}.alloy.j2"
+    dest: "{{ alloy_config_folder }}/{{ item }}.alloy"
+    owner: "{{ alloy_username }}"
+    group: "{{ alloy_username }}"
+    mode: "0644"
+    backup: true
+  loop: "{{ alloy_components }}"

@@ -20,7 +20,7 @@
   become: true
   block:
 
-    - name: Создать папку на "{{ ansible_hostname }}"
+    - name: Создать на Мастере папку "{{ ansible_hostname }}"
       delegate_to: localhost
       ansible.builtin.file:
         path: "{{ backup_local_directory }}/{{ ansible_hostname }}"
@@ -42,7 +42,7 @@
   become: true
   block:
 
-    - name: Создать папку на "{{ ansible_hostname }}"
+    - name: Создать на Мастере папку "{{ ansible_hostname }}"
       delegate_to: localhost
       ansible.builtin.file:
         path: "{{ backup_local_directory }}/{{ ansible_hostname }}"
@@ -53,18 +53,21 @@
 
     - name: Создать архив с папками
       community.general.archive:
-        path: "{{ backup_folders }}"
-        dest: "/tmp/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@backup.tar.gz"
+        path: "{{ item }}"
+        dest: "/tmp/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@{{ item | basename }}.tar.gz"
         format: "gz"
         mode: "0755"
+      loop: "{{ backup_folders }}"
 
     - name: Скопировать файл backup.tar.gz на Мастер
       ansible.builtin.fetch:
-        src: "/tmp/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@backup.tar.gz"
-        dest: "{{ backup_local_directory }}/{{ ansible_hostname }}/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@backup.tar.gz"
+        src: "/tmp/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@{{ item | basename }}.tar.gz"
+        dest: "{{ backup_local_directory }}/{{ ansible_hostname }}/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@{{ item | basename }}.tar.gz"
         flat: true
+      loop: "{{ backup_folders }}"
 
     - name: Удалить файл backup.tar.gz на "{{ ansible_hostname }}"
       ansible.builtin.file:
-        path: "/tmp/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@backup.tar.gz"
+        path: "/tmp/{{ ansible_date_time.date }}@{{ ansible_date_time.time }}@{{ item | basename }}.tar.gz"
         state: absent
+      loop: "{{ backup_folders }}"
