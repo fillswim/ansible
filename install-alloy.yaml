@@ -8,3 +8,4 @@
   roles:
     - role: backup
     - role: install-alloy
+    - role: check-service-status

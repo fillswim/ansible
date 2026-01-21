@@ -4,6 +4,8 @@
 source .venv/bin/activate
 ```
 
+ANSIBLE_CALLBACK_RESULT_FORMAT=yaml
+
 # ==================================================================================================
 # Test Ubuntu
 ```bash
@@ -249,15 +251,17 @@ ansible-playbook -i inventory/minio.yaml backup.yaml -b
 # ==============================================================================
 #                        Kafka and ZooKeeper (Alma Linux)
 # ==============================================================================
-ansible-playbook -i inventory/kafka-zoo.yaml ping.yaml -b
-ansible-playbook -i inventory/kafka-zoo.yaml general.yaml -b
-ansible-playbook -i inventory/kafka-zoo.yaml install-alloy.yaml -b
-ansible-playbook -i inventory/kafka-zoo.yaml backup.yaml -b
+ansible-playbook -i inventory/kafka-zoo/kafka-zoo.yaml ping.yaml -b
+ansible-playbook -i inventory/kafka-zoo/kafka-zoo.yaml general.yaml -b
+ansible-playbook -i inventory/kafka-zoo/kafka-zoo.yaml install-alloy.yaml -b
+ansible-playbook -i inventory/kafka-zoo/kafka-zoo.yaml check-service-status.yaml -b
+
+ansible-playbook -i inventory/kafka-zoo/kafka-zoo.yaml backup.yaml -b
 
 # ==============================================================================
 #                        Kafka and ZooKeeper (ADCM)
 # ==============================================================================
-ansible-playbook -i inventory/kafka-adcm.yaml ping.yaml -b
-ansible-playbook -i inventory/kafka-adcm.yaml general.yaml -b
-ansible-playbook -i inventory/kafka-adcm.yaml install-alloy.yaml -b
-ansible-playbook -i inventory/kafka-adcm.yaml backup.yaml -b
+ansible-playbook -i inventory/kafka-adcm/kafka-adcm.yaml ping.yaml -b
+ansible-playbook -i inventory/kafka-adcm/kafka-adcm.yaml general.yaml -b
+ansible-playbook -i inventory/kafka-adcm/kafka-adcm.yaml install-alloy.yaml -b
+ansible-playbook -i inventory/kafka-adcm/kafka-adcm.yaml backup.yaml -b

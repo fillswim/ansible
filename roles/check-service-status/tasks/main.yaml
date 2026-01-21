@@ -1,0 +1,25 @@
+---
+
+# ================================================================
+#                        Check Alloy Status
+# ================================================================
+
+- name: Check Alloy Status
+  changed_when: false
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+  register: check_service_status
+  loop: "{{ services_to_check_status }}"
+  loop_control:
+    label: "{{ item }}"
+
+- name: Print services status
+  ansible.builtin.debug:
+    msg: |
+      Service {{ item.item }}:
+        exists: {{ item.status is defined }}
+        active: {{ item.status.ActiveState | default('unknown') }}
+        enabled: {{ item.status.UnitFileState | default('unknown') }}
+  loop: "{{ check_service_status.results }}"
+  loop_control:
+    label: "{{ item.item }}"

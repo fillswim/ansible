@@ -1,0 +1,9 @@
+---
+
+# Check Service Status
+
+- name: Check Service Status
+  hosts: "all"
+
+  roles:
+    - role: check-service-status

@@ -20,7 +20,7 @@
 # ================================================================
 
 - name: Block for Altlinux
-  when: ansible_os_family == "Altlinux"
+  when: ansible_facts.os_family == "Altlinux"
   become: true
   block:
 
@@ -56,7 +56,7 @@
 # ================================================================
 
 - name: Block for not Altlinux
-  when: ansible_os_family != "Altlinux"
+  when: ansible_facts.os_family != "Altlinux"
   become: true
   block:
 
@@ -160,10 +160,23 @@
 #                    Сконфигурировать Alloy
 # ================================================================
 
+- name: Удалить папку "{{ alloy_config_folder }}"
+  ansible.builtin.file:
+    path: "{{ alloy_config_folder }}"
+    state: absent
+
+- name: Создать папку "{{ alloy_config_folder }}"
+  ansible.builtin.file:
+    path: "{{ alloy_config_folder }}"
+    state: directory
+    owner: "{{ alloy_username }}"
+    group: "{{ alloy_username }}"
+    mode: "0755"
+
 - name: Скопировать конфигурационные файлы Alloy (Not Altlinux)
   when:
+    - ansible_facts.os_family != "Altlinux"
     - alloy_components is defined
-    - ansible_os_family != "Altlinux"
   ansible.builtin.template:
     src: "alloy-configs/{{ item }}.alloy.j2"
     dest: "{{ alloy_config_folder }}/{{ item }}.alloy"
@@ -177,8 +190,8 @@
 
 - name: Скопировать конфигурационные файлы Alloy (Altlinux)
   when:
+    - ansible_facts.os_family == "Altlinux"
     - alloy_components is defined
-    - ansible_os_family == "Altlinux"
   ansible.builtin.template:
     src: "alloy-configs/{{ item }}.alloy.j2"
     dest: "{{ alloy_config_folder }}/{{ item }}.alloy"
@@ -193,21 +206,7 @@
 - name: Alloy validate
   changed_when: false
   when:
-    - ansible_os_family != "Altlinux"
+    - ansible_facts.os_family != "Altlinux"
   ansible.builtin.shell: |
     {{ alloy_install_folder }}/alloy validate {{ alloy_config_folder }}
   register: alloy_validate
-
-# ================================================================
-#                        Check Alloy Status
-# ================================================================
-
-- name: Check Alloy Status
-  changed_when: false
-  ansible.builtin.systemd:
-    name: alloy
-  register: check_alloy_status
-
-- name: Print Alloy Status
-  ansible.builtin.debug:
-    msg: "Alloy status is {{ check_alloy_status.status.ActiveState }}"

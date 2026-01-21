@@ -3,7 +3,7 @@
 // ===================================================
 
 prometheus.exporter.kafka "kafka_metrics" {
-	kafka_uris = ["kafka-zoo-1:9092"]
+	kafka_uris = ["{{ ansible_facts.hostname }}:9092"]
 }
 
 prometheus.scrape "kafka_scrape" {
