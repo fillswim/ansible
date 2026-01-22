@@ -2,7 +2,7 @@
 # tasks file for update
 
 - name: Block for RedHat
-  when: ansible_os_family == "RedHat" or ansible_os_family == "RED"
+  when: ansible_facts.os_family == "RedHat" or ansible_facts.os_family == "RED"
   become: true
   block:
 
@@ -20,7 +20,7 @@
         state: latest
 
 - name: Block for Ubuntu
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
   become: true
   block:
 

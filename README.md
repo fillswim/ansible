@@ -179,11 +179,13 @@ ansible-playbook -i inventory/test-opensearch-cluster-prod-ready-1.yaml install-
 # ==============================================================================
 #                                K8s1 RHEL Linux
 # ==============================================================================
-ansible-playbook -i inventory/k8s1-rhel.ini ping.yaml -b
-ansible-playbook -i inventory/k8s1-rhel.ini update.yaml -b
-ansible-playbook -i inventory/k8s1-rhel.ini general.yaml -b
-ansible-playbook -i inventory/k8s1-rhel.ini ssh-keys.yaml -b
-ansible-playbook -i inventory/k8s1-rhel.yaml backup.yaml -b
+ansible-playbook -i inventory/rhel-k8s1/k8s1-rhel.yaml ping.yaml -b
+ansible-playbook -i inventory/rhel-k8s1/k8s1-rhel.yaml update.yaml -b
+ansible-playbook -i inventory/rhel-k8s1/k8s1-rhel.yaml general.yaml -b
+ansible-playbook -i inventory/rhel-k8s1/k8s1-rhel.yaml install-alloy.yaml -b
+ansible-playbook -i inventory/rhel-k8s1/k8s1-rhel.yaml check-service-status.yaml -b
+ansible-playbook -i inventory/rhel-k8s1/k8s1-rhel.yaml ssh-keys.yaml -b
+ansible-playbook -i inventory/rhel-k8s1/k8s1-rhel.yaml backup.yaml -b
 # ==============================================================================
 #                                K8s1 Alma Linux
 # ==============================================================================
@@ -225,12 +227,11 @@ ansible-playbook -i inventory/portainer.yaml install-docker.yaml -b
 # ==============================================================================
 #                                 Alma K8s2
 # ==============================================================================
-ansible-playbook -i inventory/k8s2-alma.yaml ping.yaml -b
-ansible-playbook -i inventory/k8s2-alma.yaml update.yaml -b
-
-ansible-playbook -i inventory/k8s2-alma.yaml general.yaml -b
-ansible-playbook -i inventory/k8s2-alma.yaml install-alloy.yaml -b
-ansible-playbook -i inventory/k8s2-alma.yaml backup.yaml -b
+ansible-playbook -i inventory/alma-k8s2/k8s2-alma.yaml ping.yaml -b
+ansible-playbook -i inventory/alma-k8s2/k8s2-alma.yaml update.yaml -b
+ansible-playbook -i inventory/alma-k8s2/k8s2-alma.yaml general.yaml -b
+ansible-playbook -i inventory/alma-k8s2/k8s2-alma.yaml install-alloy.yaml -b
+ansible-playbook -i inventory/alma-k8s2/k8s2-alma.yaml backup.yaml -b
 
 # ==============================================================================
 #                                 Angie BLNS
