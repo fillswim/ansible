@@ -14,7 +14,12 @@ prometheus.scrape "node" {
 prometheus.relabel "filter_metrics" {
 	rule {
 		source_labels = ["__name__"]
-		regex         = "node_cpu_seconds_total"
+		regex = 
+		{% for m in metrics -%}
+        "{{ m | regex_escape }}{% if not loop.last %}|{% endif %}"{% if not loop.last %} + 
+        {% endif %}
+        {%- endfor %}
+		
 		action        = "keep"
 	}
 	forward_to = [prometheus.remote_write.mimir.receiver]
