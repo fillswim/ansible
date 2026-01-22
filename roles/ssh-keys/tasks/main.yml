@@ -21,8 +21,13 @@
   with_file: "{{ ssh_keys }}"
 
 - name: Вывести пользователей с UID >= 1000
-  ansible.builtin.shell: "awk -F: '$3 >= 1000 && $3 < 65534 { print $1 }' /etc/passwd"
+  changed_when: false
+  ansible.builtin.shell: |
+    set -o pipefail
+    getent passwd | awk -F: '$3 >= 1000 && $3 < 65534 && $7 !~ /(nologin|false)$/ { print $1 }'
   register: user_list
+  args:
+    executable: /bin/bash
 
 - name: Показать пользователей
   ansible.builtin.debug:

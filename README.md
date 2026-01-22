@@ -243,10 +243,11 @@ ansible-playbook -i inventory/angie.yaml backup.yaml -b
 # ==============================================================================
 #                                 MinIO
 # ==============================================================================
-ansible-playbook -i inventory/minio.yaml ping.yaml -b
-ansible-playbook -i inventory/minio.yaml general.yaml -b
-ansible-playbook -i inventory/minio.yaml install-alloy.yaml -b
-ansible-playbook -i inventory/minio.yaml backup.yaml -b
+ansible-playbook -i inventory/minio/minio.yaml ping.yaml -b
+ansible-playbook -i inventory/minio/minio.yaml general.yaml -b
+ansible-playbook -i inventory/minio/minio.yaml ssh-keys.yaml -b
+ansible-playbook -i inventory/minio/minio.yaml install-alloy.yaml -b
+ansible-playbook -i inventory/minio/minio.yaml backup.yaml -b
 
 # ==============================================================================
 #                        Kafka and ZooKeeper (Alma Linux)

@@ -2,8 +2,8 @@
 # tasks file for chrony
 
 - name: Block for RedHat
-  when: 
-    - ansible_os_family == "RedHat" or ansible_os_family == "RED"
+  when:
+    - ansible_facts.os_family == "RedHat" or ansible_facts.os_family == "RED"
     - ansible_virtualization_type != "lxc"
   become: true
   block:
@@ -26,8 +26,8 @@
 
 - name: Block for Ubuntu
   when: 
-    - ansible_os_family == "Debian"
-    - ansible_virtualization_type != "lxc"
+    - ansible_facts.os_family == "Debian"
+    - ansible_facts.virtualization_type != "lxc"
   become: true
   block:
 

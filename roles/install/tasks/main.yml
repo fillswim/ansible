@@ -12,14 +12,14 @@
 
 - name: Установка специфических пакетов на RedHat
   when:
-    - ansible_os_family == "RedHat" or ansible_os_family == "RED"
+    - ansible_facts.os_family == "RedHat" or ansible_facts.os_family == "RED"
   ansible.builtin.dnf:
     name:
       - bind-utils
 
 # - name: Установка специфических пакетов на "Ubuntu"
 #   when:
-#     - ansible_os_family == "Ubuntu"
+#     - ansible_facts.os_family == "Ubuntu"
 #   ansible.builtin.package:
 #     name:
 #       - open-iscsi
@@ -28,7 +28,7 @@
 
 # - name: Установка специфических пакетов на "Altlinux"
 #   when:
-#     - ansible_os_family == "Altlinux"
+#     - ansible_facts.os_family == "Altlinux"
 #   ansible.builtin.package:
 #     name:
 #       - open-iscsi
