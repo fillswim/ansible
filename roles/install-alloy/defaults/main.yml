@@ -1,5 +1,6 @@
 ---
 # defaults file for Install-Alloy
+# wget -O alloy-linux-amd64-v1.12.1.zip https://github.com/grafana/alloy/releases/download/v1.12.1/alloy-linux-amd64.zip
 
 temp_folder: "/root/download"
 alloy_tar_url: "https://github.com/grafana/alloy/releases/download/v1.12.1/alloy-linux-amd64.zip"

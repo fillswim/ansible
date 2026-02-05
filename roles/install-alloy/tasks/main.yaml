@@ -72,13 +72,22 @@
         group: root
         mode: "0755"
 
-    - name: Download Alloy
-      ansible.builtin.get_url:
-        url: "{{ alloy_tar_url }}"
-        dest: "{{ temp_folder }}/{{ alloy_tar_name }}"
-        owner: root
-        group: root
-        mode: "0644"
+    # - name: Download Alloy
+    #   ansible.builtin.get_url:
+    #     url: "{{ alloy_tar_url }}"
+    #     dest: "{{ temp_folder }}/{{ alloy_tar_name }}"
+    #     owner: root
+    #     group: root
+    #     mode: "0644"
+
+    # - name: Скопировать файл alloy-linux-amd64-v1.12.1.zip в "{{ temp_folder }}"
+    #   become: true
+    #   ansible.builtin.copy:
+    #     src: alloy-linux-amd64-v1.12.1.zip
+    #     dest: "{{ temp_folder }}/{{ alloy_tar_name }}"
+    #     owner: root
+    #     group: root
+    #     mode: "0644"
 
     - name: Распаковать Alloy в "{{ temp_folder }}"
       ansible.builtin.unarchive:
