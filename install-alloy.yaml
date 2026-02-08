@@ -6,6 +6,6 @@
   hosts: "all"
 
   roles:
-    - role: backup
+    # - role: backup
     - role: install-alloy
-    - role: check-service-status
+    # - role: check-service-status

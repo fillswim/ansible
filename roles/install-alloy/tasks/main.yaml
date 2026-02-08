@@ -4,7 +4,6 @@
 #                      Создать пользователя
 # ================================================================
 
-
 - name: Create user "{{ alloy_username }}"
   ansible.builtin.user:
     name: "{{ alloy_username }}"
@@ -25,31 +24,84 @@
   block:
 
     # ============================================
-    #               Install Alloy
+    #     Block for Altlinux major version != 8
     # ============================================
 
-    - name: Install Alloy in Altlinux
-      community.general.apt_rpm:
-        pkg:
-          - alloy
-        state: latest
-        update_cache: true
-      notify:
-        - Start Alloy
+    - name: Block for Altlinux 10.4
+      when: ansible_facts.ansible_distribution_major_version != "8"
+      block:
+
+        # ============================================
+        #        Install Alloy from repository
+        # ============================================
+
+        - name: Install Alloy in Altlinux
+          community.general.apt_rpm:
+            pkg:
+              - alloy
+            state: latest
+            update_cache: true
+          notify:
+            - Start Alloy
+
+        # ============================================
+        #   Скопировать alloy.service (Altlinux) repo
+        # ============================================
+
+        - name: Создание alloy.service (original)
+          ansible.builtin.template:
+            src: alloy.service-altlinux-repo.j2
+            dest: "/lib/systemd/system/alloy.service"
+            owner: root
+            group: root
+            mode: "0644"
+          notify:
+            - Restart Alloy Altlinux
 
     # ============================================
-    #   Скопировать alloy.service (Altlinux)
+    #     Block for Altlinux major version == 8
     # ============================================
 
-    - name: Создание alloy.service (original)
-      ansible.builtin.template:
-        src: alloy.service-altlinux.j2
-        dest: "/lib/systemd/system/alloy.service"
-        owner: root
-        group: root
-        mode: "0644"
-      notify:
-        - Restart Alloy Altlinux
+    - name: Block for Altlinux 8
+      when: ansible_facts.ansible_distribution_major_version == "8"
+      block:
+
+        - name: Создание временной папки "{{ temp_folder }}"
+          ansible.builtin.file:
+            path: "{{ temp_folder }}"
+            state: directory
+            owner: root
+            group: root
+            mode: "0755"
+
+        - name: Скопировать файл alloy-1.7.4-alt1.x86_64.rpm в "{{ temp_folder }}"
+          become: true
+          ansible.builtin.copy:
+            src: alloy-1.7.4-alt1.x86_64.rpm
+            dest: "{{ temp_folder }}/alloy-1.7.4-alt1.x86_64.rpm"
+            owner: root
+            group: root
+            mode: "0644"
+
+        - name: Install Alloy in Altlinux from packages
+          ansible.builtin.shell: |
+            apt-get install -y {{ temp_folder }}/alloy-1.7.4-alt1.x86_64.rpm
+          notify:
+            - Start Alloy
+
+        # ============================================
+        #   Скопировать alloy.service (Altlinux) pkg
+        # ============================================
+
+        - name: Создание alloy.service (original)
+          ansible.builtin.template:
+            src: alloy.service-altlinux-1.7.4.j2
+            dest: "/lib/systemd/system/alloy.service"
+            owner: root
+            group: root
+            mode: "0644"
+          notify:
+            - Restart Alloy Altlinux
 
 # ================================================================
 #                         Not Altlinux
@@ -72,13 +124,13 @@
         group: root
         mode: "0755"
 
-    # - name: Download Alloy
-    #   ansible.builtin.get_url:
-    #     url: "{{ alloy_tar_url }}"
-    #     dest: "{{ temp_folder }}/{{ alloy_tar_name }}"
-    #     owner: root
-    #     group: root
-    #     mode: "0644"
+    - name: Download Alloy
+      ansible.builtin.get_url:
+        url: "{{ alloy_tar_url }}"
+        dest: "{{ temp_folder }}/{{ alloy_tar_name }}"
+        owner: root
+        group: root
+        mode: "0644"
 
     # - name: Скопировать файл alloy-linux-amd64-v1.12.1.zip в "{{ temp_folder }}"
     #   become: true

@@ -24,3 +24,6 @@ group_vars/
 *.tar.lz4
 *.tar.zstd
 *.tar.zstd
+
+*.rpm
+*.deb
