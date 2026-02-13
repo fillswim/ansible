@@ -16,9 +16,9 @@ prometheus.relabel "filter_metrics" {
 		source_labels = ["__name__"]
 		regex = 
 		{% for m in metrics -%}
-        "{{ m | regex_escape }}{% if not loop.last %}|{% endif %}"{% if not loop.last %} + 
-        {% endif %}
-        {%- endfor %}
+		"{{ m | regex_escape }}{% if not loop.last %}|{% endif %}"{% if not loop.last %} + 
+		{% endif %}
+		{%- endfor %}
 		
 		action        = "keep"
 	}
