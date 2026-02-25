@@ -2,6 +2,11 @@
 //                    Node Metrics
 // ===================================================
 
+// Просмотр получаемых метрик в GUI http://IP:12345/debug/.node
+livedebugging {
+	enabled = true
+}
+
 prometheus.exporter.unix "node" { }
 
 prometheus.scrape "node" {
