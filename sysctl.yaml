@@ -1,0 +1,9 @@
+---
+
+# Sysctl
+
+- name: Sysctl
+  hosts: "all"
+
+  roles:
+    - role: sysctl

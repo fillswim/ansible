@@ -1,0 +1,32 @@
+// ===================================================
+//                    Alloy Metrics
+// ===================================================
+
+discovery.relabel "alloy" {
+	targets = [
+		{"__address__" = "192.168.2.134:12345"},
+	]
+
+	rule {
+		target_label = "instance"
+		replacement  = constants.hostname
+	}
+}
+
+prometheus.scrape "alloy" {
+	targets = discovery.relabel.alloy.output
+
+	metrics_path    = "/metrics"
+	scrape_interval = "15s"
+
+	forward_to = [prometheus.relabel.filter_alloy_metrics.receiver]
+}
+
+prometheus.relabel "filter_alloy_metrics" {
+	rule {
+		source_labels = ["__name__"]
+		regex         = "loki_write_sent_bytes_total"
+		action        = "keep"
+	}
+	forward_to = [prometheus.remote_write.mimir.receiver]
+}

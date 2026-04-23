@@ -231,6 +231,7 @@ ansible-playbook -i inventory/rhel-k8s1/k8s1-rhel.yaml ssh-keys.yaml -b
 ansible-playbook -i inventory/rhel-k8s1/k8s1-rhel.yaml backup.yaml -b
 
 ansible-playbook -i inventory/rhel-k8s1/k8s1-rhel.yaml install-alloy.yaml -b
+ansible-playbook -i inventory/rhel-k8s1/k8s1-rhel.yaml sysctl.yaml -b
 
 # ==============================================================================
 #                                 Alma K8s2
@@ -279,3 +280,25 @@ ansible-playbook -i inventory/kafka-adcm/kafka-adcm.yaml general.yaml -b
 ansible-playbook -i inventory/kafka-adcm/kafka-adcm.yaml backup.yaml -b
 
 ansible-playbook -i inventory/kafka-adcm/kafka-adcm.yaml install-alloy.yaml -b
+
+# ==============================================================================
+#                                 Ubuntu K8s1
+# ==============================================================================
+ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml ping.yaml -b
+ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml update.yaml -b
+ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml general.yaml -b
+
+ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml check-service-status.yaml -b
+ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml ssh-keys.yaml -b
+ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml backup.yaml -b
+ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml install-alloy.yaml -b
+ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml certs.yaml -b
+
+# ==============================================================================
+#                                    Nexus
+# ==============================================================================
+
+ansible-playbook -i inventory/nexus/nexus.yaml ping.yaml -b
+ansible-playbook -i inventory/nexus/nexus.yaml update.yaml -b
+ansible-playbook -i inventory/nexus/nexus.yaml general.yaml -b
+ansible-playbook -i inventory/nexus/nexus.yaml create-lvm-partition.yaml -b

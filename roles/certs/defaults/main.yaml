@@ -1,0 +1,4 @@
+---
+
+ubuntu_ca_certificate_path: "/usr/local/share/ca-certificates"
+redhat_ca_certificate_path: "/etc/pki/ca-trust/source/anchors"

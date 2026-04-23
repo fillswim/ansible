@@ -1,0 +1,9 @@
+---
+
+- name: Run update-ca-certificates Ubuntu
+  become: true
+  ansible.builtin.command: update-ca-certificates
+
+- name: Run update-ca-trust RedHat
+  become: true
+  ansible.builtin.command: update-ca-trust

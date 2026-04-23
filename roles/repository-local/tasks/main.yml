@@ -2,7 +2,7 @@
 # tasks file for local-repository
 
 - name: Block for RedHat
-  when: ansible_os_family == "RedHat" and ansible_distribution == "OracleLinux"
+  when: ansible_facts.os_family == "RedHat" and ansible_distribution == "OracleLinux"
   become: true
   block:
 

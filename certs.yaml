@@ -1,0 +1,9 @@
+---
+
+# Certs
+
+- name: Certs
+  hosts: "all"
+
+  roles:
+    - role: certs

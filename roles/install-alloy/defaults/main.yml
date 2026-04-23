@@ -24,3 +24,7 @@ alloy_config_file: "config.alloy"
 
 # Working directory
 alloy_working_folder: "/var/lib/alloy"
+
+# PostgreSQL
+postgresql_log_folder: "/var/lib/pgpro/std-15/log"
+postgresql_group: postgres

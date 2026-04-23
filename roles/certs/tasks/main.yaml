@@ -1,0 +1,65 @@
+---
+
+- name: Установить CA сертификат (Block для "Ubuntu")
+  when:
+    - ansible_facts.os_family == "Debian"
+  become: true
+  block:
+
+    - name: Удалить папку "{{ ubuntu_ca_certificate_path }}"
+      ansible.builtin.file:
+        path: "{{ ubuntu_ca_certificate_path }}"
+        state: absent
+
+    - name: Создать пустую папку "{{ ubuntu_ca_certificate_path }}"
+      ansible.builtin.file:
+        path: "{{ ubuntu_ca_certificate_path }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Скопировать сертификаты в "{{ ubuntu_ca_certificate_path }}" (Ubuntu)
+      become: true
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ ubuntu_ca_certificate_path }}/{{ item | basename }}"
+        owner: root
+        group: root
+        mode: "0644"
+      with_fileglob:
+        - .certs/*.crt
+      notify:
+        - Run update-ca-certificates Ubuntu
+
+- name: Установить CA сертификат (Block для "RedHat")
+  when:
+    - ansible_facts.os_family == "RedHat" or ansible_facts.os_family == "RED"
+  become: true
+  block:
+
+    - name: Удалить папку "{{ redhat_ca_certificate_path }}"
+      ansible.builtin.file:
+        path: "{{ redhat_ca_certificate_path }}"
+        state: absent
+
+    - name: Создать пустую папку "{{ redhat_ca_certificate_path }}"
+      ansible.builtin.file:
+        path: "{{ redhat_ca_certificate_path }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Скопировать сертификаты в "{{ redhat_ca_certificate_path }}" (RedHat)
+      become: true
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ redhat_ca_certificate_path }}/{{ item | basename }}"
+        owner: root
+        group: root
+        mode: "0644"
+      with_fileglob:
+        - .certs/*.crt
+      notify:
+        - Run update-ca-trust RedHat

@@ -6,7 +6,7 @@
   tasks:
 
     - name: Task number1 - Install package
-      when: ansible_os_family == "Debian"
+      when: ansible_facts.os_family == "Debian"
       become: true
       ignore_errors: true                             # Игнорирует ошибки на данном задании
       register: ignore_errors_register                # Сохранение ошибок в переменную ignore_errors_register
@@ -34,4 +34,4 @@
 
     - name: Task number4 - Print OS
       ansible.builtin.debug:
-        var: ansible_os_family
+        var: ansible_facts.os_family

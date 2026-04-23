@@ -2,7 +2,9 @@
 # tasks file for Create-LVM-Partition
 
 - name: Block for Ubuntu
-  when: inventory_hostname in groups[lvm_hosts_inventory_group_name]
+  when:
+    - lvm_hosts_inventory_group_name is defined
+    - inventory_hostname in groups[lvm_hosts_inventory_group_name]
   become: true
   block:
 
@@ -17,7 +19,7 @@
     - name: Install packages in RedHat
       ansible.builtin.yum:
         name: "{{ packages }}"
-      when: ansible_os_family == "RedHat" or ansible_os_family == "RED"
+      when: ansible_facts.os_family == "RedHat" or ansible_facts.os_family == "RED"
       vars:
         packages:
           - parted
@@ -27,7 +29,7 @@
     - name: Install packages in Ubuntu
       ansible.builtin.apt:
         name: "{{ packages }}"
-      when: ansible_os_family == "Debian"
+      when: ansible_facts.os_family == "Debian"
       vars:
         packages:
           - lvm2
@@ -36,7 +38,7 @@
     - name: Install packages in Altlinux
       ansible.builtin.apt_rpm:
         name: "{{ packages }}"
-      when: ansible_os_family == "Altlinux"
+      when: ansible_facts.os_family == "Altlinux"
       vars:
         packages:
           - lvm2

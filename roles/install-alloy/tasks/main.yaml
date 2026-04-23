@@ -15,6 +15,54 @@
     groups: systemd-journal
 
 # ================================================================
+#           Дать разрешения на папку с логами Postgres
+# ================================================================
+
+# Создание папки "data" для OpenSearch
+- name: Проверка существования папки "{{ postgresql_log_folder }}"
+  ansible.builtin.stat:
+    path: "{{ postgresql_log_folder }}"
+  register: data_folder_output
+
+# - name: Show data_folder_output
+#   ansible.builtin.debug:
+#     var: data_folder_output.stat.exists
+
+- name: Block for Permission Postgres
+  when: data_folder_output.stat.exists is true
+  become: true
+  block:
+
+    - name: Добавить пользователя в группу postgres
+      ansible.builtin.user:
+        name: "{{ alloy_username }}"
+        groups: "{{ postgresql_group }}"
+        append: true
+
+    - name: Allow alloy to read existing logs
+      ansible.posix.acl:
+        path: "{{ postgresql_log_folder }}"
+        entity: "{{ alloy_username }}"
+        etype: user
+        permissions: rx
+        recursive: true
+        state: present
+
+    - name: Allow alloy to read future logs
+      ansible.posix.acl:
+        path: "{{ postgresql_log_folder }}"
+        entity: "{{ alloy_username }}"
+        etype: user
+        permissions: rx
+        default: true
+        state: present
+
+    - name: Изменить права на папку "{{ postgresql_log_folder }}"
+      ansible.builtin.file:
+        path: "{{ postgresql_log_folder }}"
+        mode: "u=rwx,g=rx,o="
+
+# ================================================================
 #                            Altlinux
 # ================================================================
 
@@ -124,22 +172,22 @@
         group: root
         mode: "0755"
 
-    - name: Download Alloy
-      ansible.builtin.get_url:
-        url: "{{ alloy_tar_url }}"
-        dest: "{{ temp_folder }}/{{ alloy_tar_name }}"
-        owner: root
-        group: root
-        mode: "0644"
-
-    # - name: Скопировать файл alloy-linux-amd64-v1.12.1.zip в "{{ temp_folder }}"
-    #   become: true
-    #   ansible.builtin.copy:
-    #     src: alloy-linux-amd64-v1.12.1.zip
+    # - name: Download Alloy
+    #   ansible.builtin.get_url:
+    #     url: "{{ alloy_tar_url }}"
     #     dest: "{{ temp_folder }}/{{ alloy_tar_name }}"
     #     owner: root
     #     group: root
     #     mode: "0644"
+
+    - name: Скопировать файл alloy-linux-amd64-v1.12.1.zip в "{{ temp_folder }}"
+      become: true
+      ansible.builtin.copy:
+        src: alloy-linux-amd64-v1.12.1.zip
+        dest: "{{ temp_folder }}/{{ alloy_tar_name }}"
+        owner: root
+        group: root
+        mode: "0644"
 
     - name: Распаковать Alloy в "{{ temp_folder }}"
       ansible.builtin.unarchive:
