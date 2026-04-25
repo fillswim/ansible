@@ -43,10 +43,5 @@
         owner: root
         group: root
         mode: "0644"
-
-    - name: Restart systemd-resolved (Debian)
-      become: true
-      ansible.builtin.systemd:
-        state: restarted
-        daemon_reload: true
-        name: systemd-resolved
+      notify:
+        - Restart systemd-resolved (Debian)

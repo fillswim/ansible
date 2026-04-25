@@ -294,6 +294,8 @@ ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml backup.yaml -b
 ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml install-alloy.yaml -b
 ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml certs.yaml -b
 
+ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml repository-add-apt.yaml -b
+
 # ==============================================================================
 #                                    Nexus
 # ==============================================================================

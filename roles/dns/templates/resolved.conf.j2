@@ -24,7 +24,7 @@ DNS={% for ip in dns_servers %} {{ip}} {% endfor %}
 
 #FallbackDNS=
 
-Domains={{ domen }}
+Domains={% for domain in domains %} {{domain}} {% endfor %}
 
 #DNSSEC=no
 #DNSOverTLS=no

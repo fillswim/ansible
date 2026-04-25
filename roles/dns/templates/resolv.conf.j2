@@ -2,4 +2,4 @@
 nameserver {{ ip }}
 {% endfor %}
 
-search {{ domen }}
+search {% for domain in domains %} {{domain}} {% endfor %}
