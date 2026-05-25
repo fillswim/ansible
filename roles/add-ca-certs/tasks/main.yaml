@@ -1,5 +1,9 @@
 ---
 
+# =============================================================================
+#                                     Ubuntu
+# =============================================================================
+
 - name: Установить CA сертификат (Block для "Ubuntu")
   when:
     - ansible_facts.os_family == "Debian"
@@ -32,6 +36,10 @@
       notify:
         - Run update-ca-certificates Ubuntu
 
+# =============================================================================
+#                                     RedHat
+# =============================================================================
+
 - name: Установить CA сертификат (Block для "RedHat")
   when:
     - ansible_facts.os_family == "RedHat" or ansible_facts.os_family == "RED"
@@ -51,7 +59,7 @@
         group: root
         mode: '0755'
 
-    - name: Скопировать сертификаты в "{{ redhat_ca_certificate_path }}" (RedHat)
+    - name: Скопировать сертификаты для RedHat в "{{ redhat_ca_certificate_path }}"
       become: true
       ansible.builtin.copy:
         src: "{{ item }}"

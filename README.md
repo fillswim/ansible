@@ -282,11 +282,31 @@ ansible-playbook -i inventory/kafka-adcm/kafka-adcm.yaml backup.yaml -b
 ansible-playbook -i inventory/kafka-adcm/kafka-adcm.yaml install-alloy.yaml -b
 
 # ==============================================================================
-#                                 Ubuntu K8s1
+#                                    Nexus
+# ==============================================================================
+
+ansible-playbook -i inventory/nexus/nexus.yaml ping.yaml -b
+ansible-playbook -i inventory/nexus/nexus.yaml update.yaml -b
+ansible-playbook -i inventory/nexus/nexus.yaml general.yaml -b
+ansible-playbook -i inventory/nexus/nexus.yaml create-lvm-partition.yaml -b
+
+# ==============================================================================
+#                                    NUC
+# ==============================================================================
+
+ansible-playbook -i inventory/nuc/nuc.yaml ping.yaml -b
+ansible-playbook -i inventory/nuc/nuc.yaml update.yaml -b
+ansible-playbook -i inventory/nuc/nuc.yaml general.yaml -b
+ansible-playbook -i inventory/nuc/nuc.yaml create-lvm-partition.yaml -b
+
+# ==============================================================================
+#                                Ubuntu K8s1 (NUCs)
 # ==============================================================================
 ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml ping.yaml -b
 ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml update.yaml -b
 ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml general.yaml -b
+
+ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml dns.yaml -b
 
 ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml check-service-status.yaml -b
 ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml ssh-keys.yaml -b
@@ -297,10 +317,17 @@ ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml certs.yaml -b
 ansible-playbook -i inventory/ubuntu-k8s1/ubuntu-k8s1.yaml repository-add-apt.yaml -b
 
 # ==============================================================================
-#                                    Nexus
+#                              Ubuntu K8s3 (ContainerD)
 # ==============================================================================
 
-ansible-playbook -i inventory/nexus/nexus.yaml ping.yaml -b
-ansible-playbook -i inventory/nexus/nexus.yaml update.yaml -b
-ansible-playbook -i inventory/nexus/nexus.yaml general.yaml -b
-ansible-playbook -i inventory/nexus/nexus.yaml create-lvm-partition.yaml -b
+ansible-playbook -i inventory/ubuntu-k8s3/ubuntu-k8s3.yaml ping.yaml -b
+ansible-playbook -i inventory/ubuntu-k8s3/ubuntu-k8s3.yaml update.yaml -b
+ansible-playbook -i inventory/ubuntu-k8s3/ubuntu-k8s3.yaml general.yaml -b
+
+# ==============================================================================
+#                              Ubuntu K8s4 (CRI-O)
+# ==============================================================================
+
+ansible-playbook -i inventory/ubuntu-k8s4/ubuntu-k8s4.yaml ping.yaml -b
+ansible-playbook -i inventory/ubuntu-k8s4/ubuntu-k8s4.yaml update.yaml -b
+ansible-playbook -i inventory/ubuntu-k8s4/ubuntu-k8s4.yaml general.yaml -b

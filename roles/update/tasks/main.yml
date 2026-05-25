@@ -35,4 +35,5 @@
     - name: Upgrade
       ansible.builtin.apt:
         upgrade: dist
+        autoremove: true
       become: true

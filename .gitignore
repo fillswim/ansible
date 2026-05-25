@@ -27,3 +27,5 @@ group_vars/
 
 *.rpm
 *.deb
+
+.certs/

@@ -15,4 +15,5 @@
       when: "'ntp' not in inventory_hostname"
     - role: timezone
     - role: install
+    - role: add-ca-certs
     # - role: reboot

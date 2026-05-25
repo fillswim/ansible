@@ -12,3 +12,4 @@ ssh_keys:
   - /home/fill/.ssh-others/id_ed25519-wsl-almalinux-10.pub        # wsl-almalinux-10 (WSL)
   - /home/fill/.ssh-others/id_ed25519-ansible-redos-73.pub        # ansible-redos-73 (VM)
   - /home/fill/.ssh-others/id_ed25519-ansible-redos-80.pub        # ansible-redos-80 (VM)
+  - /home/fill/.ssh-others/id_ed25519-NUC12WSKi5.pub              # NUC12WSKi5

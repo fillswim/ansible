@@ -1,0 +1,9 @@
+---
+
+# Add CA Certs
+
+- name: Add CA Certs
+  hosts: "all"
+
+  roles:
+    - role: add-ca-certs
