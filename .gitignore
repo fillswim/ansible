@@ -29,3 +29,6 @@ group_vars/
 *.deb
 
 .certs/
+
+.ansible/
+.ansible/.lock
