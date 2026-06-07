@@ -8,8 +8,6 @@
       - mc
       - mc
       - unzip
-      - atop
-      - btop
     state: present
 
 - name: Установка специфических пакетов на RedHat
